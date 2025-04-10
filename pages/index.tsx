@@ -1,9 +1,11 @@
+import Billboard from "@/components/Billboard";
 import Navbar from "@/components/Navbar";
 
-import { NextPageContext } from "next";
+import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 
-export async function getServerSideProps(context: NextPageContext) {
+// Using GetServerSideProps type and no mixing with getStaticProps/getStaticPaths
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
 
   if (!session) {
@@ -18,12 +20,13 @@ export async function getServerSideProps(context: NextPageContext) {
   return {
     props: {},
   };
-}
+};
 
 export default function Home() {
   return (
     <>
       <Navbar />
+      <Billboard />
     </>
   );
 }
