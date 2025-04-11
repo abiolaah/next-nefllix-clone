@@ -1,6 +1,7 @@
 import Billboard from "@/components/Billboard";
 import MovieList from "@/components/MovieList";
 import Navbar from "@/components/Navbar";
+import useFavourites from "@/hooks/useFavourites";
 import useMovieList from "@/hooks/useMovieList";
 
 import { GetServerSideProps } from "next";
@@ -26,12 +27,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 export default function Home() {
   const { data: movies = [] } = useMovieList();
+  const { data: favourites = [] } = useFavourites();
   return (
     <>
       <Navbar />
       <Billboard />
       <div className="pb-40">
         <MovieList title="Trending Now" data={movies} />
+        <MovieList title="My List" data={favourites} />
       </div>
     </>
   );
