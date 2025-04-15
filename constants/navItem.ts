@@ -5,11 +5,11 @@ export const navItem = [
   },
   {
     id: 2,
-    name: "Series",
+    name: "TV Shows",
   },
   {
     id: 3,
-    name: "Films",
+    name: "Movies",
   },
   {
     id: 4,
