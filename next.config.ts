@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
       "www.cartoonbrew.com",
       "commondatastorage.googleapis.com",
       "res.cloudinary.com",
+      "image.tmdb.org",
     ],
   },
 };
