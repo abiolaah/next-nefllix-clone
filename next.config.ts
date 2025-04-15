@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       "download.blender.org",
       "www.cartoonbrew.com",
       "commondatastorage.googleapis.com",
+      "res.cloudinary.com",
     ],
   },
 };

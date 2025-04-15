@@ -54,7 +54,7 @@ const Auth = () => {
       <div className="bg-black w-full h-full lg:bg-black/50">
         <nav className="px-12 py-5">
           <Image
-            src="/images/logo.png"
+            src="https://res.cloudinary.com/dixwarqdb/image/upload/v1744696101/logo_uwzr3q.png"
             alt="Logo"
             className="h-12"
             width={105}
