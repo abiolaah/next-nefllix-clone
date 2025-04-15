@@ -6,18 +6,21 @@ interface InputProps {
   value: string;
   label: string;
   type?: string;
+  className?: string;
 }
 
-const Input = ({ id, onChange, value, label, type }: InputProps) => {
+const Input = ({ id, onChange, value, label, type, className }: InputProps) => {
   return (
-    <div className="relative">
+    <div className={`relative`}>
       <input
         id={id}
         value={value}
         type={type}
         onChange={onChange}
-        className="
-        block
+        className={
+          className
+            ? className
+            : `block
         rounded-md
         px-6
         pt-6
@@ -30,7 +33,8 @@ const Input = ({ id, onChange, value, label, type }: InputProps) => {
         focus:outline-none
         focus:ring-0
         peer
-        "
+        `
+        }
         placeholder=" "
       />
       <label
