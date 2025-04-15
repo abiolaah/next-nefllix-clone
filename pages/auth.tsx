@@ -50,7 +50,7 @@ const Auth = () => {
   }, [email, name, password, login]);
 
   return (
-    <div className="relative h-full w-full bg-[url('/images/hero.jpg')] bg-no-repeat bg-center bg-fixed bg-cover">
+    <div className="relative h-full w-full bg-[url('https://res.cloudinary.com/dixwarqdb/image/upload/v1744696101/hero_pzur2o.jpg')] bg-no-repeat bg-center bg-fixed bg-cover">
       <div className="bg-black w-full h-full lg:bg-black/50">
         <nav className="px-12 py-5">
           <Image
