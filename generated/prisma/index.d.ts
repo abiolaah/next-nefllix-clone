@@ -5395,6 +5395,7 @@ export namespace Prisma {
     description: string | null
     videoUrl: string | null
     thumbnailUrl: string | null
+    trailerUrl: string | null
     rating: number | null
     duration: string | null
   }
@@ -5405,6 +5406,7 @@ export namespace Prisma {
     description: string | null
     videoUrl: string | null
     thumbnailUrl: string | null
+    trailerUrl: string | null
     rating: number | null
     duration: string | null
   }
@@ -5415,6 +5417,7 @@ export namespace Prisma {
     description: number
     videoUrl: number
     thumbnailUrl: number
+    trailerUrl: number
     genre: number
     rating: number
     duration: number
@@ -5436,6 +5439,7 @@ export namespace Prisma {
     description?: true
     videoUrl?: true
     thumbnailUrl?: true
+    trailerUrl?: true
     rating?: true
     duration?: true
   }
@@ -5446,6 +5450,7 @@ export namespace Prisma {
     description?: true
     videoUrl?: true
     thumbnailUrl?: true
+    trailerUrl?: true
     rating?: true
     duration?: true
   }
@@ -5456,6 +5461,7 @@ export namespace Prisma {
     description?: true
     videoUrl?: true
     thumbnailUrl?: true
+    trailerUrl?: true
     genre?: true
     rating?: true
     duration?: true
@@ -5554,6 +5560,7 @@ export namespace Prisma {
     description: string
     videoUrl: string
     thumbnailUrl: string
+    trailerUrl: string
     genre: string[]
     rating: number | null
     duration: string
@@ -5584,6 +5591,7 @@ export namespace Prisma {
     description?: boolean
     videoUrl?: boolean
     thumbnailUrl?: boolean
+    trailerUrl?: boolean
     genre?: boolean
     rating?: boolean
     duration?: boolean
@@ -5597,12 +5605,13 @@ export namespace Prisma {
     description?: boolean
     videoUrl?: boolean
     thumbnailUrl?: boolean
+    trailerUrl?: boolean
     genre?: boolean
     rating?: boolean
     duration?: boolean
   }
 
-  export type MovieOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "videoUrl" | "thumbnailUrl" | "genre" | "rating" | "duration", ExtArgs["result"]["movie"]>
+  export type MovieOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "videoUrl" | "thumbnailUrl" | "trailerUrl" | "genre" | "rating" | "duration", ExtArgs["result"]["movie"]>
 
   export type $MoviePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Movie"
@@ -5613,6 +5622,7 @@ export namespace Prisma {
       description: string
       videoUrl: string
       thumbnailUrl: string
+      trailerUrl: string
       genre: string[]
       rating: number | null
       duration: string
@@ -6013,6 +6023,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Movie", 'String'>
     readonly videoUrl: FieldRef<"Movie", 'String'>
     readonly thumbnailUrl: FieldRef<"Movie", 'String'>
+    readonly trailerUrl: FieldRef<"Movie", 'String'>
     readonly genre: FieldRef<"Movie", 'String[]'>
     readonly rating: FieldRef<"Movie", 'Float'>
     readonly duration: FieldRef<"Movie", 'String'>
@@ -6392,6 +6403,7 @@ export namespace Prisma {
     description: string | null
     videoUrl: string | null
     thumbnailUrl: string | null
+    trailerUrl: string | null
     rating: number | null
     numberOfSeasons: number | null
   }
@@ -6402,6 +6414,7 @@ export namespace Prisma {
     description: string | null
     videoUrl: string | null
     thumbnailUrl: string | null
+    trailerUrl: string | null
     rating: number | null
     numberOfSeasons: number | null
   }
@@ -6412,6 +6425,7 @@ export namespace Prisma {
     description: number
     videoUrl: number
     thumbnailUrl: number
+    trailerUrl: number
     genre: number
     rating: number
     numberOfSeasons: number
@@ -6435,6 +6449,7 @@ export namespace Prisma {
     description?: true
     videoUrl?: true
     thumbnailUrl?: true
+    trailerUrl?: true
     rating?: true
     numberOfSeasons?: true
   }
@@ -6445,6 +6460,7 @@ export namespace Prisma {
     description?: true
     videoUrl?: true
     thumbnailUrl?: true
+    trailerUrl?: true
     rating?: true
     numberOfSeasons?: true
   }
@@ -6455,6 +6471,7 @@ export namespace Prisma {
     description?: true
     videoUrl?: true
     thumbnailUrl?: true
+    trailerUrl?: true
     genre?: true
     rating?: true
     numberOfSeasons?: true
@@ -6553,6 +6570,7 @@ export namespace Prisma {
     description: string
     videoUrl: string
     thumbnailUrl: string
+    trailerUrl: string
     genre: string[]
     rating: number | null
     numberOfSeasons: number
@@ -6583,6 +6601,7 @@ export namespace Prisma {
     description?: boolean
     videoUrl?: boolean
     thumbnailUrl?: boolean
+    trailerUrl?: boolean
     genre?: boolean
     rating?: boolean
     numberOfSeasons?: boolean
@@ -6596,12 +6615,13 @@ export namespace Prisma {
     description?: boolean
     videoUrl?: boolean
     thumbnailUrl?: boolean
+    trailerUrl?: boolean
     genre?: boolean
     rating?: boolean
     numberOfSeasons?: boolean
   }
 
-  export type TvShowOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "videoUrl" | "thumbnailUrl" | "genre" | "rating" | "numberOfSeasons", ExtArgs["result"]["tvShow"]>
+  export type TvShowOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "videoUrl" | "thumbnailUrl" | "trailerUrl" | "genre" | "rating" | "numberOfSeasons", ExtArgs["result"]["tvShow"]>
 
   export type $TvShowPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TvShow"
@@ -6612,6 +6632,7 @@ export namespace Prisma {
       description: string
       videoUrl: string
       thumbnailUrl: string
+      trailerUrl: string
       genre: string[]
       rating: number | null
       numberOfSeasons: number
@@ -7012,6 +7033,7 @@ export namespace Prisma {
     readonly description: FieldRef<"TvShow", 'String'>
     readonly videoUrl: FieldRef<"TvShow", 'String'>
     readonly thumbnailUrl: FieldRef<"TvShow", 'String'>
+    readonly trailerUrl: FieldRef<"TvShow", 'String'>
     readonly genre: FieldRef<"TvShow", 'String[]'>
     readonly rating: FieldRef<"TvShow", 'Float'>
     readonly numberOfSeasons: FieldRef<"TvShow", 'Int'>
@@ -7426,6 +7448,7 @@ export namespace Prisma {
     description: 'description',
     videoUrl: 'videoUrl',
     thumbnailUrl: 'thumbnailUrl',
+    trailerUrl: 'trailerUrl',
     genre: 'genre',
     rating: 'rating',
     duration: 'duration'
@@ -7440,6 +7463,7 @@ export namespace Prisma {
     description: 'description',
     videoUrl: 'videoUrl',
     thumbnailUrl: 'thumbnailUrl',
+    trailerUrl: 'trailerUrl',
     genre: 'genre',
     rating: 'rating',
     numberOfSeasons: 'numberOfSeasons'
@@ -7806,6 +7830,7 @@ export namespace Prisma {
     description?: StringFilter<"Movie"> | string
     videoUrl?: StringFilter<"Movie"> | string
     thumbnailUrl?: StringFilter<"Movie"> | string
+    trailerUrl?: StringFilter<"Movie"> | string
     genre?: StringNullableListFilter<"Movie">
     rating?: FloatNullableFilter<"Movie"> | number | null
     duration?: StringFilter<"Movie"> | string
@@ -7817,6 +7842,7 @@ export namespace Prisma {
     description?: SortOrder
     videoUrl?: SortOrder
     thumbnailUrl?: SortOrder
+    trailerUrl?: SortOrder
     genre?: SortOrder
     rating?: SortOrder
     duration?: SortOrder
@@ -7831,6 +7857,7 @@ export namespace Prisma {
     description?: StringFilter<"Movie"> | string
     videoUrl?: StringFilter<"Movie"> | string
     thumbnailUrl?: StringFilter<"Movie"> | string
+    trailerUrl?: StringFilter<"Movie"> | string
     genre?: StringNullableListFilter<"Movie">
     rating?: FloatNullableFilter<"Movie"> | number | null
     duration?: StringFilter<"Movie"> | string
@@ -7842,6 +7869,7 @@ export namespace Prisma {
     description?: SortOrder
     videoUrl?: SortOrder
     thumbnailUrl?: SortOrder
+    trailerUrl?: SortOrder
     genre?: SortOrder
     rating?: SortOrder
     duration?: SortOrder
@@ -7861,6 +7889,7 @@ export namespace Prisma {
     description?: StringWithAggregatesFilter<"Movie"> | string
     videoUrl?: StringWithAggregatesFilter<"Movie"> | string
     thumbnailUrl?: StringWithAggregatesFilter<"Movie"> | string
+    trailerUrl?: StringWithAggregatesFilter<"Movie"> | string
     genre?: StringNullableListFilter<"Movie">
     rating?: FloatNullableWithAggregatesFilter<"Movie"> | number | null
     duration?: StringWithAggregatesFilter<"Movie"> | string
@@ -7875,6 +7904,7 @@ export namespace Prisma {
     description?: StringFilter<"TvShow"> | string
     videoUrl?: StringFilter<"TvShow"> | string
     thumbnailUrl?: StringFilter<"TvShow"> | string
+    trailerUrl?: StringFilter<"TvShow"> | string
     genre?: StringNullableListFilter<"TvShow">
     rating?: FloatNullableFilter<"TvShow"> | number | null
     numberOfSeasons?: IntFilter<"TvShow"> | number
@@ -7886,6 +7916,7 @@ export namespace Prisma {
     description?: SortOrder
     videoUrl?: SortOrder
     thumbnailUrl?: SortOrder
+    trailerUrl?: SortOrder
     genre?: SortOrder
     rating?: SortOrder
     numberOfSeasons?: SortOrder
@@ -7900,6 +7931,7 @@ export namespace Prisma {
     description?: StringFilter<"TvShow"> | string
     videoUrl?: StringFilter<"TvShow"> | string
     thumbnailUrl?: StringFilter<"TvShow"> | string
+    trailerUrl?: StringFilter<"TvShow"> | string
     genre?: StringNullableListFilter<"TvShow">
     rating?: FloatNullableFilter<"TvShow"> | number | null
     numberOfSeasons?: IntFilter<"TvShow"> | number
@@ -7911,6 +7943,7 @@ export namespace Prisma {
     description?: SortOrder
     videoUrl?: SortOrder
     thumbnailUrl?: SortOrder
+    trailerUrl?: SortOrder
     genre?: SortOrder
     rating?: SortOrder
     numberOfSeasons?: SortOrder
@@ -7930,6 +7963,7 @@ export namespace Prisma {
     description?: StringWithAggregatesFilter<"TvShow"> | string
     videoUrl?: StringWithAggregatesFilter<"TvShow"> | string
     thumbnailUrl?: StringWithAggregatesFilter<"TvShow"> | string
+    trailerUrl?: StringWithAggregatesFilter<"TvShow"> | string
     genre?: StringNullableListFilter<"TvShow">
     rating?: FloatNullableWithAggregatesFilter<"TvShow"> | number | null
     numberOfSeasons?: IntWithAggregatesFilter<"TvShow"> | number
@@ -8218,6 +8252,7 @@ export namespace Prisma {
     description: string
     videoUrl: string
     thumbnailUrl: string
+    trailerUrl: string
     genre?: MovieCreategenreInput | string[]
     rating?: number | null
     duration: string
@@ -8229,6 +8264,7 @@ export namespace Prisma {
     description: string
     videoUrl: string
     thumbnailUrl: string
+    trailerUrl: string
     genre?: MovieCreategenreInput | string[]
     rating?: number | null
     duration: string
@@ -8239,6 +8275,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     videoUrl?: StringFieldUpdateOperationsInput | string
     thumbnailUrl?: StringFieldUpdateOperationsInput | string
+    trailerUrl?: StringFieldUpdateOperationsInput | string
     genre?: MovieUpdategenreInput | string[]
     rating?: NullableFloatFieldUpdateOperationsInput | number | null
     duration?: StringFieldUpdateOperationsInput | string
@@ -8249,6 +8286,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     videoUrl?: StringFieldUpdateOperationsInput | string
     thumbnailUrl?: StringFieldUpdateOperationsInput | string
+    trailerUrl?: StringFieldUpdateOperationsInput | string
     genre?: MovieUpdategenreInput | string[]
     rating?: NullableFloatFieldUpdateOperationsInput | number | null
     duration?: StringFieldUpdateOperationsInput | string
@@ -8260,6 +8298,7 @@ export namespace Prisma {
     description: string
     videoUrl: string
     thumbnailUrl: string
+    trailerUrl: string
     genre?: MovieCreategenreInput | string[]
     rating?: number | null
     duration: string
@@ -8270,6 +8309,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     videoUrl?: StringFieldUpdateOperationsInput | string
     thumbnailUrl?: StringFieldUpdateOperationsInput | string
+    trailerUrl?: StringFieldUpdateOperationsInput | string
     genre?: MovieUpdategenreInput | string[]
     rating?: NullableFloatFieldUpdateOperationsInput | number | null
     duration?: StringFieldUpdateOperationsInput | string
@@ -8280,6 +8320,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     videoUrl?: StringFieldUpdateOperationsInput | string
     thumbnailUrl?: StringFieldUpdateOperationsInput | string
+    trailerUrl?: StringFieldUpdateOperationsInput | string
     genre?: MovieUpdategenreInput | string[]
     rating?: NullableFloatFieldUpdateOperationsInput | number | null
     duration?: StringFieldUpdateOperationsInput | string
@@ -8291,6 +8332,7 @@ export namespace Prisma {
     description: string
     videoUrl: string
     thumbnailUrl: string
+    trailerUrl: string
     genre?: TvShowCreategenreInput | string[]
     rating?: number | null
     numberOfSeasons: number
@@ -8302,6 +8344,7 @@ export namespace Prisma {
     description: string
     videoUrl: string
     thumbnailUrl: string
+    trailerUrl: string
     genre?: TvShowCreategenreInput | string[]
     rating?: number | null
     numberOfSeasons: number
@@ -8312,6 +8355,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     videoUrl?: StringFieldUpdateOperationsInput | string
     thumbnailUrl?: StringFieldUpdateOperationsInput | string
+    trailerUrl?: StringFieldUpdateOperationsInput | string
     genre?: TvShowUpdategenreInput | string[]
     rating?: NullableFloatFieldUpdateOperationsInput | number | null
     numberOfSeasons?: IntFieldUpdateOperationsInput | number
@@ -8322,6 +8366,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     videoUrl?: StringFieldUpdateOperationsInput | string
     thumbnailUrl?: StringFieldUpdateOperationsInput | string
+    trailerUrl?: StringFieldUpdateOperationsInput | string
     genre?: TvShowUpdategenreInput | string[]
     rating?: NullableFloatFieldUpdateOperationsInput | number | null
     numberOfSeasons?: IntFieldUpdateOperationsInput | number
@@ -8333,6 +8378,7 @@ export namespace Prisma {
     description: string
     videoUrl: string
     thumbnailUrl: string
+    trailerUrl: string
     genre?: TvShowCreategenreInput | string[]
     rating?: number | null
     numberOfSeasons: number
@@ -8343,6 +8389,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     videoUrl?: StringFieldUpdateOperationsInput | string
     thumbnailUrl?: StringFieldUpdateOperationsInput | string
+    trailerUrl?: StringFieldUpdateOperationsInput | string
     genre?: TvShowUpdategenreInput | string[]
     rating?: NullableFloatFieldUpdateOperationsInput | number | null
     numberOfSeasons?: IntFieldUpdateOperationsInput | number
@@ -8353,6 +8400,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     videoUrl?: StringFieldUpdateOperationsInput | string
     thumbnailUrl?: StringFieldUpdateOperationsInput | string
+    trailerUrl?: StringFieldUpdateOperationsInput | string
     genre?: TvShowUpdategenreInput | string[]
     rating?: NullableFloatFieldUpdateOperationsInput | number | null
     numberOfSeasons?: IntFieldUpdateOperationsInput | number
@@ -8697,6 +8745,7 @@ export namespace Prisma {
     description?: SortOrder
     videoUrl?: SortOrder
     thumbnailUrl?: SortOrder
+    trailerUrl?: SortOrder
     genre?: SortOrder
     rating?: SortOrder
     duration?: SortOrder
@@ -8712,6 +8761,7 @@ export namespace Prisma {
     description?: SortOrder
     videoUrl?: SortOrder
     thumbnailUrl?: SortOrder
+    trailerUrl?: SortOrder
     rating?: SortOrder
     duration?: SortOrder
   }
@@ -8722,6 +8772,7 @@ export namespace Prisma {
     description?: SortOrder
     videoUrl?: SortOrder
     thumbnailUrl?: SortOrder
+    trailerUrl?: SortOrder
     rating?: SortOrder
     duration?: SortOrder
   }
@@ -8764,6 +8815,7 @@ export namespace Prisma {
     description?: SortOrder
     videoUrl?: SortOrder
     thumbnailUrl?: SortOrder
+    trailerUrl?: SortOrder
     genre?: SortOrder
     rating?: SortOrder
     numberOfSeasons?: SortOrder
@@ -8780,6 +8832,7 @@ export namespace Prisma {
     description?: SortOrder
     videoUrl?: SortOrder
     thumbnailUrl?: SortOrder
+    trailerUrl?: SortOrder
     rating?: SortOrder
     numberOfSeasons?: SortOrder
   }
@@ -8790,6 +8843,7 @@ export namespace Prisma {
     description?: SortOrder
     videoUrl?: SortOrder
     thumbnailUrl?: SortOrder
+    trailerUrl?: SortOrder
     rating?: SortOrder
     numberOfSeasons?: SortOrder
   }

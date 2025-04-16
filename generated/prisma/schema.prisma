@@ -71,6 +71,7 @@ model Movie {
   description  String
   videoUrl     String
   thumbnailUrl String
+  trailerUrl   String
   genre        String[]
   rating       Float?
   duration     String
@@ -82,6 +83,7 @@ model TvShow {
   description     String
   videoUrl        String
   thumbnailUrl    String
+  trailerUrl      String
   genre           String[]
   rating          Float?
   numberOfSeasons Int

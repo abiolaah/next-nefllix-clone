@@ -157,6 +157,7 @@ exports.Prisma.MovieScalarFieldEnum = {
   description: 'description',
   videoUrl: 'videoUrl',
   thumbnailUrl: 'thumbnailUrl',
+  trailerUrl: 'trailerUrl',
   genre: 'genre',
   rating: 'rating',
   duration: 'duration'
@@ -168,6 +169,7 @@ exports.Prisma.TvShowScalarFieldEnum = {
   description: 'description',
   videoUrl: 'videoUrl',
   thumbnailUrl: 'thumbnailUrl',
+  trailerUrl: 'trailerUrl',
   genre: 'genre',
   rating: 'rating',
   numberOfSeasons: 'numberOfSeasons'
