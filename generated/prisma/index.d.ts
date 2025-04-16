@@ -38,6 +38,11 @@ export type VerificationToken = $Result.DefaultSelection<Prisma.$VerificationTok
  * 
  */
 export type Movie = $Result.DefaultSelection<Prisma.$MoviePayload>
+/**
+ * Model TvShow
+ * 
+ */
+export type TvShow = $Result.DefaultSelection<Prisma.$TvShowPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -180,6 +185,16 @@ export class PrismaClient<
     * ```
     */
   get movie(): Prisma.MovieDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.tvShow`: Exposes CRUD operations for the **TvShow** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TvShows
+    * const tvShows = await prisma.tvShow.findMany()
+    * ```
+    */
+  get tvShow(): Prisma.TvShowDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -624,7 +639,8 @@ export namespace Prisma {
     Account: 'Account',
     Session: 'Session',
     VerificationToken: 'VerificationToken',
-    Movie: 'Movie'
+    Movie: 'Movie',
+    TvShow: 'TvShow'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -643,7 +659,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "account" | "session" | "verificationToken" | "movie"
+      modelProps: "user" | "account" | "session" | "verificationToken" | "movie" | "tvShow"
       txIsolationLevel: never
     }
     model: {
@@ -1017,6 +1033,80 @@ export namespace Prisma {
           }
         }
       }
+      TvShow: {
+        payload: Prisma.$TvShowPayload<ExtArgs>
+        fields: Prisma.TvShowFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TvShowFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TvShowPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TvShowFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TvShowPayload>
+          }
+          findFirst: {
+            args: Prisma.TvShowFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TvShowPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TvShowFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TvShowPayload>
+          }
+          findMany: {
+            args: Prisma.TvShowFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TvShowPayload>[]
+          }
+          create: {
+            args: Prisma.TvShowCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TvShowPayload>
+          }
+          createMany: {
+            args: Prisma.TvShowCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.TvShowDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TvShowPayload>
+          }
+          update: {
+            args: Prisma.TvShowUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TvShowPayload>
+          }
+          deleteMany: {
+            args: Prisma.TvShowDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TvShowUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.TvShowUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TvShowPayload>
+          }
+          aggregate: {
+            args: Prisma.TvShowAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTvShow>
+          }
+          groupBy: {
+            args: Prisma.TvShowGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TvShowGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.TvShowFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.TvShowAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.TvShowCountArgs<ExtArgs>
+            result: $Utils.Optional<TvShowCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1093,6 +1183,7 @@ export namespace Prisma {
     session?: SessionOmit
     verificationToken?: VerificationTokenOmit
     movie?: MovieOmit
+    tvShow?: TvShowOmit
   }
 
   /* Types for Logging */
@@ -5304,7 +5395,6 @@ export namespace Prisma {
     description: string | null
     videoUrl: string | null
     thumbnailUrl: string | null
-    genre: string | null
     rating: number | null
     duration: string | null
   }
@@ -5315,7 +5405,6 @@ export namespace Prisma {
     description: string | null
     videoUrl: string | null
     thumbnailUrl: string | null
-    genre: string | null
     rating: number | null
     duration: string | null
   }
@@ -5347,7 +5436,6 @@ export namespace Prisma {
     description?: true
     videoUrl?: true
     thumbnailUrl?: true
-    genre?: true
     rating?: true
     duration?: true
   }
@@ -5358,7 +5446,6 @@ export namespace Prisma {
     description?: true
     videoUrl?: true
     thumbnailUrl?: true
-    genre?: true
     rating?: true
     duration?: true
   }
@@ -5467,7 +5554,7 @@ export namespace Prisma {
     description: string
     videoUrl: string
     thumbnailUrl: string
-    genre: string
+    genre: string[]
     rating: number | null
     duration: string
     _count: MovieCountAggregateOutputType | null
@@ -5526,7 +5613,7 @@ export namespace Prisma {
       description: string
       videoUrl: string
       thumbnailUrl: string
-      genre: string
+      genre: string[]
       rating: number | null
       duration: string
     }, ExtArgs["result"]["movie"]>
@@ -5926,7 +6013,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Movie", 'String'>
     readonly videoUrl: FieldRef<"Movie", 'String'>
     readonly thumbnailUrl: FieldRef<"Movie", 'String'>
-    readonly genre: FieldRef<"Movie", 'String'>
+    readonly genre: FieldRef<"Movie", 'String[]'>
     readonly rating: FieldRef<"Movie", 'Float'>
     readonly duration: FieldRef<"Movie", 'String'>
   }
@@ -6278,6 +6365,1005 @@ export namespace Prisma {
 
 
   /**
+   * Model TvShow
+   */
+
+  export type AggregateTvShow = {
+    _count: TvShowCountAggregateOutputType | null
+    _avg: TvShowAvgAggregateOutputType | null
+    _sum: TvShowSumAggregateOutputType | null
+    _min: TvShowMinAggregateOutputType | null
+    _max: TvShowMaxAggregateOutputType | null
+  }
+
+  export type TvShowAvgAggregateOutputType = {
+    rating: number | null
+    numberOfSeasons: number | null
+  }
+
+  export type TvShowSumAggregateOutputType = {
+    rating: number | null
+    numberOfSeasons: number | null
+  }
+
+  export type TvShowMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    videoUrl: string | null
+    thumbnailUrl: string | null
+    rating: number | null
+    numberOfSeasons: number | null
+  }
+
+  export type TvShowMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    videoUrl: string | null
+    thumbnailUrl: string | null
+    rating: number | null
+    numberOfSeasons: number | null
+  }
+
+  export type TvShowCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    videoUrl: number
+    thumbnailUrl: number
+    genre: number
+    rating: number
+    numberOfSeasons: number
+    _all: number
+  }
+
+
+  export type TvShowAvgAggregateInputType = {
+    rating?: true
+    numberOfSeasons?: true
+  }
+
+  export type TvShowSumAggregateInputType = {
+    rating?: true
+    numberOfSeasons?: true
+  }
+
+  export type TvShowMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    videoUrl?: true
+    thumbnailUrl?: true
+    rating?: true
+    numberOfSeasons?: true
+  }
+
+  export type TvShowMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    videoUrl?: true
+    thumbnailUrl?: true
+    rating?: true
+    numberOfSeasons?: true
+  }
+
+  export type TvShowCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    videoUrl?: true
+    thumbnailUrl?: true
+    genre?: true
+    rating?: true
+    numberOfSeasons?: true
+    _all?: true
+  }
+
+  export type TvShowAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TvShow to aggregate.
+     */
+    where?: TvShowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TvShows to fetch.
+     */
+    orderBy?: TvShowOrderByWithRelationInput | TvShowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TvShowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TvShows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TvShows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TvShows
+    **/
+    _count?: true | TvShowCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TvShowAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TvShowSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TvShowMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TvShowMaxAggregateInputType
+  }
+
+  export type GetTvShowAggregateType<T extends TvShowAggregateArgs> = {
+        [P in keyof T & keyof AggregateTvShow]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTvShow[P]>
+      : GetScalarType<T[P], AggregateTvShow[P]>
+  }
+
+
+
+
+  export type TvShowGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TvShowWhereInput
+    orderBy?: TvShowOrderByWithAggregationInput | TvShowOrderByWithAggregationInput[]
+    by: TvShowScalarFieldEnum[] | TvShowScalarFieldEnum
+    having?: TvShowScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TvShowCountAggregateInputType | true
+    _avg?: TvShowAvgAggregateInputType
+    _sum?: TvShowSumAggregateInputType
+    _min?: TvShowMinAggregateInputType
+    _max?: TvShowMaxAggregateInputType
+  }
+
+  export type TvShowGroupByOutputType = {
+    id: string
+    title: string
+    description: string
+    videoUrl: string
+    thumbnailUrl: string
+    genre: string[]
+    rating: number | null
+    numberOfSeasons: number
+    _count: TvShowCountAggregateOutputType | null
+    _avg: TvShowAvgAggregateOutputType | null
+    _sum: TvShowSumAggregateOutputType | null
+    _min: TvShowMinAggregateOutputType | null
+    _max: TvShowMaxAggregateOutputType | null
+  }
+
+  type GetTvShowGroupByPayload<T extends TvShowGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TvShowGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TvShowGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TvShowGroupByOutputType[P]>
+            : GetScalarType<T[P], TvShowGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TvShowSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    videoUrl?: boolean
+    thumbnailUrl?: boolean
+    genre?: boolean
+    rating?: boolean
+    numberOfSeasons?: boolean
+  }, ExtArgs["result"]["tvShow"]>
+
+
+
+  export type TvShowSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    videoUrl?: boolean
+    thumbnailUrl?: boolean
+    genre?: boolean
+    rating?: boolean
+    numberOfSeasons?: boolean
+  }
+
+  export type TvShowOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "videoUrl" | "thumbnailUrl" | "genre" | "rating" | "numberOfSeasons", ExtArgs["result"]["tvShow"]>
+
+  export type $TvShowPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TvShow"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string
+      videoUrl: string
+      thumbnailUrl: string
+      genre: string[]
+      rating: number | null
+      numberOfSeasons: number
+    }, ExtArgs["result"]["tvShow"]>
+    composites: {}
+  }
+
+  type TvShowGetPayload<S extends boolean | null | undefined | TvShowDefaultArgs> = $Result.GetResult<Prisma.$TvShowPayload, S>
+
+  type TvShowCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TvShowFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TvShowCountAggregateInputType | true
+    }
+
+  export interface TvShowDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TvShow'], meta: { name: 'TvShow' } }
+    /**
+     * Find zero or one TvShow that matches the filter.
+     * @param {TvShowFindUniqueArgs} args - Arguments to find a TvShow
+     * @example
+     * // Get one TvShow
+     * const tvShow = await prisma.tvShow.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TvShowFindUniqueArgs>(args: SelectSubset<T, TvShowFindUniqueArgs<ExtArgs>>): Prisma__TvShowClient<$Result.GetResult<Prisma.$TvShowPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TvShow that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TvShowFindUniqueOrThrowArgs} args - Arguments to find a TvShow
+     * @example
+     * // Get one TvShow
+     * const tvShow = await prisma.tvShow.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TvShowFindUniqueOrThrowArgs>(args: SelectSubset<T, TvShowFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TvShowClient<$Result.GetResult<Prisma.$TvShowPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TvShow that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TvShowFindFirstArgs} args - Arguments to find a TvShow
+     * @example
+     * // Get one TvShow
+     * const tvShow = await prisma.tvShow.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TvShowFindFirstArgs>(args?: SelectSubset<T, TvShowFindFirstArgs<ExtArgs>>): Prisma__TvShowClient<$Result.GetResult<Prisma.$TvShowPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TvShow that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TvShowFindFirstOrThrowArgs} args - Arguments to find a TvShow
+     * @example
+     * // Get one TvShow
+     * const tvShow = await prisma.tvShow.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TvShowFindFirstOrThrowArgs>(args?: SelectSubset<T, TvShowFindFirstOrThrowArgs<ExtArgs>>): Prisma__TvShowClient<$Result.GetResult<Prisma.$TvShowPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TvShows that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TvShowFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TvShows
+     * const tvShows = await prisma.tvShow.findMany()
+     * 
+     * // Get first 10 TvShows
+     * const tvShows = await prisma.tvShow.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const tvShowWithIdOnly = await prisma.tvShow.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TvShowFindManyArgs>(args?: SelectSubset<T, TvShowFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TvShowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TvShow.
+     * @param {TvShowCreateArgs} args - Arguments to create a TvShow.
+     * @example
+     * // Create one TvShow
+     * const TvShow = await prisma.tvShow.create({
+     *   data: {
+     *     // ... data to create a TvShow
+     *   }
+     * })
+     * 
+     */
+    create<T extends TvShowCreateArgs>(args: SelectSubset<T, TvShowCreateArgs<ExtArgs>>): Prisma__TvShowClient<$Result.GetResult<Prisma.$TvShowPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TvShows.
+     * @param {TvShowCreateManyArgs} args - Arguments to create many TvShows.
+     * @example
+     * // Create many TvShows
+     * const tvShow = await prisma.tvShow.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TvShowCreateManyArgs>(args?: SelectSubset<T, TvShowCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a TvShow.
+     * @param {TvShowDeleteArgs} args - Arguments to delete one TvShow.
+     * @example
+     * // Delete one TvShow
+     * const TvShow = await prisma.tvShow.delete({
+     *   where: {
+     *     // ... filter to delete one TvShow
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TvShowDeleteArgs>(args: SelectSubset<T, TvShowDeleteArgs<ExtArgs>>): Prisma__TvShowClient<$Result.GetResult<Prisma.$TvShowPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TvShow.
+     * @param {TvShowUpdateArgs} args - Arguments to update one TvShow.
+     * @example
+     * // Update one TvShow
+     * const tvShow = await prisma.tvShow.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TvShowUpdateArgs>(args: SelectSubset<T, TvShowUpdateArgs<ExtArgs>>): Prisma__TvShowClient<$Result.GetResult<Prisma.$TvShowPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TvShows.
+     * @param {TvShowDeleteManyArgs} args - Arguments to filter TvShows to delete.
+     * @example
+     * // Delete a few TvShows
+     * const { count } = await prisma.tvShow.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TvShowDeleteManyArgs>(args?: SelectSubset<T, TvShowDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TvShows.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TvShowUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TvShows
+     * const tvShow = await prisma.tvShow.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TvShowUpdateManyArgs>(args: SelectSubset<T, TvShowUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one TvShow.
+     * @param {TvShowUpsertArgs} args - Arguments to update or create a TvShow.
+     * @example
+     * // Update or create a TvShow
+     * const tvShow = await prisma.tvShow.upsert({
+     *   create: {
+     *     // ... data to create a TvShow
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TvShow we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TvShowUpsertArgs>(args: SelectSubset<T, TvShowUpsertArgs<ExtArgs>>): Prisma__TvShowClient<$Result.GetResult<Prisma.$TvShowPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TvShows that matches the filter.
+     * @param {TvShowFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const tvShow = await prisma.tvShow.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: TvShowFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a TvShow.
+     * @param {TvShowAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const tvShow = await prisma.tvShow.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: TvShowAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of TvShows.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TvShowCountArgs} args - Arguments to filter TvShows to count.
+     * @example
+     * // Count the number of TvShows
+     * const count = await prisma.tvShow.count({
+     *   where: {
+     *     // ... the filter for the TvShows we want to count
+     *   }
+     * })
+    **/
+    count<T extends TvShowCountArgs>(
+      args?: Subset<T, TvShowCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TvShowCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TvShow.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TvShowAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TvShowAggregateArgs>(args: Subset<T, TvShowAggregateArgs>): Prisma.PrismaPromise<GetTvShowAggregateType<T>>
+
+    /**
+     * Group by TvShow.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TvShowGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TvShowGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TvShowGroupByArgs['orderBy'] }
+        : { orderBy?: TvShowGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TvShowGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTvShowGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TvShow model
+   */
+  readonly fields: TvShowFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TvShow.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TvShowClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TvShow model
+   */
+  interface TvShowFieldRefs {
+    readonly id: FieldRef<"TvShow", 'String'>
+    readonly title: FieldRef<"TvShow", 'String'>
+    readonly description: FieldRef<"TvShow", 'String'>
+    readonly videoUrl: FieldRef<"TvShow", 'String'>
+    readonly thumbnailUrl: FieldRef<"TvShow", 'String'>
+    readonly genre: FieldRef<"TvShow", 'String[]'>
+    readonly rating: FieldRef<"TvShow", 'Float'>
+    readonly numberOfSeasons: FieldRef<"TvShow", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TvShow findUnique
+   */
+  export type TvShowFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TvShow
+     */
+    select?: TvShowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TvShow
+     */
+    omit?: TvShowOmit<ExtArgs> | null
+    /**
+     * Filter, which TvShow to fetch.
+     */
+    where: TvShowWhereUniqueInput
+  }
+
+  /**
+   * TvShow findUniqueOrThrow
+   */
+  export type TvShowFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TvShow
+     */
+    select?: TvShowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TvShow
+     */
+    omit?: TvShowOmit<ExtArgs> | null
+    /**
+     * Filter, which TvShow to fetch.
+     */
+    where: TvShowWhereUniqueInput
+  }
+
+  /**
+   * TvShow findFirst
+   */
+  export type TvShowFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TvShow
+     */
+    select?: TvShowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TvShow
+     */
+    omit?: TvShowOmit<ExtArgs> | null
+    /**
+     * Filter, which TvShow to fetch.
+     */
+    where?: TvShowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TvShows to fetch.
+     */
+    orderBy?: TvShowOrderByWithRelationInput | TvShowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TvShows.
+     */
+    cursor?: TvShowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TvShows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TvShows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TvShows.
+     */
+    distinct?: TvShowScalarFieldEnum | TvShowScalarFieldEnum[]
+  }
+
+  /**
+   * TvShow findFirstOrThrow
+   */
+  export type TvShowFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TvShow
+     */
+    select?: TvShowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TvShow
+     */
+    omit?: TvShowOmit<ExtArgs> | null
+    /**
+     * Filter, which TvShow to fetch.
+     */
+    where?: TvShowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TvShows to fetch.
+     */
+    orderBy?: TvShowOrderByWithRelationInput | TvShowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TvShows.
+     */
+    cursor?: TvShowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TvShows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TvShows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TvShows.
+     */
+    distinct?: TvShowScalarFieldEnum | TvShowScalarFieldEnum[]
+  }
+
+  /**
+   * TvShow findMany
+   */
+  export type TvShowFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TvShow
+     */
+    select?: TvShowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TvShow
+     */
+    omit?: TvShowOmit<ExtArgs> | null
+    /**
+     * Filter, which TvShows to fetch.
+     */
+    where?: TvShowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TvShows to fetch.
+     */
+    orderBy?: TvShowOrderByWithRelationInput | TvShowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TvShows.
+     */
+    cursor?: TvShowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TvShows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TvShows.
+     */
+    skip?: number
+    distinct?: TvShowScalarFieldEnum | TvShowScalarFieldEnum[]
+  }
+
+  /**
+   * TvShow create
+   */
+  export type TvShowCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TvShow
+     */
+    select?: TvShowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TvShow
+     */
+    omit?: TvShowOmit<ExtArgs> | null
+    /**
+     * The data needed to create a TvShow.
+     */
+    data: XOR<TvShowCreateInput, TvShowUncheckedCreateInput>
+  }
+
+  /**
+   * TvShow createMany
+   */
+  export type TvShowCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TvShows.
+     */
+    data: TvShowCreateManyInput | TvShowCreateManyInput[]
+  }
+
+  /**
+   * TvShow update
+   */
+  export type TvShowUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TvShow
+     */
+    select?: TvShowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TvShow
+     */
+    omit?: TvShowOmit<ExtArgs> | null
+    /**
+     * The data needed to update a TvShow.
+     */
+    data: XOR<TvShowUpdateInput, TvShowUncheckedUpdateInput>
+    /**
+     * Choose, which TvShow to update.
+     */
+    where: TvShowWhereUniqueInput
+  }
+
+  /**
+   * TvShow updateMany
+   */
+  export type TvShowUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TvShows.
+     */
+    data: XOR<TvShowUpdateManyMutationInput, TvShowUncheckedUpdateManyInput>
+    /**
+     * Filter which TvShows to update
+     */
+    where?: TvShowWhereInput
+    /**
+     * Limit how many TvShows to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TvShow upsert
+   */
+  export type TvShowUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TvShow
+     */
+    select?: TvShowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TvShow
+     */
+    omit?: TvShowOmit<ExtArgs> | null
+    /**
+     * The filter to search for the TvShow to update in case it exists.
+     */
+    where: TvShowWhereUniqueInput
+    /**
+     * In case the TvShow found by the `where` argument doesn't exist, create a new TvShow with this data.
+     */
+    create: XOR<TvShowCreateInput, TvShowUncheckedCreateInput>
+    /**
+     * In case the TvShow was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TvShowUpdateInput, TvShowUncheckedUpdateInput>
+  }
+
+  /**
+   * TvShow delete
+   */
+  export type TvShowDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TvShow
+     */
+    select?: TvShowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TvShow
+     */
+    omit?: TvShowOmit<ExtArgs> | null
+    /**
+     * Filter which TvShow to delete.
+     */
+    where: TvShowWhereUniqueInput
+  }
+
+  /**
+   * TvShow deleteMany
+   */
+  export type TvShowDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TvShows to delete
+     */
+    where?: TvShowWhereInput
+    /**
+     * Limit how many TvShows to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TvShow findRaw
+   */
+  export type TvShowFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * TvShow aggregateRaw
+   */
+  export type TvShowAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * TvShow without action
+   */
+  export type TvShowDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TvShow
+     */
+    select?: TvShowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TvShow
+     */
+    omit?: TvShowOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -6346,6 +7432,20 @@ export namespace Prisma {
   };
 
   export type MovieScalarFieldEnum = (typeof MovieScalarFieldEnum)[keyof typeof MovieScalarFieldEnum]
+
+
+  export const TvShowScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    videoUrl: 'videoUrl',
+    thumbnailUrl: 'thumbnailUrl',
+    genre: 'genre',
+    rating: 'rating',
+    numberOfSeasons: 'numberOfSeasons'
+  };
+
+  export type TvShowScalarFieldEnum = (typeof TvShowScalarFieldEnum)[keyof typeof TvShowScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -6706,7 +7806,7 @@ export namespace Prisma {
     description?: StringFilter<"Movie"> | string
     videoUrl?: StringFilter<"Movie"> | string
     thumbnailUrl?: StringFilter<"Movie"> | string
-    genre?: StringFilter<"Movie"> | string
+    genre?: StringNullableListFilter<"Movie">
     rating?: FloatNullableFilter<"Movie"> | number | null
     duration?: StringFilter<"Movie"> | string
   }
@@ -6731,7 +7831,7 @@ export namespace Prisma {
     description?: StringFilter<"Movie"> | string
     videoUrl?: StringFilter<"Movie"> | string
     thumbnailUrl?: StringFilter<"Movie"> | string
-    genre?: StringFilter<"Movie"> | string
+    genre?: StringNullableListFilter<"Movie">
     rating?: FloatNullableFilter<"Movie"> | number | null
     duration?: StringFilter<"Movie"> | string
   }, "id">
@@ -6761,9 +7861,78 @@ export namespace Prisma {
     description?: StringWithAggregatesFilter<"Movie"> | string
     videoUrl?: StringWithAggregatesFilter<"Movie"> | string
     thumbnailUrl?: StringWithAggregatesFilter<"Movie"> | string
-    genre?: StringWithAggregatesFilter<"Movie"> | string
+    genre?: StringNullableListFilter<"Movie">
     rating?: FloatNullableWithAggregatesFilter<"Movie"> | number | null
     duration?: StringWithAggregatesFilter<"Movie"> | string
+  }
+
+  export type TvShowWhereInput = {
+    AND?: TvShowWhereInput | TvShowWhereInput[]
+    OR?: TvShowWhereInput[]
+    NOT?: TvShowWhereInput | TvShowWhereInput[]
+    id?: StringFilter<"TvShow"> | string
+    title?: StringFilter<"TvShow"> | string
+    description?: StringFilter<"TvShow"> | string
+    videoUrl?: StringFilter<"TvShow"> | string
+    thumbnailUrl?: StringFilter<"TvShow"> | string
+    genre?: StringNullableListFilter<"TvShow">
+    rating?: FloatNullableFilter<"TvShow"> | number | null
+    numberOfSeasons?: IntFilter<"TvShow"> | number
+  }
+
+  export type TvShowOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    videoUrl?: SortOrder
+    thumbnailUrl?: SortOrder
+    genre?: SortOrder
+    rating?: SortOrder
+    numberOfSeasons?: SortOrder
+  }
+
+  export type TvShowWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TvShowWhereInput | TvShowWhereInput[]
+    OR?: TvShowWhereInput[]
+    NOT?: TvShowWhereInput | TvShowWhereInput[]
+    title?: StringFilter<"TvShow"> | string
+    description?: StringFilter<"TvShow"> | string
+    videoUrl?: StringFilter<"TvShow"> | string
+    thumbnailUrl?: StringFilter<"TvShow"> | string
+    genre?: StringNullableListFilter<"TvShow">
+    rating?: FloatNullableFilter<"TvShow"> | number | null
+    numberOfSeasons?: IntFilter<"TvShow"> | number
+  }, "id">
+
+  export type TvShowOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    videoUrl?: SortOrder
+    thumbnailUrl?: SortOrder
+    genre?: SortOrder
+    rating?: SortOrder
+    numberOfSeasons?: SortOrder
+    _count?: TvShowCountOrderByAggregateInput
+    _avg?: TvShowAvgOrderByAggregateInput
+    _max?: TvShowMaxOrderByAggregateInput
+    _min?: TvShowMinOrderByAggregateInput
+    _sum?: TvShowSumOrderByAggregateInput
+  }
+
+  export type TvShowScalarWhereWithAggregatesInput = {
+    AND?: TvShowScalarWhereWithAggregatesInput | TvShowScalarWhereWithAggregatesInput[]
+    OR?: TvShowScalarWhereWithAggregatesInput[]
+    NOT?: TvShowScalarWhereWithAggregatesInput | TvShowScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TvShow"> | string
+    title?: StringWithAggregatesFilter<"TvShow"> | string
+    description?: StringWithAggregatesFilter<"TvShow"> | string
+    videoUrl?: StringWithAggregatesFilter<"TvShow"> | string
+    thumbnailUrl?: StringWithAggregatesFilter<"TvShow"> | string
+    genre?: StringNullableListFilter<"TvShow">
+    rating?: FloatNullableWithAggregatesFilter<"TvShow"> | number | null
+    numberOfSeasons?: IntWithAggregatesFilter<"TvShow"> | number
   }
 
   export type UserCreateInput = {
@@ -7049,7 +8218,7 @@ export namespace Prisma {
     description: string
     videoUrl: string
     thumbnailUrl: string
-    genre: string
+    genre?: MovieCreategenreInput | string[]
     rating?: number | null
     duration: string
   }
@@ -7060,7 +8229,7 @@ export namespace Prisma {
     description: string
     videoUrl: string
     thumbnailUrl: string
-    genre: string
+    genre?: MovieCreategenreInput | string[]
     rating?: number | null
     duration: string
   }
@@ -7070,7 +8239,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     videoUrl?: StringFieldUpdateOperationsInput | string
     thumbnailUrl?: StringFieldUpdateOperationsInput | string
-    genre?: StringFieldUpdateOperationsInput | string
+    genre?: MovieUpdategenreInput | string[]
     rating?: NullableFloatFieldUpdateOperationsInput | number | null
     duration?: StringFieldUpdateOperationsInput | string
   }
@@ -7080,7 +8249,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     videoUrl?: StringFieldUpdateOperationsInput | string
     thumbnailUrl?: StringFieldUpdateOperationsInput | string
-    genre?: StringFieldUpdateOperationsInput | string
+    genre?: MovieUpdategenreInput | string[]
     rating?: NullableFloatFieldUpdateOperationsInput | number | null
     duration?: StringFieldUpdateOperationsInput | string
   }
@@ -7091,7 +8260,7 @@ export namespace Prisma {
     description: string
     videoUrl: string
     thumbnailUrl: string
-    genre: string
+    genre?: MovieCreategenreInput | string[]
     rating?: number | null
     duration: string
   }
@@ -7101,7 +8270,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     videoUrl?: StringFieldUpdateOperationsInput | string
     thumbnailUrl?: StringFieldUpdateOperationsInput | string
-    genre?: StringFieldUpdateOperationsInput | string
+    genre?: MovieUpdategenreInput | string[]
     rating?: NullableFloatFieldUpdateOperationsInput | number | null
     duration?: StringFieldUpdateOperationsInput | string
   }
@@ -7111,9 +8280,82 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     videoUrl?: StringFieldUpdateOperationsInput | string
     thumbnailUrl?: StringFieldUpdateOperationsInput | string
-    genre?: StringFieldUpdateOperationsInput | string
+    genre?: MovieUpdategenreInput | string[]
     rating?: NullableFloatFieldUpdateOperationsInput | number | null
     duration?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TvShowCreateInput = {
+    id?: string
+    title: string
+    description: string
+    videoUrl: string
+    thumbnailUrl: string
+    genre?: TvShowCreategenreInput | string[]
+    rating?: number | null
+    numberOfSeasons: number
+  }
+
+  export type TvShowUncheckedCreateInput = {
+    id?: string
+    title: string
+    description: string
+    videoUrl: string
+    thumbnailUrl: string
+    genre?: TvShowCreategenreInput | string[]
+    rating?: number | null
+    numberOfSeasons: number
+  }
+
+  export type TvShowUpdateInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    videoUrl?: StringFieldUpdateOperationsInput | string
+    thumbnailUrl?: StringFieldUpdateOperationsInput | string
+    genre?: TvShowUpdategenreInput | string[]
+    rating?: NullableFloatFieldUpdateOperationsInput | number | null
+    numberOfSeasons?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type TvShowUncheckedUpdateInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    videoUrl?: StringFieldUpdateOperationsInput | string
+    thumbnailUrl?: StringFieldUpdateOperationsInput | string
+    genre?: TvShowUpdategenreInput | string[]
+    rating?: NullableFloatFieldUpdateOperationsInput | number | null
+    numberOfSeasons?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type TvShowCreateManyInput = {
+    id?: string
+    title: string
+    description: string
+    videoUrl: string
+    thumbnailUrl: string
+    genre?: TvShowCreategenreInput | string[]
+    rating?: number | null
+    numberOfSeasons: number
+  }
+
+  export type TvShowUpdateManyMutationInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    videoUrl?: StringFieldUpdateOperationsInput | string
+    thumbnailUrl?: StringFieldUpdateOperationsInput | string
+    genre?: TvShowUpdategenreInput | string[]
+    rating?: NullableFloatFieldUpdateOperationsInput | number | null
+    numberOfSeasons?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type TvShowUncheckedUpdateManyInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    videoUrl?: StringFieldUpdateOperationsInput | string
+    thumbnailUrl?: StringFieldUpdateOperationsInput | string
+    genre?: TvShowUpdategenreInput | string[]
+    rating?: NullableFloatFieldUpdateOperationsInput | number | null
+    numberOfSeasons?: IntFieldUpdateOperationsInput | number
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -7470,7 +8712,6 @@ export namespace Prisma {
     description?: SortOrder
     videoUrl?: SortOrder
     thumbnailUrl?: SortOrder
-    genre?: SortOrder
     rating?: SortOrder
     duration?: SortOrder
   }
@@ -7481,7 +8722,6 @@ export namespace Prisma {
     description?: SortOrder
     videoUrl?: SortOrder
     thumbnailUrl?: SortOrder
-    genre?: SortOrder
     rating?: SortOrder
     duration?: SortOrder
   }
@@ -7505,6 +8745,74 @@ export namespace Prisma {
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
     isSet?: boolean
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type TvShowCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    videoUrl?: SortOrder
+    thumbnailUrl?: SortOrder
+    genre?: SortOrder
+    rating?: SortOrder
+    numberOfSeasons?: SortOrder
+  }
+
+  export type TvShowAvgOrderByAggregateInput = {
+    rating?: SortOrder
+    numberOfSeasons?: SortOrder
+  }
+
+  export type TvShowMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    videoUrl?: SortOrder
+    thumbnailUrl?: SortOrder
+    rating?: SortOrder
+    numberOfSeasons?: SortOrder
+  }
+
+  export type TvShowMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    videoUrl?: SortOrder
+    thumbnailUrl?: SortOrder
+    rating?: SortOrder
+    numberOfSeasons?: SortOrder
+  }
+
+  export type TvShowSumOrderByAggregateInput = {
+    rating?: SortOrder
+    numberOfSeasons?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type UserCreatefavouritesIdsInput = {
@@ -7655,6 +8963,15 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionsInput, UserUpdateWithoutSessionsInput>, UserUncheckedUpdateWithoutSessionsInput>
   }
 
+  export type MovieCreategenreInput = {
+    set: string[]
+  }
+
+  export type MovieUpdategenreInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
   export type NullableFloatFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -7662,6 +8979,23 @@ export namespace Prisma {
     multiply?: number
     divide?: number
     unset?: boolean
+  }
+
+  export type TvShowCreategenreInput = {
+    set: string[]
+  }
+
+  export type TvShowUpdategenreInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -7847,6 +9181,33 @@ export namespace Prisma {
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
     isSet?: boolean
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type SessionCreateWithoutUserInput = {

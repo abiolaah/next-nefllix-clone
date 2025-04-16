@@ -162,6 +162,17 @@ exports.Prisma.MovieScalarFieldEnum = {
   duration: 'duration'
 };
 
+exports.Prisma.TvShowScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  videoUrl: 'videoUrl',
+  thumbnailUrl: 'thumbnailUrl',
+  genre: 'genre',
+  rating: 'rating',
+  numberOfSeasons: 'numberOfSeasons'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -178,7 +189,8 @@ exports.Prisma.ModelName = {
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
-  Movie: 'Movie'
+  Movie: 'Movie',
+  TvShow: 'TvShow'
 };
 
 /**
