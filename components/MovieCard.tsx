@@ -1,14 +1,14 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+
+import React from "react";
+
 import { BsFillPlayFill } from "react-icons/bs";
+import { BiChevronDown } from "react-icons/bi";
+
 import FavouriteButton from "./FavouriteButton";
-import {
-  BsHandThumbsUp,
-  BsHandThumbsDownFill,
-  BsHandThumbsUpFill,
-} from "react-icons/bs";
-import { AiFillHeart } from "react-icons/ai";
+import ReactionsButton from "./ReactionsButton";
+import useInfoModal from "@/hooks/useInfoModal";
 
 interface MovieData {
   id: string;
@@ -27,35 +27,8 @@ interface MovieCardProps {
 
 const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
   const router = useRouter();
-  const [isHovered, setIsHovered] = useState(false);
-  const [isLiked, setLiked] = useState(false);
-  const [isDisliked, setDisliked] = useState(false);
-  const [isLoved, setLoved] = useState(false);
 
-  const handleReactionHover = (hoverState: boolean) => {
-    setIsHovered(hoverState);
-  };
-
-  const handleLikeButton = () => {
-    setLiked(!isLiked);
-    setDisliked(false);
-    setLoved(false);
-    setIsHovered(false); // Close the reaction menu after selection
-  };
-
-  const handleDislikeButton = () => {
-    setDisliked(!isDisliked);
-    setLiked(false);
-    setLoved(false);
-    setIsHovered(false); // Close the reaction menu after selection
-  };
-
-  const handleLoveButton = () => {
-    setLoved(!isLoved);
-    setDisliked(false);
-    setLiked(false);
-    setIsHovered(false); // Close the reaction menu after selection
-  };
+  const { openModal } = useInfoModal();
 
   return (
     <div className="group bg-zinc-900 col-span relative h-[12vw]">
@@ -85,70 +58,16 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
             <FavouriteButton movieId={data?.id} />
 
             {/* Reactions Container */}
-            <div className="relative">
-              <div
-                onMouseEnter={() => handleReactionHover(true)}
-                className="cursor-pointer rounded-lg"
-              >
-                {isLiked ? (
-                  <BsHandThumbsUpFill
-                    className={isLiked ? "text-blue-400" : "text-white"}
-                    size={30}
-                  />
-                ) : isDisliked ? (
-                  <BsHandThumbsDownFill
-                    className={isDisliked ? "text-red-400" : "text-white"}
-                    size={30}
-                  />
-                ) : isLoved ? (
-                  <AiFillHeart
-                    className={isLoved ? "text-pink-400" : "text-white"}
-                    size={30}
-                  />
-                ) : (
-                  <BsHandThumbsUp className="text-white" size={30} />
-                )}
-              </div>
+            <ReactionsButton />
 
-              {/* Reaction Options */}
-              {isHovered && (
-                <div
-                  className="absolute bottom-full left-0 mb-2 bg-zinc-700 p-2 rounded-md shadow-lg flex gap-2"
-                  onMouseEnter={() => handleReactionHover(true)}
-                  onMouseLeave={() => handleReactionHover(false)}
-                >
-                  <div
-                    className="cursor-pointer hover:scale-110 transition-transform"
-                    onClick={handleLikeButton}
-                    title="Like"
-                  >
-                    <BsHandThumbsUpFill
-                      className={isLiked ? "text-blue-400" : "text-white"}
-                      size={25}
-                    />
-                  </div>
-                  <div
-                    className="cursor-pointer hover:scale-110 transition-transform"
-                    onClick={handleDislikeButton}
-                    title="Dislike"
-                  >
-                    <BsHandThumbsDownFill
-                      className={isDisliked ? "text-red-400" : "text-white"}
-                      size={25}
-                    />
-                  </div>
-                  <div
-                    className="cursor-pointer hover:scale-110 transition-transform"
-                    onClick={handleLoveButton}
-                    title="Love"
-                  >
-                    <AiFillHeart
-                      className={isLoved ? "text-pink-400" : "text-white"}
-                      size={25}
-                    />
-                  </div>
-                </div>
-              )}
+            <div
+              className="cursor-pointer ml-auto group/item w-6 h-6 lg:w-10 lg:h-10 border-white rounded-full flex justify-center items-center transition hover:border-neutral-300"
+              onClick={() => openModal(data?.id)}
+            >
+              <BiChevronDown
+                className="text-white group-hover/item:text-neutral-300"
+                size={30}
+              />
             </div>
           </div>
 
