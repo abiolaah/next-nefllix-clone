@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { BsBell, BsChevronDown, BsSearch } from "react-icons/bs";
+import { IoMdArrowDropdown } from "react-icons/io";
 import NavbarItem from "./NavbarItem";
 import MobileMenu from "./MobileMenu";
 import AccountMenu from "./AccountMenu";
@@ -79,7 +80,7 @@ const Navbar = () => {
 
           <div
             onClick={toggleAccountMenu}
-            className="flex flex-row items-center gap-2 cursor-pointer relative"
+            className="flex flex-row items-center gap-1 cursor-pointer relative"
           >
             <div className="w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden">
               <Image
@@ -89,10 +90,11 @@ const Navbar = () => {
                 alt="Profile"
               />
             </div>
-            <BsChevronDown
+            <IoMdArrowDropdown
               className={`text-white transition ${
                 showAccountMenu ? `rotate-180` : `rotate-0`
               }`}
+              size={25}
             />
             <AccountMenu visible={showAccountMenu} />
           </div>
