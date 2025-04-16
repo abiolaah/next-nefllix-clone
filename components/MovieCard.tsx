@@ -1,11 +1,8 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-
 import React from "react";
-
 import { BsFillPlayFill } from "react-icons/bs";
 import { BiChevronDown } from "react-icons/bi";
-
 import FavouriteButton from "./FavouriteButton";
 import ReactionsButton from "./ReactionsButton";
 import useInfoModal from "@/hooks/useInfoModal";
@@ -16,9 +13,13 @@ interface MovieData {
   description: string;
   videoUrl: string;
   thumbnailUrl: string;
-  genre: string;
+  genre: string | string[];
   rating: number | null;
   duration: string;
+  releaseDate?: string;
+  adult?: boolean;
+  isTvShow?: boolean;
+  numberOfSeasons?: number;
 }
 
 interface MovieCardProps {
@@ -27,60 +28,93 @@ interface MovieCardProps {
 
 const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
   const router = useRouter();
-
   const { openModal } = useInfoModal();
 
+  const getRating = () => {
+    if (data.isTvShow) {
+      return data.adult ? "TV-MA" : "TV-14";
+    }
+    return data.adult ? "18+" : "PG-13";
+  };
+
+  const getReleaseYear = () => {
+    if (data.isTvShow) return null;
+    return data.releaseDate ? new Date(data.releaseDate).getFullYear() : null;
+  };
+
+  const getDuration = () => {
+    if (data.isTvShow) {
+      if (data.numberOfSeasons === 1) return "Limited Series";
+      return `${data.numberOfSeasons} Seasons`;
+    }
+    return data.duration;
+  };
+
+  const getGenres = () => {
+    if (!data.genre) return "No genres";
+
+    if (typeof data.genre === "string") {
+      return data.genre;
+    }
+
+    if (Array.isArray(data.genre)) {
+      if (data.genre.length === 0) return "No genres";
+      if (data.genre.length <= 3) return data.genre.join(", ");
+      return data.genre.slice(0, 3).join(", ");
+    }
+
+    return "No genres";
+  };
+
   return (
-    <div className="group bg-zinc-900 col-span relative h-[12vw]">
-      <Image
-        src={data.thumbnailUrl}
-        alt="Thumbnail"
-        width={200}
-        height={300}
-        className="cursor-pointer object-cover transition duration shadow-xl rounded-md group-hover:opacity-90 sm:group-hover:opacity-0 delay-300 w-full h-[12vw]"
-      />
-      <div className="opacity-0 absolute top-0 transition duration-200 z-10 invisible sm:visible delay-300 w-full scale-0 group-hover:scale-110 group-hover:-translate-y-[6vw] group-hover:translate-x-[2vw] group-hover:opacity-100">
+    <div className="group relative w-[200px] h-[300px]">
+      <div className="relative w-full h-full">
         <Image
           src={data.thumbnailUrl}
           alt="Thumbnail"
-          width={200}
-          height={300}
-          className="cursor-pointer object-cover transition duration shadow-xl rounded-t-md w-full h-[12vw]"
+          fill
+          className="object-contain transition duration shadow-xl rounded-md group-hover:opacity-90 sm:group-hover:opacity-0 delay-300"
         />
-        <div className="z-10 bg-zinc-800 p-2 lg:p-4 w-full transition shadow-md rounded-b-md">
-          <div className="flex flex-row items-center gap-3">
+      </div>
+      <div className="opacity-0 absolute top-0 transition duration-200 z-10 invisible sm:visible delay-300 w-full group-hover:opacity-100">
+        <div className="relative w-full h-[200px]">
+          <Image
+            src={data.thumbnailUrl}
+            alt="Thumbnail"
+            fill
+            className="object-contain transition duration shadow-xl rounded-t-md"
+          />
+        </div>
+        <div className="z-10 bg-zinc-800 p-2 w-full transition shadow-md rounded-b-md">
+          <div className="flex flex-row items-center gap-2">
             <div
               onClick={() => router.push(`/watch/${data?.id}`)}
-              className="cursor-pointer w-6 h-6 lg:w-10 lg:h-10 bg-white rounded-full flex justify-center items-center transition hover:bg-neutral-300"
+              className="cursor-pointer w-6 h-6 bg-white rounded-full flex justify-center items-center transition hover:bg-neutral-300"
             >
-              <BsFillPlayFill size={30} />
+              <BsFillPlayFill size={20} />
             </div>
             <FavouriteButton movieId={data?.id} />
-
-            {/* Reactions Container */}
             <ReactionsButton />
-
             <div
-              className="cursor-pointer ml-auto group/item w-6 h-6 lg:w-10 lg:h-10 border-white rounded-full flex justify-center items-center transition hover:border-neutral-300"
+              className="cursor-pointer ml-auto group/item w-6 h-6 border-white rounded-full flex justify-center items-center transition hover:border-neutral-300"
               onClick={() => openModal(data?.id)}
             >
               <BiChevronDown
                 className="text-white group-hover/item:text-neutral-300"
-                size={30}
+                size={20}
               />
             </div>
           </div>
 
-          <p className="text-green-400 font-semibold mt-4">
-            New <span className="text-white">2025</span>
-          </p>
-
-          <div className="flex flex-row mt-4 gap-2 items-center">
-            <p className="text-white text-[10px] lg:text-sm">{data.duration}</p>
-          </div>
-
-          <div className="flex flex-row mt-4 gap-2 items-center">
-            <p className="text-white text-[10px] lg:text-sm">{data.genre}</p>
+          <div className="flex flex-col gap-1 mt-2">
+            <p className="text-green-400 font-semibold text-xs">
+              {getRating()}
+              {getReleaseYear() && (
+                <span className="text-white ml-1">{getReleaseYear()}</span>
+              )}
+            </p>
+            <p className="text-white text-xs">{getDuration()}</p>
+            <p className="text-white text-xs">{getGenres()}</p>
           </div>
         </div>
       </div>
