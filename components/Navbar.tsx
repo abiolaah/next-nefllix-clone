@@ -1,11 +1,12 @@
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { BsBell, BsChevronDown, BsSearch } from "react-icons/bs";
 import { IoMdArrowDropdown } from "react-icons/io";
 import NavbarItem from "./NavbarItem";
 import MobileMenu from "./MobileMenu";
 import AccountMenu from "./AccountMenu";
 import { navItem } from "@/constants/navItem";
+import Input from "./Input";
 
 const TOP_OFFSET = 66;
 
@@ -13,6 +14,10 @@ const Navbar = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showBackground, setShowBackground] = useState(false);
+
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,6 +35,25 @@ const Navbar = () => {
     };
   }, []);
 
+  // Handle clicks outside the search input
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node) &&
+        showSearch
+      ) {
+        setShowSearch(false);
+        setSearchQuery("");
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showSearch]);
+
   const toggleMobileMenu = useCallback(() => {
     setShowMobileMenu((current) => !current);
   }, []);
@@ -37,6 +61,18 @@ const Navbar = () => {
   const toggleAccountMenu = useCallback(() => {
     setShowAccountMenu((current) => !current);
   }, []);
+
+  const toggleSearch = useCallback(() => {
+    setShowSearch((current) => !current);
+    if (showSearch) {
+      setSearchQuery(""); // Clear search when closing
+    }
+  }, [showSearch]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    // You can add search functionality here
+  };
 
   return (
     <nav className="w-full fixed z-40">
@@ -54,7 +90,7 @@ const Navbar = () => {
         />
         <div className="flex-row ml-8 gap-7 hidden lg:flex">
           {navItem.map((item) => (
-            <NavbarItem key={item.id} label={item.name} />
+            <NavbarItem key={item.id} label={item.name} link={item.link} />
           ))}
         </div>
 
@@ -71,9 +107,28 @@ const Navbar = () => {
           <MobileMenu visible={showMobileMenu} />
         </div>
         <div className="flex flex-row ml-auto gap-7 items-center">
-          <div className="text-gray-200 hover:text-gray-300 cursor-pointer transition">
-            <BsSearch />
-          </div>
+          {showSearch ? (
+            <div
+              ref={searchRef}
+              className="relative w-48 md:w-64 transition-all duration-300"
+            >
+              <Input
+                id="search"
+                onChange={handleSearchChange}
+                value={searchQuery}
+                label="Search movies..."
+                type="text"
+                className="block rounded-md px-6 pt-4 pb-2 w-full text-md text-white bg-neutral-700 appearance-none focus:outline-none focus:ring-0 peer"
+              />
+            </div>
+          ) : (
+            <div
+              onClick={toggleSearch}
+              className="text-gray-200 hover:text-gray-300 cursor-pointer transition"
+            >
+              <BsSearch />
+            </div>
+          )}
           <div className="text-gray-200 hover:text-gray-300 cursor-pointer transition">
             <BsBell />
           </div>
