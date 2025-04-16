@@ -33,11 +33,11 @@ const Profiles = () => {
           Who is watching?
         </h1>
         <div className="flex items-center justify-center gap-8 mt-10">
-          <div className="" onClick={() => router.push("/")}>
+          <div className="" onClick={() => router.push("/browse")}>
             <div className="group flex-row w-44 mx-auto">
               <div className="w-44 h-44 rounded-md flex items-center justify-center border-2 border-transparent group-hover:cursor-pointer group-hover:border-white overflow-hidden">
                 <Image
-                  src="/images/default-blue.png"
+                  src="https://res.cloudinary.com/dixwarqdb/image/upload/v1744696100/default-blue_oqkthi.png"
                   width={150}
                   height={150}
                   alt="Profile"

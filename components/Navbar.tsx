@@ -46,7 +46,7 @@ const Navbar = () => {
       >
         <Image
           className="h-4 lg:h-7"
-          src="/images/logo-2.png"
+          src="https://res.cloudinary.com/dixwarqdb/image/upload/v1744696101/logo_uwzr3q.png"
           width={100}
           height={100}
           alt="Logo"
@@ -83,7 +83,7 @@ const Navbar = () => {
           >
             <div className="w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden">
               <Image
-                src="/images/default-blue.png"
+                src="https://res.cloudinary.com/dixwarqdb/image/upload/v1744696100/default-blue_oqkthi.png"
                 width={30}
                 height={30}
                 alt="Profile"

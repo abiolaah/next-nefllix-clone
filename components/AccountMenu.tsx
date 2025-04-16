@@ -14,7 +14,7 @@ const AccountMenu: React.FC<AccountMenuProp> = ({ visible }) => {
         <div className="px-3 group/item flex flex-row gap-3 items-center w-full">
           <Image
             className="w-8 rounded-md"
-            src="/images/default-blue.png"
+            src="https://res.cloudinary.com/dixwarqdb/image/upload/v1744696100/default-blue_oqkthi.png"
             width={30}
             height={30}
             alt="Profile"
