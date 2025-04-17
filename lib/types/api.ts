@@ -1,4 +1,4 @@
-import { Movie, TvShow } from "@prisma/client";
+import { Movie, TvShow } from "@/generated/prisma";
 
 export interface MovieData {
   id: string;
