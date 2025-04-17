@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-
-import useMovie from "@/hooks/useMovie";
+import useMovieDetails from "@/hooks/useMovieDetails";
 import { AiOutlineArrowLeft, AiOutlinePause } from "react-icons/ai";
 import { BiFullscreen, BiVolumeFull, BiVolumeMute } from "react-icons/bi";
 import { FiPlay } from "react-icons/fi";
 import { MdForward10, MdReplay10 } from "react-icons/md";
 import { MdSubtitles } from "react-icons/md";
+// import { MediaItem } from "@/lib/types/api";
 
 const Watch = () => {
   const router = useRouter();
   const { movieId } = router.query;
-  const { data } = useMovie(movieId as string);
+  const { data } = useMovieDetails(movieId as string);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Use refs for timers to preserve values between renders
@@ -179,40 +179,65 @@ const Watch = () => {
     }
   };
 
+  if (!data) {
+    return null;
+  }
+
   return (
     <div
       className="relative h-screen w-screen bg-black"
       id="video-container"
       onMouseMove={handleMouseMove}
     >
-      <nav className="fixed w-full p-4 z-20 flex flex-row items-center gap-8 bg-black/70">
+      <nav
+        className="
+          fixed
+          w-full
+          p-4
+          z-10
+          flex
+          flex-row
+          items-center
+          gap-8
+          bg-black
+          bg-opacity-70
+        "
+      >
         <AiOutlineArrowLeft
-          onClick={() => router.push("/browse")}
+          onClick={() => router.push("/")}
           className="text-white cursor-pointer"
           size={40}
-          aria-label="Go back to browse"
-          title="Go back to browse"
         />
+        <p className="text-white text-1xl md:text-3xl font-bold">
+          <span className="font-light">Watching:</span> {data.title}
+          {data.isTvShow && data.numberOfSeasons && (
+            <span className="font-light ml-2">
+              ({data.numberOfSeasons}{" "}
+              {data.numberOfSeasons === 1 ? "Season" : "Seasons"})
+            </span>
+          )}
+        </p>
       </nav>
 
       {/* Video player */}
       <video
         ref={videoRef}
         autoPlay
-        src={data?.videoUrl}
+        controls
+        src={data.videoUrl}
         className="h-full w-full"
         onClick={handlePlayPause}
-        aria-label={`Video player for ${data?.title}`}
+        aria-label={`Video player for ${data.title}`}
       ></video>
 
       {/* Overlay with title and description when paused */}
       {showOverlay && (
         <div className="absolute top-0 left-0 right-0 bottom-0 bg-black/50 flex flex-col items-center justify-center p-8 z-10">
           <h1 className="text-white text-4xl md:text-6xl font-bold mb-4">
-            {data?.title}
+            {data.title}
           </h1>
           <p className="text-white text-lg md:text-xl max-w-3xl text-center">
-            {data?.description}
+            {data.description}
           </p>
           <p className="text-white uppercase mt-4">paused</p>
         </div>
@@ -389,7 +414,7 @@ const Watch = () => {
             {/* Title in the middle */}
             <div className="flex-1 text-center">
               <p className="text-white font-medium truncate mx-4">
-                {data?.title}
+                {data.title}
               </p>
             </div>
 
