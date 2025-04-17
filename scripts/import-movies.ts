@@ -42,6 +42,13 @@ async function importMedia() {
 
     console.log(`Found ${mediaData.length} items to import`);
 
+    // Delete all existing data first
+    console.log("Deleting all existing movies...");
+    await prisma.movie.deleteMany({});
+    console.log("Deleting all existing TV shows...");
+    await prisma.tvShow.deleteMany({});
+    console.log("All existing data cleared successfully!");
+
     // Process each entry
     for (const item of mediaData) {
       if (item.type === "movie") {
