@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 
 import PlayButton from "./PlayButton";
-import FavoriteButton from "./FavoriteButton";
+import FavouriteButton from "./FavouriteButton";
 import ReactionsButton from "./ReactionsButton";
 
 import useInfoModal from "@/hooks/useInfoModal";
@@ -63,7 +63,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
               </p>
               <div className="flex flex-row gap-4 items-center">
                 <PlayButton movieId={data.id} />
-                <FavoriteButton movieId={data.id} />
+                <FavouriteButton movieId={data.id} />
                 <ReactionsButton />
               </div>
             </div>
