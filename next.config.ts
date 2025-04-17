@@ -13,6 +13,12 @@ const nextConfig: NextConfig = {
       "commondatastorage.googleapis.com",
       "res.cloudinary.com",
       "image.tmdb.org",
+      "example.com",
+      "beam-images.warnermediacdn.com",
+      "images.squarespace-cdn.com",
+      "m.media-amazon.com",
+      "s3.amazonaws.com",
+      "mediaproxy.tvtropes.org",
     ],
   },
 };
