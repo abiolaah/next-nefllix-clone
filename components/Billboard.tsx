@@ -30,7 +30,7 @@ const Billboard = () => {
         muted
         loop
         poster={data.thumbnailUrl}
-        src={data.videoUrl}
+        src={data.trailerUrl}
       ></video>
       <div className="absolute top-[30%] md:top-[40%] ml-4 md:ml-16">
         <p className="text-white text-xl md:text-5xl h-full w-[50%] lg:text-6xl font-bold drop-shadow-xl">
