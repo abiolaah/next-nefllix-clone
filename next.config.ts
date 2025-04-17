@@ -4,21 +4,63 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
   images: {
-    domains: [
-      "upload.wikimedia.org",
-      "uhdtv.io",
-      "mango.blender.org",
-      "download.blender.org",
-      "www.cartoonbrew.com",
-      "commondatastorage.googleapis.com",
-      "res.cloudinary.com",
-      "image.tmdb.org",
-      "example.com",
-      "beam-images.warnermediacdn.com",
-      "images.squarespace-cdn.com",
-      "m.media-amazon.com",
-      "s3.amazonaws.com",
-      "mediaproxy.tvtropes.org",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "upload.wikimedia.org",
+      },
+      {
+        protocol: "https",
+        hostname: "uhdtv.io",
+      },
+      {
+        protocol: "https",
+        hostname: "mango.blender.org",
+      },
+      {
+        protocol: "https",
+        hostname: "download.blender.org",
+      },
+      {
+        protocol: "https",
+        hostname: "www.cartoonbrew.com",
+      },
+      {
+        protocol: "https",
+        hostname: "commondatastorage.googleapis.com",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "image.tmdb.org",
+      },
+      {
+        protocol: "https",
+        hostname: "example.com",
+      },
+      {
+        protocol: "https",
+        hostname: "beam-images.warnermediacdn.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.squarespace-cdn.com",
+      },
+      {
+        protocol: "https",
+        hostname: "m.media-amazon.com",
+      },
+      {
+        protocol: "https",
+        hostname: "s3.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "mediaproxy.tvtropes.org",
+      },
     ],
   },
 };
