@@ -1,38 +1,50 @@
-import useSWR from "swr";
-import fetcher from "@/lib/fetcher";
+import { useState, useEffect } from "react";
+import { MediaItem } from "@/lib/types/api";
 
-interface TvShowData {
-  id: string;
-  title: string;
-  description: string;
-  videoUrl: string;
-  thumbnailUrl: string;
-  genre: string[];
-  rating: number | null;
-  duration: string;
-  releaseDate: string;
-  adult: boolean;
-  isTvShow: boolean;
-  numberOfSeasons: number;
+interface TvShowsResponse {
+  local: MediaItem[];
+  tmdb: MediaItem[];
 }
 
 const useTvShows = () => {
-  const { data, isLoading, error, mutate } = useSWR<TvShowData[]>(
-    "/api/tv",
-    fetcher,
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  );
+  const [data, setData] = useState<TvShowsResponse>({ local: [], tmdb: [] });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  return {
-    data: data || [],
-    error,
-    isLoading,
-    mutate,
-  };
+  useEffect(() => {
+    const fetchTvShows = async () => {
+      try {
+        const response = await fetch("/api/tv", {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch TV shows: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+
+        // Ensure we have the correct data structure
+        const tvShowsData: TvShowsResponse = {
+          local: Array.isArray(responseData?.local) ? responseData.local : [],
+          tmdb: Array.isArray(responseData?.tmdb) ? responseData.tmdb : [],
+        };
+
+        setData(tvShowsData);
+      } catch (err) {
+        console.error("Error fetching TV shows:", err);
+        setError(err instanceof Error ? err.message : "An error occurred");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTvShows();
+  }, []);
+
+  return { data, isLoading, error };
 };
 
 export default useTvShows;
