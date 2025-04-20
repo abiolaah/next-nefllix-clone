@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import {
   BsHandThumbsUp,
+  BsHandThumbsDown,
   BsHandThumbsDownFill,
   BsHandThumbsUpFill,
 } from "react-icons/bs";
-import { AiFillHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 
 const ReactionsButton = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -40,6 +41,7 @@ const ReactionsButton = () => {
     <div className="relative">
       <div
         onMouseEnter={() => handleReactionHover(true)}
+        onMouseLeave={() => handleReactionHover(false)}
         className="cursor-pointer rounded-lg"
       >
         {isLiked ? (
@@ -74,30 +76,33 @@ const ReactionsButton = () => {
             onClick={handleLikeButton}
             title="Like"
           >
-            <BsHandThumbsUpFill
-              className={isLiked ? "text-blue-400" : "text-white"}
-              size={25}
-            />
+            {isLiked ? (
+              <BsHandThumbsUpFill className="text-blue-400" size={25} />
+            ) : (
+              <BsHandThumbsUp className="text-white" size={25} />
+            )}
           </div>
           <div
             className="cursor-pointer hover:scale-110 transition-transform"
             onClick={handleDislikeButton}
             title="Dislike"
           >
-            <BsHandThumbsDownFill
-              className={isDisliked ? "text-red-400" : "text-white"}
-              size={25}
-            />
+            {isDisliked ? (
+              <BsHandThumbsDownFill className="text-red-400" size={25} />
+            ) : (
+              <BsHandThumbsDown className="text-white" size={25} />
+            )}
           </div>
           <div
             className="cursor-pointer hover:scale-110 transition-transform"
             onClick={handleLoveButton}
             title="Love"
           >
-            <AiFillHeart
-              className={isLoved ? "text-pink-400" : "text-white"}
-              size={25}
-            />
+            {isLoved ? (
+              <AiFillHeart className="text-pink-400" size={25} />
+            ) : (
+              <AiOutlineHeart className="text-white" size={25} />
+            )}
           </div>
         </div>
       )}
