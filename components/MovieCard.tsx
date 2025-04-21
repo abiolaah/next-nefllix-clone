@@ -179,7 +179,10 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
               <FavouriteButton movieId={data.id} />
               <ReactionsButton />
               <div
-                onClick={() => openModal(data?.id)}
+                onClick={() => {
+                  openModal(data?.id);
+                  setIsHovered(false);
+                }}
                 className="cursor-pointer ml-auto w-6 h-6 lg:w-10 lg:h-10 border-white/60 border-2 rounded-full flex justify-center items-center transition hover:border-white"
               >
                 <BiChevronDown className="text-white" size={25} />
