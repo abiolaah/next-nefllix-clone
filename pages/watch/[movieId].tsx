@@ -8,6 +8,9 @@ import { MdForward10, MdReplay10 } from "react-icons/md";
 import { MdSubtitles } from "react-icons/md";
 // import { MediaItem } from "@/lib/types/api";
 
+const DEFAULT_VIDEO =
+  "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+
 const Watch = () => {
   const router = useRouter();
   const { movieId } = router.query;
@@ -189,26 +192,15 @@ const Watch = () => {
       id="video-container"
       onMouseMove={handleMouseMove}
     >
-      <nav
-        className="
-          fixed
-          w-full
-          p-4
-          z-10
-          flex
-          flex-row
-          items-center
-          gap-8
-          bg-black
-          bg-opacity-70
-        "
-      >
+      <nav className="fixed w-full p-4 z-10 flex flex-row items-center gap-8 bg-black bg-opacity-70">
         <AiOutlineArrowLeft
-          onClick={() => router.push("/")}
+          onClick={() => router.push("/browse")}
           className="text-white cursor-pointer"
           size={40}
+          aria-label="Go back to browse"
+          title="Go back to browse"
         />
-        <p className="text-white text-1xl md:text-3xl font-bold">
+        {/* <p className="text-white text-1xl md:text-3xl font-bold">
           <span className="font-light">Watching:</span> {data.title}
           {data.isTvShow && data.numberOfSeasons && (
             <span className="font-light ml-2">
@@ -216,15 +208,15 @@ const Watch = () => {
               {data.numberOfSeasons === 1 ? "Season" : "Seasons"})
             </span>
           )}
-        </p>
+        </p> */}
       </nav>
 
       {/* Video player */}
       <video
         ref={videoRef}
         autoPlay
-        controls
-        src={data.videoUrl}
+        // controls
+        src={data?.videoUrl || DEFAULT_VIDEO}
         className="h-full w-full"
         onClick={handlePlayPause}
         aria-label={`Video player for ${data.title}`}
