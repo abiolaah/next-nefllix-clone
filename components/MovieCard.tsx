@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 
 import { BsFillPlayFill } from "react-icons/bs";
 import { BiChevronDown } from "react-icons/bi";
@@ -14,6 +14,7 @@ import useInfoModal from "@/hooks/useInfoModal";
 
 import FavouriteButton from "./FavouriteButton";
 import ReactionsButton from "./ReactionsButton";
+import { useExpandedPosition } from "@/lib/useExpandedPosition";
 
 interface MovieCardProps {
   data: MediaItem;
@@ -21,24 +22,15 @@ interface MovieCardProps {
   totalItems: number;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ data, index, totalItems }) => {
+const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
   const router = useRouter();
+  const expandedRef = useRef<HTMLDivElement>(null);
+  const { getPosition } = useExpandedPosition(expandedRef);
   const { openModal } = useInfoModal();
   const [isHovered, setIsHovered] = useState(false);
-  const [position, setPosition] = useState<"left" | "middle" | "right">(
-    "middle"
-  );
 
-  // Determine if card is at the left edge, right edge, or middle
-  useEffect(() => {
-    if (index === 0) {
-      setPosition("left");
-    } else if (index === totalItems - 1) {
-      setPosition("right");
-    } else {
-      setPosition("middle");
-    }
-  }, [index, totalItems]);
+  const refPosition = getPosition();
+  console.log(refPosition);
 
   const getImageUrl = (path: string) => {
     if (!path) {
@@ -68,45 +60,52 @@ const MovieCard: React.FC<MovieCardProps> = ({ data, index, totalItems }) => {
   // Calculate position adjustments for the expanded card
   const getExpandedCardStyle = () => {
     const baseStyle = {
-      position: "absolute" as const,
-      zIndex: 9999,
+      // position: "absolute" as const,
+      // zIndex: 9999,
       transition: "all 0.3s ease-in-out",
       boxShadow: "0 10px 25px rgba(0, 0, 0, 0.5)",
       pointerEvents: "auto" as const,
     };
 
-    if (position === "left") {
-      return {
-        ...baseStyle,
-        left: "0",
-        top: "0%", // Reduced from -40% to prevent cutting off at the top
-        transform: "scale(1.2)", // Reduced from 1.3 to prevent overflow
-        width: "22vw", // Slightly wider to accommodate content
-        // marginLeft: "2",
-      };
-    } else if (position === "right") {
-      return {
-        ...baseStyle,
-        right: "0",
-        left: "auto",
-        top: "0%",
-        transform: "scale(1.2)",
-        width: "22vw",
-      };
-    } else {
-      return {
-        ...baseStyle,
-        left: "-15%", // Adjusted to center the expanded card better
-        top: "0%",
-        transform: "scale(1.2)",
-        width: "22vw",
-      };
-    }
+    // if (position === "left") {
+    //   return {
+    //     ...baseStyle,
+    //     left: "0",
+    //     top: "0%", // Reduced from -40% to prevent cutting off at the top
+    //     transform: "scale(1.2)", // Reduced from 1.3 to prevent overflow
+    //     width: "22vw", // Slightly wider to accommodate content
+    //     // marginLeft: "2",
+    //   };
+    // } else if (position === "right") {
+    //   return {
+    //     ...baseStyle,
+    //     right: "0",
+    //     left: "auto",
+    //     top: "0%",
+    //     transform: "scale(1.2)",
+    //     width: "22vw",
+    //   };
+    // } else {
+    //   return {
+    //     ...baseStyle,
+    //     left: "-15%", // Adjusted to center the expanded card better
+    //     top: "0%",
+    //     transform: "scale(1.2)",
+    //     width: "22vw",
+    //   };
+    // }
+    return {
+      ...baseStyle,
+      left: refPosition.left,
+      top: refPosition.top,
+      transform: "scale(1.2)",
+      width: "22vw",
+    };
   };
 
   return (
     <div
-      className="relative h-[12vw] w-[16vw] netflix-card-wrapper"
+      className="relative"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
@@ -114,29 +113,40 @@ const MovieCard: React.FC<MovieCardProps> = ({ data, index, totalItems }) => {
         zIndex: isHovered ? 1000 : 1,
         isolation: isHovered ? "isolate" : "auto",
       }}
+      ref={expandedRef}
     >
       {/* Base Card */}
-      <div
-        className={`relative w-full h-full rounded-md overflow-hidden transition-opacity duration-300 ${
-          isHovered ? "opacity-0" : "opacity-100"
-        }`}
-      >
-        <Image
-          src={imageUrl || "/placeholder.svg"}
-          alt={data.title}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="cursor-pointer object-cover shadow-xl rounded-md"
-          onError={(e) => {
-            console.error("Error loading image for", data.title, ":", imageUrl);
-            (e.target as HTMLImageElement).src = "/images/placeholder.jpg";
-          }}
-        />
+      <div className="relative h-[12vw] w-[16vw] netflix-card-wrapper">
+        <div
+          className={`relative w-full h-full rounded-md overflow-hidden transition-opacity duration-300 ${
+            isHovered ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          <Image
+            src={imageUrl || "/placeholder.svg"}
+            alt={data.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="cursor-pointer object-cover shadow-xl rounded-md"
+            onError={(e) => {
+              console.error(
+                "Error loading image for",
+                data.title,
+                ":",
+                imageUrl
+              );
+              (e.target as HTMLImageElement).src = "/images/placeholder.jpg";
+            }}
+          />
+        </div>
       </div>
 
       {/* Expanded Card on Hover */}
       {isHovered && (
-        <div className="netflix-expanded-card" style={getExpandedCardStyle()}>
+        <div
+          className="netflix-expanded-card z-100"
+          style={getExpandedCardStyle()}
+        >
           <div className="relative w-full h-[8vw] rounded-t-md overflow-hidden mt-5">
             <Image
               src={imageUrl || "/placeholder.svg"}
@@ -154,15 +164,6 @@ const MovieCard: React.FC<MovieCardProps> = ({ data, index, totalItems }) => {
                 (e.target as HTMLImageElement).src = "/images/placeholder.jpg";
               }}
             />
-            {/* Play Button overlay on Image */}
-            {/* <div className="absolute inset-0 flex items-center justify-center">
-              <div
-                onClick={() => router.push(`/watch/${data.id}`)}
-                className="bg-white/30 rounded-full p-4 backdrop-blur-sm cursor-pointer hover:bg-white/40 transition"
-              >
-                <BsFillPlayFill className="text-white w-6 h-6" />
-              </div>
-            </div> */}
           </div>
 
           {/* Content section */}
