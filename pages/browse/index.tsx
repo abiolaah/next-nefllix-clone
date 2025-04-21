@@ -2,9 +2,10 @@ import Billboard from "@/components/Billboard";
 import InfoModal from "@/components/InfoModal";
 import MovieList from "@/components/MovieList";
 import Navbar from "@/components/Navbar";
-import useFavourites from "@/hooks/useFavourites";
 import useInfoModal from "@/hooks/useInfoModal";
-import useMovieList from "@/hooks/useMovieList";
+import useMovies from "@/hooks/useMovies";
+import useTvShows from "@/hooks/useTvShows";
+import { MediaItem } from "@/lib/types/api";
 
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
@@ -27,19 +28,56 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default function Home() {
-  const { data: movies = [] } = useMovieList();
-  const { data: favourites = [] } = useFavourites();
+const Browse = () => {
+  const { data: movies, isLoading: moviesLoading } = useMovies();
+  const { data: tvShows, isLoading: tvShowsLoading } = useTvShows();
   const { isOpen, closeModal } = useInfoModal();
+
+  if (moviesLoading || tvShowsLoading) {
+    return (
+      <>
+        <Navbar />
+        <Billboard />
+        <div className="pb-40">
+          <div className="text-white">Loading...</div>
+        </div>
+      </>
+    );
+  }
+
+  // Combine local and TMDB data
+  const allMovies: MediaItem[] = [
+    ...(movies?.local || []),
+    ...(movies?.tmdb || []),
+  ];
+
+  const allTvShows: MediaItem[] = [
+    ...(tvShows?.local || []),
+    ...(tvShows?.tmdb || []),
+  ];
+
+  const allMedia: MediaItem[] = [...allMovies, ...allTvShows];
+
   return (
     <>
       <InfoModal visible={isOpen} onClose={closeModal} />
       <Navbar />
       <Billboard />
       <div className="pb-40">
-        <MovieList title="Trending Now" data={movies} />
-        <MovieList title="My List" data={favourites} />
+        <MovieList
+          title="Movies Only on This Platform"
+          data={movies?.local || []}
+        />
+        <MovieList title="Popular Movies" data={movies?.tmdb || []} />
+        <MovieList
+          title="TV Shows Only on This Platform"
+          data={tvShows?.local || []}
+        />
+        <MovieList title="Popular TV Shows" data={tvShows?.tmdb || []} />
+        <MovieList title="Top 10" data={allMedia} />
       </div>
     </>
   );
-}
+};
+
+export default Browse;
