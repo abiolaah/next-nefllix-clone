@@ -10,7 +10,7 @@ export interface TMDBMovie {
   poster_path: string;
   genre_ids: number[];
   vote_average: number;
-  runtime: number;
+  runtime?: number;
   release_date: string;
   adult: boolean;
 }

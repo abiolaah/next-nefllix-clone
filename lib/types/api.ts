@@ -28,12 +28,14 @@ export interface TransformedMovie extends Omit<Movie, "id"> {
   id: string;
   genre: string[];
   isTvShow: false;
+  isAdult: boolean;
 }
 
 export interface TransformedTvShow extends Omit<TvShow, "id"> {
   id: string;
   genre: string[];
   isTvShow: true;
+  isAdult: boolean;
 }
 
 export type MediaItem = TransformedMovie | TransformedTvShow;
