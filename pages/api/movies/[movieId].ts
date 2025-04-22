@@ -43,7 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const detailsResponse = await fetch(
       `${TMDB_BASE_URL}${TMDB_ENDPOINTS.MOVIES.DETAILS(
         movieId as string
-      )}?api_key=${TMDB_API_KEY}`
+      )}?api_key=${TMDB_API_KEY}&append_to_response=credits`
     );
 
     if (!detailsResponse.ok) {
