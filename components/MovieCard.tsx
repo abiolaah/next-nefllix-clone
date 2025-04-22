@@ -67,33 +67,6 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
       pointerEvents: "auto" as const,
     };
 
-    // if (position === "left") {
-    //   return {
-    //     ...baseStyle,
-    //     left: "0",
-    //     top: "0%", // Reduced from -40% to prevent cutting off at the top
-    //     transform: "scale(1.2)", // Reduced from 1.3 to prevent overflow
-    //     width: "22vw", // Slightly wider to accommodate content
-    //     // marginLeft: "2",
-    //   };
-    // } else if (position === "right") {
-    //   return {
-    //     ...baseStyle,
-    //     right: "0",
-    //     left: "auto",
-    //     top: "0%",
-    //     transform: "scale(1.2)",
-    //     width: "22vw",
-    //   };
-    // } else {
-    //   return {
-    //     ...baseStyle,
-    //     left: "-15%", // Adjusted to center the expanded card better
-    //     top: "0%",
-    //     transform: "scale(1.2)",
-    //     width: "22vw",
-    //   };
-    // }
     return {
       ...baseStyle,
       left: refPosition.left,
@@ -191,7 +164,13 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
             {/* Metadata */}
             <div className="flex items-center gap-2 mb-2">
               <span className="text-white/70 text-xs border px-1 border-white/40">
-                {data.isTvShow ? "TV-14" : "PG-13"}
+                {data.isTvShow
+                  ? data.isAdult
+                    ? "TV-MA"
+                    : "TV-14"
+                  : data.isAdult
+                  ? "R"
+                  : "PG-13"}
               </span>
               <span className="text-white/70 text-xs">
                 {data.isTvShow
