@@ -18,8 +18,6 @@ import { useExpandedPosition } from "@/lib/useExpandedPosition";
 
 interface MovieCardProps {
   data: MediaItem;
-  index: number;
-  totalItems: number;
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
