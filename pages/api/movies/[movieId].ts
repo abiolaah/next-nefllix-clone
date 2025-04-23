@@ -1,6 +1,102 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { TMDB_BASE_URL, TMDB_ENDPOINTS } from "../../../lib/tmdb";
 import prismadb from "@/lib/prismadb";
+import { faker } from "@faker-js/faker";
+
+interface TMDBVideo {
+  key: string;
+  site: string;
+  type: string;
+  official?: boolean;
+}
+
+// Define types for our response data
+interface MovieDetailsResponse {
+  details: {
+    id: string | number;
+    title: string;
+    description: string;
+    videoUrl?: string;
+    trailerUrl?: string;
+    thumbnailUrl: string;
+    genre: Array<{ id: number; name: string }>;
+    rating?: number;
+    duration: string;
+    releaseDate: string;
+    tagline: string;
+    isAdult: boolean;
+    isTvShow: boolean;
+    credits?: {
+      cast: Array<{
+        id: number;
+        name: string;
+      }>;
+      crew: Array<{
+        id: number;
+        name: string;
+        department: string;
+      }>;
+    };
+    videos?: {
+      results: TMDBVideo[];
+    };
+    keywords?: {
+      keywords: Array<{ id: number; name: string }>;
+    };
+  };
+  similar: Array<{
+    id: string | number;
+    title: string;
+    description: string;
+    thumbnailUrl: string;
+    releaseDate: string;
+    duration: string;
+    videoUrl?: string;
+    trailerUrl?: string;
+    isAdult: boolean;
+    isTvShow: boolean;
+  }>;
+  source: string;
+}
+
+const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
+
+// Helper function to find best trailer URL from vidoes
+const findBestTrailerUrl = (videos: { results: TMDBVideo[] }): string => {
+  if (!videos || !videos.results || videos.results.length === 0) {
+    return "";
+  }
+
+  const officialTrailer = videos.results.find(
+    (video: TMDBVideo) =>
+      video.type === "Trailer" &&
+      video.site === "YouTube" &&
+      video.official === true
+  );
+
+  const anyTrailer = videos.results.find(
+    (video: TMDBVideo) => video.type === "Trailer" && video.site === "YouTube"
+  );
+
+  const anyVideo = videos.results.find(
+    (video: TMDBVideo) => video.site === "YouTube"
+  );
+
+  const trailer = officialTrailer || anyTrailer || anyVideo;
+
+  if (trailer) {
+    return `https://www.youtube.com/watch?v=${trailer.key}`;
+  }
+
+  return "";
+};
+
+// Helper function to generate name without titles
+const generateNameWithoutTitle = (): string => {
+  const firstName = faker.person.firstName();
+  const lastName = faker.person.lastName();
+  return `${firstName} ${lastName}`;
+};
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { movieId } = req.query;
@@ -15,35 +111,133 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
-    // First, try to find the movie in MongoDB
-    const localMovie = await prismadb.movie.findUnique({
-      where: {
-        id: movieId as string,
-      },
-    });
+    // First, try to find the movie in MongoDB - but only if it seems like a MongoDB ID
+    let localMovie = null;
+
+    // Check if the ID looks like a MongoDB ObjectID(24 char hex string)
+    const isValidObjectId =
+      typeof movieId === "string" &&
+      /^[0-9a-fA-F]{24}$/.test(movieId as string);
+
+    if (isValidObjectId) {
+      localMovie = await prismadb.movie.findUnique({
+        where: {
+          id: movieId as string,
+        },
+      });
+    }
 
     if (localMovie) {
       // If found in MongoDB, return the local data
-      return res.status(200).json({
+      // Generate fake data for fields not available in local source
+      const isAdult = Math.random() >= 0.5;
+      const releaseDate = faker.date.past().toISOString().split("T")[0];
+      const tagline = faker.lorem.sentence();
+
+      // Create fake similar movies
+      const similarMovies = Array.from({ length: 5 }, () => ({
+        id: faker.string.uuid(),
+        title: faker.lorem.words({ min: 1, max: 5 }),
+        description: faker.lorem.paragraph(),
+        thumbnailUrl: faker.image.url(),
+        releaseDate: faker.date.past().toISOString().split("T")[0],
+        duration: `${faker.number.int({ min: 70, max: 180 })} minutes`,
+        videoUrl: faker.internet.url(),
+        trailerUrl: `https://www.youtube.com/watch?v=${faker.string.alphanumeric(
+          11
+        )}`,
+        isAdult: Math.random() >= 0.5,
+        isTvShow: false,
+      }));
+
+      // Create fake cast and crew
+      const cast = Array.from({ length: 8 }, () => ({
+        id: faker.number.int({ min: 1000, max: 9999999 }),
+        name: generateNameWithoutTitle(),
+      }));
+
+      const crew = [
+        {
+          id: faker.number.int({ min: 1000, max: 9999999 }),
+          name: generateNameWithoutTitle(),
+          department: "Directing",
+        },
+        {
+          id: faker.number.int({ min: 1000, max: 9999999 }),
+          name: generateNameWithoutTitle(),
+          department: "Writing",
+        },
+      ];
+
+      // Create fake videos
+      const videos = {
+        results: [
+          {
+            key: faker.string.alphanumeric(11),
+            name: "Official Trailer",
+            site: "YouTube",
+            type: "Trailer",
+            official: true,
+          },
+          {
+            key: faker.string.alphanumeric(11),
+            name: "Official Trailer",
+            site: "YouTube",
+            type: "Clip",
+            official: true,
+          },
+        ],
+      };
+
+      // Create fake keywords
+      const keywords = {
+        keywords: Array.from({ length: 5 }, () => ({
+          id: faker.number.int({ min: 1000, max: 9999 }),
+          name: faker.word.sample(),
+        })),
+      };
+
+      // Format the genre as an array of objects with id and name
+      const genreArray = Array.isArray(localMovie.genre)
+        ? localMovie.genre.map((name: string, index: number) => ({
+            id: faker.number.int({ min: 1, max: 1000 }) + index,
+            name,
+          }))
+        : [];
+
+      const response: MovieDetailsResponse = {
         details: {
           id: localMovie.id,
           title: localMovie.title,
-          overview: localMovie.description,
+          description: localMovie.description,
           videoUrl: localMovie.videoUrl,
           thumbnailUrl: localMovie.thumbnailUrl,
-          genre: localMovie.genre,
-          rating: localMovie.rating,
-          duration: localMovie.duration,
+          trailerUrl: localMovie.trailerUrl,
+          genre: genreArray,
+          rating: localMovie.rating || 0,
+          duration: localMovie.duration || "10 minutes",
+          releaseDate,
+          tagline,
+          isAdult,
+          isTvShow: false,
+          credits: {
+            cast,
+            crew,
+          },
+          videos,
+          keywords,
         },
+        similar: similarMovies,
         source: "local",
-      });
+      };
+      return res.status(200).json(response);
     }
 
     // If not found in MongoDB, fetch from TMDB
     const detailsResponse = await fetch(
       `${TMDB_BASE_URL}${TMDB_ENDPOINTS.MOVIES.DETAILS(
         movieId as string
-      )}?api_key=${TMDB_API_KEY}&append_to_response=credits`
+      )}?api_key=${TMDB_API_KEY}&append_to_response=credits,videos,keywords,similar`
     );
 
     if (!detailsResponse.ok) {
@@ -52,24 +246,149 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const movieDetails = await detailsResponse.json();
 
-    // Fetch similar movies from TMDB
-    const similarResponse = await fetch(
-      `${TMDB_BASE_URL}${TMDB_ENDPOINTS.MOVIES.SIMILAR(
-        movieId as string
-      )}?api_key=${TMDB_API_KEY}`
-    );
+    // Process TMDB data to match our expected format
+    const filteredCrew = movieDetails.credits?.crew
+      ? movieDetails.credits.crew
+          .filter(
+            (person: { department: string }) =>
+              person.department === "Directing" ||
+              person.department === "Writing"
+          )
+          .map((person: { id: number; name: string; department: string }) => ({
+            id: person.id,
+            name: person.name,
+            department: person.department,
+          }))
+      : [];
 
-    if (!similarResponse.ok) {
-      throw new Error("Failed to fetch similar movies from TMDB");
-    }
+    // Process TMDB data to match our expected format
+    const filteredCast = movieDetails.credits?.cast
+      ? movieDetails.credits.cast.map(
+          (person: { id: number; name: string }) => ({
+            id: person.id,
+            name: person.name,
+          })
+        )
+      : [];
 
-    const similarMovies = await similarResponse.json();
+    // Find the best trailer URL
+    const trailerUrl = findBestTrailerUrl(movieDetails.videos);
 
-    return res.status(200).json({
-      details: movieDetails,
-      similar: similarMovies.results,
+    // Process similar movies with additional API calls for each
+    const similarMoviesPromises = (movieDetails.similar?.results || [])
+      .slice(0, 8)
+      .map(
+        async (movie: {
+          id: string;
+          title?: string;
+          overview?: string;
+          poster_path?: string;
+          release_date?: string;
+          adult?: boolean;
+          runtime?: number;
+        }) => {
+          try {
+            // Fetch detailed info including runtime for each similar movie
+            const detailedInfoResponse = await fetch(
+              `${TMDB_BASE_URL}/movie/${movie.id}?api_key=${TMDB_API_KEY}&append_to_response=videos`
+            );
+
+            if (detailedInfoResponse.ok) {
+              const detailedInfo = await detailedInfoResponse.json();
+              const similarTrailerUrl = findBestTrailerUrl(detailedInfo.videos);
+
+              return {
+                id: movie.id,
+                title: movie.title || "",
+                description: movie.overview || "",
+                thumbnailUrl: movie.poster_path
+                  ? `${TMDB_IMAGE_BASE_URL}${movie.poster_path}`
+                  : "",
+                releaseDate: movie.release_date || "",
+                duration: detailedInfo.runtime
+                  ? `${detailedInfo.runtime} minutes`
+                  : "120 minutes",
+                videoUrl: "",
+                trailerUrl: similarTrailerUrl,
+                isAdult: movie.adult || false,
+                isTvShow: false,
+              };
+            }
+
+            // Fallback if detailed info fetch fails
+            return {
+              id: movie.id,
+              title: movie.title || "",
+              description: movie.overview || "",
+              thumbnailUrl: movie.poster_path
+                ? `${TMDB_IMAGE_BASE_URL}${movie.poster_path}`
+                : "",
+              releaseDate: movie.release_date || "",
+              duration: "120 minutes",
+              videoUrl: "",
+              trailerUrl: "",
+              isAdult: movie.adult || false,
+              isTvShow: false,
+            };
+          } catch (error) {
+            console.error(
+              `Error fetching details for similar movie ${movie.id}:`,
+              error
+            );
+
+            // Return basic info if fetch fails
+            return {
+              id: movie.id,
+              title: movie.title || "",
+              description: movie.overview || "",
+              thumbnailUrl: movie.poster_path
+                ? `${TMDB_IMAGE_BASE_URL}${movie.poster_path}`
+                : "",
+              releaseDate: movie.release_date || "",
+              duration: movie.runtime || "N/A",
+              videoUrl: "",
+              trailerUrl: "",
+              isAdult: movie.adult || false,
+              isTvShow: false,
+            };
+          }
+        }
+      );
+
+    // Wait for all similar movie detail requests to complete
+    const similarMovies = await Promise.all(similarMoviesPromises);
+
+    const response: MovieDetailsResponse = {
+      details: {
+        id: movieDetails.id,
+        title: movieDetails.title || "",
+        description: movieDetails.overview || "",
+        videoUrl: "",
+        thumbnailUrl: movieDetails.poster_path
+          ? `${TMDB_IMAGE_BASE_URL}${movieDetails.poster_path}`
+          : "",
+        trailerUrl,
+        genre: movieDetails.genres || [],
+        rating: movieDetails.vote_average || 0,
+        duration: movieDetails.runtime
+          ? `${movieDetails.runtime} minutes`
+          : "120 minutes",
+        releaseDate: movieDetails.release_date || "",
+        tagline: movieDetails.tagline || "",
+        isAdult: movieDetails.adult || false,
+        isTvShow: false,
+        credits: {
+          cast: filteredCast,
+          crew: filteredCrew,
+        },
+        videos: movieDetails.videos || { results: [] },
+        keywords: movieDetails.keywords || { keywords: [] },
+      },
+      similar: similarMovies,
       source: "tmdb",
-    });
+    };
+
+    return res.status(200).json(response);
   } catch (error) {
     console.error("Error fetching movie data:", error);
     return res.status(500).json({ error: "Failed to fetch movie data" });
