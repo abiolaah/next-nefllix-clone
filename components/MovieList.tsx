@@ -58,7 +58,7 @@ const MovieList: React.FC<MovieListProps> = ({ data, title }) => {
   };
 
   return (
-    <div className="relative px-4 md:px-12 mt-8 netflix-list-container">
+    <div className="relative mt-8 netflix-list-container">
       {/* Title and section area */}
       <h2 className="text-white text-xl md:text-2xl font-semibold mb-4 px-4 md:px-12">
         {title}
