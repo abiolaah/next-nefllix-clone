@@ -31,17 +31,43 @@ html {
 /* Netflix card styling */
 .netflix-list-container {
   position: relative;
-  padding-left: 4vw;
+  margin: 2rem 0;
+  overflow: visible;
+}
+
+/* Make scroll container take full width */
+.netflix-list-container .scrollbar-hide.scroll-smooth {
+  width: 100%;
+  position: relative;
+}
+
+/* Show arrows on hover */
+.netflix-list-container:hover button {
+  opacity: 1;
+}
+
+/* Make sure arrows stay outside content area */
+.netflix-list-container button {
+  opacity: 0;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+/* Make sure the scroll area has enough padding for the expanded cards */
+.netflix-list-container .scrollbar-hide {
+  padding-top: 1.5rem;
+  padding-bottom: 8rem;
+  margin-top: -1.5rem;
+  /* margin-bottom: -8rem; */
 }
 
 .netflix-card-container {
   position: relative;
-  transition: transform 0.3s ease, z-index 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .netflix-card-wrapper {
   position: relative;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, z-index 0.3s ease;
 }
 
 .netflix-expanded-card {
