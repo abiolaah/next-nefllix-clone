@@ -2,62 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { TMDB_BASE_URL, TMDB_ENDPOINTS } from "../../../lib/tmdb";
 import prismadb from "@/lib/prismadb";
 import { faker } from "@faker-js/faker";
-
-interface TMDBVideo {
-  key: string;
-  site: string;
-  type: string;
-  official?: boolean;
-}
-
-// Define types for our response data
-interface MovieDetailsResponse {
-  details: {
-    id: string | number;
-    title: string;
-    description: string;
-    videoUrl?: string;
-    trailerUrl?: string;
-    thumbnailUrl: string;
-    genre: Array<{ id: number; name: string }>;
-    rating?: number;
-    duration: string;
-    releaseDate: string;
-    tagline: string;
-    isAdult: boolean;
-    isTvShow: boolean;
-    credits?: {
-      cast: Array<{
-        id: number;
-        name: string;
-      }>;
-      crew: Array<{
-        id: number;
-        name: string;
-        department: string;
-      }>;
-    };
-    videos?: {
-      results: TMDBVideo[];
-    };
-    keywords?: {
-      keywords: Array<{ id: number; name: string }>;
-    };
-  };
-  similar: Array<{
-    id: string | number;
-    title: string;
-    description: string;
-    thumbnailUrl: string;
-    releaseDate: string;
-    duration: string;
-    videoUrl?: string;
-    trailerUrl?: string;
-    isAdult: boolean;
-    isTvShow: boolean;
-  }>;
-  source: string;
-}
+import { TMDBVideo, MovieDetailsResponse } from "@/lib/types/api";
 
 const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
