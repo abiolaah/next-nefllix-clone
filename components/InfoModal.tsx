@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 
 import { AiOutlineClose } from "react-icons/ai";
-import { BsFillPlayFill } from "react-icons/bs";
+import { BsFillPlayFill, BsVolumeMute, BsVolumeUp } from "react-icons/bs";
 import { BiChevronDown } from "react-icons/bi";
 
 import Image from "next/image";
@@ -42,6 +42,8 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
   const { movieId, contentType: storeContentType } = useInfoModal();
   const [isAlreadyWatched, setIsAlreadyWatched] = useState(false);
 
+  const [isMuted, setIsMuted] = useState(true);
+
   // Important: We maintain the content type from the store consistently
   const [contentType, setContentType] = useState<"movie" | "tv">(
     storeContentType
@@ -69,6 +71,11 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
   // Extract the details from the response
   const movieData = movieDetailsResponse?.details;
   const tvData = tvDetailsResponse?.details;
+
+  // Toggle for muted
+  const toggleMute = () => {
+    setIsMuted(!isMuted);
+  };
 
   // Update the effect that watches for contentType changes
   useEffect(() => {
@@ -272,7 +279,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
               <video
                 poster={data.thumbnailUrl || "/images/placeholder.jpg"}
                 autoPlay
-                muted
+                muted={isMuted}
                 loop
                 src={data.trailerUrl}
                 className="w-full brightness-[60%] object-cover h-full"
@@ -292,6 +299,19 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
               className="cursor-pointer absolute top-3 right-3 h-10 w-10 rounded-full bg-black/70 flex items-center justify-center z-10"
             >
               <AiOutlineClose className="text-white w-6" />
+            </div>
+
+            <div className="absolute bottom-10 right-10 flex items-center gap-4">
+              <button
+                onClick={toggleMute}
+                className="border-white/60 p-2 rounded-full hover:border-white/80 transition"
+              >
+                {isMuted ? (
+                  <BsVolumeMute size={20} className="text-white" />
+                ) : (
+                  <BsVolumeUp size={20} className="text-white" />
+                )}
+              </button>
             </div>
 
             {/* Movie/Show Title and Action Buttons */}
