@@ -1,9 +1,9 @@
 import useSWR from "swr";
 import fetcher from "@/lib/fetcher";
-import { MediaItem } from "@/lib/types/api";
+import { MediaResponse } from "@/lib/types/api";
 
 const useMovieDetails = (id: string) => {
-  const { data, isLoading, error, mutate } = useSWR<MediaItem>(
+  const { data, isLoading, error, mutate } = useSWR<MediaResponse>(
     id ? `/api/movies/${id}` : null,
     fetcher,
     {
