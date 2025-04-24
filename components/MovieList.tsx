@@ -57,6 +57,10 @@ const MovieList: React.FC<MovieListProps> = ({ data, title }) => {
     }
   };
 
+  if (data.length <= 0) {
+    return null;
+  }
+
   return (
     <div className="relative mt-8 netflix-list-container">
       {/* Title and section area */}
