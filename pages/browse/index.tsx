@@ -5,9 +5,11 @@ import Navbar from "@/components/Navbar";
 import useInfoModal from "@/hooks/useInfoModal";
 import useMovies from "@/hooks/useMovies";
 import useTvShows from "@/hooks/useTvShows";
+import useFavourites from "@/hooks/useFavourites";
 
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
+import { MediaItem } from "@/lib/types/api";
 
 // Using GetServerSideProps type and no mixing with getStaticProps/getStaticPaths
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -60,6 +62,9 @@ const Browse = () => {
   const { data: tredningTvShows, isLoading: tredningTvShowsLoading } =
     useTvShows({ type: "trending", page: 2 });
 
+  const { data: favourites, isLoading: favouritesLoading } = useFavourites();
+  const watching: MediaItem[] = [];
+
   const { isOpen, closeModal } = useInfoModal();
 
   if (
@@ -73,7 +78,8 @@ const Browse = () => {
     onAirTvShowsLoading ||
     topRatedTvShowsLoading ||
     tredningTvShowsLoading ||
-    popularTvShowsLoading
+    popularTvShowsLoading ||
+    favouritesLoading
   ) {
     return (
       <>
@@ -92,22 +98,41 @@ const Browse = () => {
       <Navbar />
       <Billboard />
       <div className="pb-40">
+        {/* Movies Available on this platform */}
         <MovieList
           title="Movies Only on This Platform"
           data={movies?.local || []}
         />
+        {/* Popular Movies */}
         <MovieList title="Popular Movies" data={popularMovies?.tmdb || []} />
+
+        {/* Trending Movies */}
         <MovieList title="Trending Movies" data={trendingMovies?.tmdb || []} />
-        <MovieList title="Top rated Movies" data={topRatedMovies?.tmdb || []} />
+
+        {/* Top Rated Movies */}
+        <MovieList title="Top Rated Movies" data={topRatedMovies?.tmdb || []} />
+
+        {/* Movies Now Playing */}
         <MovieList
           title="Now Playing Movies"
           data={nowPlayingMovies?.tmdb || []}
         />
+
+        {/* Upcoming Movies */}
         <MovieList title="Upcoming Movies" data={upcomingMovies?.tmdb || []} />
+
+        {/* Favourite */}
+        <MovieList title="My List" data={favourites || []} />
+
+        {/* Continue Watching */}
+        <MovieList title="Continue Watching" data={watching} />
+
+        {/* TV Shows Only on This Platform */}
         <MovieList
           title="TV Shows Only on This Platform"
           data={tvShows?.local || []}
         />
+
         <MovieList title="Popular TV Shows" data={popularTvShows?.tmdb || []} />
         <MovieList
           title="Top Rated TV Shows"
