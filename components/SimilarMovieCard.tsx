@@ -4,11 +4,24 @@ import type React from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import FavouriteButton from "./FavouriteButton";
-import type { MediaItem } from "@/lib/types/api";
 import { TMDB_IMAGE_BASE_URL } from "@/lib/tmdb";
 
+interface SimilarContentItem {
+  id: string | number;
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+  releaseDate: string;
+  duration?: string;
+  numberOfSeasons?: string;
+  videoUrl?: string;
+  trailerUrl?: string;
+  isAdult: boolean;
+  isTvShow: boolean;
+}
+
 interface SimilarMovieCardProps {
-  data: MediaItem;
+  data: SimilarContentItem;
 }
 
 const SimilarMovieCard: React.FC<SimilarMovieCardProps> = ({ data }) => {
