@@ -11,7 +11,7 @@ const Billboard = () => {
   const { openModal } = useInfoModal();
 
   const handleOpenModal = useCallback(() => {
-    openModal(data?.id);
+    openModal(data?.id, "movie");
   }, [openModal, data?.id]);
 
   useEffect(() => {
