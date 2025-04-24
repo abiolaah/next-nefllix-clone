@@ -28,7 +28,6 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const refPosition = getPosition();
-  console.log(refPosition);
 
   const getImageUrl = (path: string) => {
     if (!path) {
@@ -72,6 +71,13 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
       transform: "scale(1.2)",
       width: "22vw",
     };
+  };
+
+  const handleOpenModal = () => {
+    const contentType: "movie" | "tv" =
+      data?.isTvShow === true ? "tv" : "movie";
+    openModal(data?.id, contentType);
+    setIsHovered(false);
   };
 
   return (
@@ -150,10 +156,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
               <FavouriteButton movieId={data.id} />
               <ReactionsButton />
               <div
-                onClick={() => {
-                  openModal(data?.id);
-                  setIsHovered(false);
-                }}
+                onClick={handleOpenModal}
                 className="cursor-pointer ml-auto w-6 h-6 lg:w-10 lg:h-10 border-white/60 border-2 rounded-full flex justify-center items-center transition hover:border-white"
               >
                 <BiChevronDown className="text-white" size={25} />

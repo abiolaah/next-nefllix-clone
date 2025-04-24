@@ -1,7 +1,5 @@
 "use client";
-
-import type React from "react";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { AiOutlineClose } from "react-icons/ai";
 import { BsFillPlayFill } from "react-icons/bs";
@@ -15,29 +13,96 @@ import SimilarMovieCard from "./SimilarMovieCard";
 
 import useInfoModal from "@/hooks/useInfoModal";
 import useMovieDetails from "@/hooks/useMovieDetails";
-import { sampleMovies } from "@/constants/data";
+import useTvShowDetails from "@/hooks/useTvShowDetails";
 
-import type {
-  MediaItem,
-  TransformedMovie,
-  TransformedTvShow,
-} from "@/lib/types/api";
+import { MovieDetailsResponse, TvShowDetailsResponse } from "@/lib/types/api";
 
 interface InfoModalProps {
   visible?: boolean;
   onClose: () => void;
 }
 
+interface SimilarContentItem {
+  id: string | number;
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+  releaseDate: string;
+  duration?: string;
+  numberOfSeasons?: string;
+  videoUrl?: string;
+  trailerUrl?: string;
+  isAdult: boolean;
+  isTvShow: boolean;
+}
+
 const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
   const [isVisible, setIsVisible] = useState(!!visible);
-  const [selectedSeason, setSelectedSeason] = useState(4); // Default to season 4 for TV shows
-  const { movieId } = useInfoModal();
-  const { data } = useMovieDetails(movieId || "");
-  const [isAlreadyWatched, setIsAlreadyWatched] = useState(false); // To track if movie is being watched
+  const [selectedSeason, setSelectedSeason] = useState(1);
+  const { movieId, contentType: storeContentType } = useInfoModal();
+  const [isAlreadyWatched, setIsAlreadyWatched] = useState(false);
 
+  // Important: We maintain the content type from the store consistently
+  const [contentType, setContentType] = useState<"movie" | "tv">(
+    storeContentType
+  );
+
+  const [similarContent, setSimilarContent] = useState<SimilarContentItem[]>(
+    []
+  );
+
+  // Fetch data based on content type
+  const { data: movieResponse, isLoading: movieLoading } = useMovieDetails(
+    contentType === "movie" ? movieId || "" : ""
+  );
+
+  const { data: tvResponse, isLoading: tvLoading } = useTvShowDetails(
+    contentType === "tv" ? movieId || "" : ""
+  );
+
+  // Cast to proper types
+  const movieDetailsResponse = movieResponse as
+    | MovieDetailsResponse
+    | undefined;
+  const tvDetailsResponse = tvResponse as TvShowDetailsResponse | undefined;
+
+  // Extract the details from the response
+  const movieData = movieDetailsResponse?.details;
+  const tvData = tvDetailsResponse?.details;
+
+  // Update the effect that watches for contentType changes
+  useEffect(() => {
+    setContentType(storeContentType);
+  }, [storeContentType]);
+
+  // Update content type only after data is loaded and if needed
+  useEffect(() => {
+    // If we're in TV mode but don't have TV data after it finished loading, check if we have movie data
+    if (contentType === "tv" && !tvLoading && !tvData && movieData) {
+      setContentType("movie");
+    }
+    // If we're in movie mode but don't have movie data after it finished loading, check if we have TV data
+    else if (contentType === "movie" && !movieLoading && !movieData && tvData) {
+      setContentType("tv");
+    }
+  }, [contentType, movieData, tvData, movieLoading, tvLoading]);
+
+  // Set up similar content
+  useEffect(() => {
+    const apiSimilarMovies = movieDetailsResponse?.similar || [];
+    const apiSimilarTvShows = tvDetailsResponse?.similar || [];
+
+    if (contentType === "movie" && apiSimilarMovies.length > 0) {
+      setSimilarContent(apiSimilarMovies.slice(0, 3));
+    } else if (contentType === "tv" && apiSimilarTvShows.length > 0) {
+      setSimilarContent(apiSimilarTvShows.slice(0, 3));
+    }
+  }, [contentType, movieDetailsResponse?.similar, tvDetailsResponse?.similar]);
+
+  // Update visibility based on prop changes
   useEffect(() => {
     setIsVisible(!!visible);
-    // For demo purposes, randomly set if the movie is already being watched
+    // For demo purposes, randomly set if the content is already being watched
     setIsAlreadyWatched(Math.random() > 0.5);
   }, [visible]);
 
@@ -48,148 +113,150 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
     }, 300);
   }, [onClose]);
 
-  if (!visible || !data) {
+  // Determine which data to use based on content type
+  const data = contentType === "tv" ? tvData : movieData;
+  const isLoading = contentType === "tv" ? tvLoading : movieLoading;
+
+  if (!visible) {
     return null;
   }
 
-  // Ensure we have default data to work with even if data isn't loaded yet
-  const movieData = data || {
-    id: "default",
-    title: "Loading...",
-    thumbnailUrl: "/images/placeholder.jpg",
-    videoUrl: "",
-    isTvShow: false,
-    numberOfSeasons: 1,
-    duration: "1h 54m",
-  };
+  if (isLoading) {
+    return (
+      <div className="z-50 transition duration-300 bg-black/80 flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0">
+        <div className="relative w-auto mx-auto max-w-4xl rounded-md overflow-hidden">
+          <div className="relative bg-zinc-900 p-10 flex justify-center items-center">
+            <div className="text-white text-2xl">Loading...</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-  const isTvShow = movieData.isTvShow || false;
+  if (!data) {
+    return null;
+  }
 
-  // Sample data
-  const sampleCastData = isTvShow
-    ? [
-        { id: 1, name: "Grant Gustin" },
-        { id: 2, name: "Candice Patton" },
-        { id: 3, name: "Danielle Panabaker" },
-        { id: 4, name: "Carlos Valdes" },
-        { id: 5, name: "Jesse L. Martin" },
-      ]
-    : [
-        { id: 1, name: "Jamie Foxx" },
-        { id: 2, name: "Cameron Diaz" },
-        { id: 3, name: "Glenn Close" },
-        { id: 4, name: "Kyle Chandler" },
-        { id: 5, name: "Andrew Scott" },
-      ];
+  // Explicitly determine if this is a TV show based on content type
+  const isTvShow = contentType === "tv" || data.isTvShow;
 
-  const sampleGenres = isTvShow
-    ? ["Sci-Fi TV", "TV Action & Adventure", "TV Shows Based on Comics"]
-    : ["Comedy Movies", "Action & Adventure Movies", "Spy Movies"];
+  // Format genres for display
+  const formattedGenres = Array.isArray(data.genre)
+    ? data.genre.map((g) => (typeof g === "object" && g.name ? g.name : g))
+    : typeof data.genre === "string"
+    ? [data.genre]
+    : ["Unknown"];
 
-  const movieKeywords = isTvShow
-    ? ["Adrenaline Rush", "Exciting"]
-    : ["Exciting"];
+  // Format content rating
+  const contentRating = isTvShow
+    ? data.isAdult
+      ? "TV-MA"
+      : "TV-14"
+    : data.isAdult
+    ? "R"
+    : "PG-13";
 
-  const moreVideos = isTvShow
-    ? [
-        { id: 1, title: "The Flash Season 4 Trailer" },
-        { id: 2, title: "The Flash Season 3 Trailer" },
-        { id: 3, title: "The Flash Season 2 Trailer" },
-      ]
-    : [
-        { id: 1, title: "Teaser: Back In Action" },
-        { id: 2, title: "Trailer: Back In Action" },
-      ];
+  // Format content warning based on rating
+  const contentWarning =
+    contentRating === "TV-MA" || contentRating === "R"
+      ? "Language, violence, sexual content. Not suitable for viewers under 17."
+      : contentRating === "TV-14" || contentRating === "PG-13"
+      ? "Fear, language. Parents strongly cautioned. May not be suitable for ages under 14."
+      : "Suitable for most audiences";
 
-  const releaseYear = isTvShow ? "2023" : "2025";
-  const rating = isTvShow ? "TV-14" : "PG-13";
-  const maturityRating = movieData
-    ? movieData.isTvShow
-      ? "TV-14"
-      : "PG-13"
-    : rating;
-  const contentWarning = isTvShow
-    ? "Fear, language. Parents strongly cautioned. May not be suitable for ages under 14."
-    : "sequences of violence and action, some suggestive references and strong language, and brief teen partying";
+  // Extract cast from the nested credits structure
+  const castMembers = data.credits?.cast
+    ? data.credits.cast.map((cast) => cast.name)
+    : [];
 
-  // Sample episodes data for TV shows
-  const sampleEpisodes = [
-    {
-      id: 1,
-      thumbnail: "/images/placeholder.jpg",
-      title: "The Flash Reborn",
-      duration: "42m",
-      description:
-        "As Barry remains trapped in the speed force, a powerful new villain issues a deadly ultimatum, putting the team in a tough spot.",
-    },
-    {
-      id: 2,
-      thumbnail: "/images/placeholder.jpg",
-      title: "Mixed Signals",
-      duration: "42m",
-      description:
-        "While struggling to adjust to Cisco's upgraded suit, Barry takes on a dangerous meta who has the power to control technology.",
-    },
-    {
-      id: 3,
-      thumbnail: "/images/placeholder.jpg",
-      title: "Luck Be a Lady",
-      duration: "42m",
-      description:
-        "When Barry and company are hit by a flurry of accidents and problems, they realize they may be close to poor fortune than actual bad luck.",
-    },
-    {
-      id: 4,
-      thumbnail: "/images/placeholder.jpg",
-      title: "Elongated Journey Into Night",
-      duration: "41m",
-      description:
-        "Cisco is shocked to see Danny and her father, Breacher, on Earth-1. Meanwhile, Barry collides with an old foe, the recently thoughtful Dibny.",
-    },
-    {
-      id: 5,
-      thumbnail: "/images/placeholder.jpg",
-      title: "Girl's Night Out",
-      duration: "41m",
-      description:
-        "Barry and the boys hit the town for a bachelor party while Iris enjoys a night out with the girls. But the celebration hits a few snags along the way.",
-    },
-  ];
+  // Handle creators/directors differently based on content type
+  const creators =
+    isTvShow && tvData && "createdBy" in tvData
+      ? (tvData.createdBy || []).map(
+          (creator: { name: string }) => creator.name
+        )
+      : (
+          data.credits as { crew?: Array<{ department: string; name: string }> }
+        )?.crew
+          ?.filter(
+            (person: { department: string }) =>
+              person.department === "Directing"
+          )
+          .map((director: { name: string }) => director.name) || [];
 
-  // Prepare media items for SimilarMovieCard
-  const similarMediaItems: MediaItem[] = sampleMovies
-    .slice(0, 3)
-    .map((movie) => {
-      // Create a base media item with common properties
-      const baseItem = {
-        id: movie.id,
-        title: movie.title,
-        thumbnailUrl: movie.thumbnailUrl || "/images/placeholder.jpg",
-        description: movie.description || "",
-        videoUrl: movie.videoUrl || "",
-        trailerUrl: movie.trailerUrl || "",
-        genre:
-          typeof movie.genre === "string" ? [movie.genre] : movie.genre || [],
-        rating: movie.rating || null,
-      };
+  // Writers only apply to movies
+  const writers = !isTvShow
+    ? (
+        data.credits as { crew?: Array<{ department: string; name: string }> }
+      )?.crew
+        ?.filter(
+          (person: { department: string }) => person.department === "Writing"
+        )
+        .map((writer: { name: string }) => writer.name) || []
+    : [];
 
-      // Return either a TransformedMovie or TransformedTvShow based on isTvShow flag
-      if (movie.isTvShow) {
-        return {
-          ...baseItem,
-          numberOfSeasons: movie.numberOfSeasons || 1,
-          isTvShow: true as const, //Using `as const` to specify it's the literal 'true' value
-        } as TransformedTvShow;
-      } else {
-        return {
-          ...baseItem,
-          duration: movie.duration || "1h 54m",
-          isTvShow: false as const, //Using `as const` to specify it's the literal 'false' value,
-        } as TransformedMovie;
-      }
-    });
+  // Extract keywords
+  const keywordsList =
+    data.keywords?.keywords?.map((keyword) => keyword.name) || [];
 
-  // Add formattedGenre function
+  // Format episodes for TV shows
+  const episodes =
+    isTvShow &&
+    tvData &&
+    "seasons" in tvData &&
+    tvData.seasons &&
+    tvData.seasons.length > 0
+      ? (
+          tvData.seasons.find((s) => s.season_number === selectedSeason)
+            ?.episodes || []
+        ).map((episode) => ({
+          id: episode.id.toString(),
+          thumbnail:
+            episode.thumbnailUrl ||
+            data.thumbnailUrl ||
+            "/images/placeholder.jpg",
+          title: episode.name || `Episode ${episode.episodeNumber}`,
+          duration: episode.duration || "42m",
+          description: episode.description || "No description available.",
+        }))
+      : isTvShow
+      ? [
+          {
+            id: "1",
+            thumbnail: data.thumbnailUrl || "/images/placeholder.jpg",
+            title: "Episode 1",
+            duration: "42m",
+            description: data.description || "No description available.",
+          },
+          {
+            id: "2",
+            thumbnail: data.thumbnailUrl || "/images/placeholder.jpg",
+            title: "Episode 2",
+            duration: "42m",
+            description: "The adventure continues in this thrilling episode.",
+          },
+          {
+            id: "3",
+            thumbnail: data.thumbnailUrl || "/images/placeholder.jpg",
+            title: "Episode 3",
+            duration: "42m",
+            description: "Our heroes face unexpected challenges.",
+          },
+        ]
+      : [];
+
+  // Handle the number of seasons for TV shows
+  const numberOfSeasons =
+    isTvShow && tvData
+      ? typeof tvData.numberOfSeasons === "string"
+        ? Math.max(1, parseInt(tvData.numberOfSeasons)) || 1
+        : Math.max(tvData.numberOfSeasons || 1)
+      : 1;
+
+  // Format display text for seasons/duration based on content type
+  const durationText = isTvShow
+    ? `${numberOfSeasons} ${numberOfSeasons === 1 ? "Season" : "Seasons"}`
+    : (data as MovieDetailsResponse["details"]).duration || "N/A";
 
   return (
     <div className="z-50 transition duration-300 bg-black/80 flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0">
@@ -201,14 +268,24 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
         >
           {/* Hero Section with Video/Image */}
           <div className="relative h-96 w-full">
-            <video
-              poster={data.thumbnailUrl || "/images/placeholder.jpg"}
-              autoPlay
-              muted
-              loop
-              src={data.videoUrl}
-              className="w-full brightness-[60%] object-cover h-full"
-            ></video>
+            {data.trailerUrl ? (
+              <video
+                poster={data.thumbnailUrl || "/images/placeholder.jpg"}
+                autoPlay
+                muted
+                loop
+                src={data.trailerUrl}
+                className="w-full brightness-[60%] object-cover h-full"
+              ></video>
+            ) : (
+              <Image
+                src={data.thumbnailUrl || "/images/placeholder.jpg"}
+                alt={data.title}
+                fill
+                className="w-full brightness-[60%] object-cover h-full"
+              />
+            )}
+
             {/* Close Button */}
             <div
               onClick={handleClose}
@@ -220,14 +297,14 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
             {/* Movie/Show Title and Action Buttons */}
             <div className="absolute bottom-[10%] left-10">
               <p className="text-white text-3xl md:text-4xl h-full lg:text-5xl font-bold mb-8">
-                {data.title || (isTvShow ? "The Flash" : "Back in Action")}
+                {data.title}
               </p>
               <div className="flex flex-row gap-4 items-center">
                 <button className="bg-white text-black rounded-md py-2 px-4 md:py-2 md:px-6 font-bold flex flex-row items-center gap-2">
                   <BsFillPlayFill className="w-6 h-6" />
                   {isAlreadyWatched ? <span>Resume</span> : <span>Play</span>}
                 </button>
-                <FavouriteButton movieId={data.id} />
+                <FavouriteButton movieId={data.id.toString()} />
                 <ReactionsButton />
               </div>
             </div>
@@ -240,12 +317,12 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
               {/* Left Column */}
               <div className="flex flex-col w-2/3">
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="text-white/50 font-bold">{releaseYear}</span>
-                  <span className="text-white/70">
-                    {data.isTvShow
-                      ? `${data.numberOfSeasons || 9}`
-                      : data.duration || "1h 54m"}
+                  <span className="text-white/50 font-bold">
+                    {data.releaseDate
+                      ? new Date(data.releaseDate).getFullYear()
+                      : "N/A"}
                   </span>
+                  <span className="text-white/70">{durationText}</span>
                   <span className="border border-white/40 text-white/70 text-xs px-1 py-0.5 rounded">
                     HD
                   </span>
@@ -253,17 +330,16 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
 
                 <div className="flex items-center mb-6">
                   <span className="text-white/70 text-xs border px-1 py-0.5 border-white/40 mr-3 w-16 h-6 rounded-md">
-                    {maturityRating}
+                    {contentRating}
                   </span>
                   <span className="text-white/70 text-sm">
                     {contentWarning}
                   </span>
                 </div>
 
-                <p className="text-white text-base mb-4">
-                  {isTvShow
-                    ? "Barry takes time to travel while desperately searching for a way to stop an already-exploding bomb from destroying Central City."
-                    : "Two ex-spies (Jamie Foxx and Cameron Diaz) living undercover in suburbia whisk their unsuspecting kids away on a global adventure in this action comedy."}
+                <p className="text-white text-xl mb-4">{data.title}</p>
+                <p className="text-white text-base mb-2">
+                  {data.description || "No description available."}
                 </p>
               </div>
 
@@ -272,19 +348,16 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                 <div className="mb-2">
                   <span className="text-white/50 text-sm">Cast: </span>
                   <span className="text-white/70 text-sm">
-                    {sampleCastData.map((cast, index) => (
-                      <span key={cast.id}>
-                        {cast.name}
-                        {index < sampleCastData.length - 1 ? ", " : ""}
-                      </span>
-                    ))}
+                    {castMembers.length > 0
+                      ? castMembers.slice(0, 3).join(", ")
+                      : "Cast information unavailable"}
                   </span>
                 </div>
 
                 <div className="mb-2">
                   <span className="text-white/50 text-sm">Genres: </span>
                   <span className="text-white/70 text-sm">
-                    {sampleGenres.join(", ")}
+                    {formattedGenres.join(", ")}
                   </span>
                 </div>
 
@@ -293,7 +366,9 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                     This {isTvShow ? "Show" : "Movie"} Is:{" "}
                   </span>
                   <span className="text-white/70 text-sm">
-                    {movieKeywords.join(", ")}
+                    {keywordsList.length > 0
+                      ? keywordsList.slice(0, 3).join(", ")
+                      : "Exciting"}
                   </span>
                 </div>
               </div>
@@ -302,7 +377,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
 
           {/* Scrollable Content Section */}
           <div className="px-12 py-6 overflow-y-auto">
-            {/* TV Show Episodes Section */}
+            {/* TV Show Episodes Section - Only render for TV shows */}
             {isTvShow && (
               <div className="mt-8 mb-8">
                 <div className="flex justify-between items-center mb-6">
@@ -316,11 +391,25 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                       className="appearance-none bg-zinc-800 text-white pl-4 pr-10 py-2 rounded-md border border-zinc-700 cursor-pointer"
                       aria-label="Select season"
                     >
-                      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((season) => (
-                        <option key={season} value={season}>
-                          Season {season}
-                        </option>
-                      ))}
+                      {tvData && "seasons" in tvData && tvData.seasons
+                        ? tvData.seasons
+                            .filter((season) => season.season_number > 0)
+                            .map((season) => (
+                              <option
+                                key={season.id}
+                                value={season.season_number}
+                              >
+                                Season {season.season_number}
+                              </option>
+                            ))
+                        : Array.from(
+                            { length: numberOfSeasons },
+                            (_, i) => i + 1
+                          ).map((season) => (
+                            <option key={season} value={season}>
+                              Season {season}
+                            </option>
+                          ))}
                     </select>
                     <BiChevronDown
                       className="absolute right-3 top-2.5 text-white"
@@ -330,7 +419,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-6">
-                  {sampleEpisodes.map((episode, index) => (
+                  {episodes.map((episode, index) => (
                     <div
                       key={episode.id}
                       className="flex gap-4 cursor-pointer hover:bg-zinc-800 p-2 rounded-md"
@@ -340,12 +429,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                       </div>
                       <div className="relative h-24 w-40 flex-shrink-0">
                         <Image
-                          src={
-                            episode.thumbnail ||
-                            data.thumbnailUrl ||
-                            "/images/placeholder.jpg" ||
-                            "/placeholder.svg"
-                          }
+                          src={episode.thumbnail || "/images/placeholder.jpg"}
                           alt={episode.title}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -380,8 +464,8 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                 More Like This
               </h2>
               <div className="grid grid-cols-3 gap-4">
-                {similarMediaItems.map((movie) => (
-                  <SimilarMovieCard key={movie.id} data={movie} />
+                {similarContent.map((item) => (
+                  <SimilarMovieCard key={item.id} data={item} />
                 ))}
               </div>
             </div>
@@ -392,11 +476,22 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                 Trailers & More
               </h2>
               <div className="grid grid-cols-2 gap-4">
-                {moreVideos.map((video) => (
+                {[
+                  {
+                    id: 1,
+                    title: `${data.title} Trailer`,
+                    thumbnailUrl: data.thumbnailUrl,
+                  },
+                  {
+                    id: 2,
+                    title: `Behind the Scenes: ${data.title}`,
+                    thumbnailUrl: data.thumbnailUrl,
+                  },
+                ].map((video) => (
                   <div key={video.id} className="relative">
                     <div className="relative h-40 rounded-md overflow-hidden">
                       <Image
-                        src={data.thumbnailUrl || "/images/placeholder.jpg"}
+                        src={video.thumbnailUrl || "/images/placeholder.jpg"}
                         alt={video.title}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -414,13 +509,10 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
               </div>
             </div>
 
-            {/* About */}
+            {/* About - Different display based on content type */}
             <div className="mt-8">
               <h2 className="text-white text-xl font-bold mb-4">
-                About{" "}
-                <strong>
-                  {data.title || isTvShow ? "The Flash" : "Back in Action"}{" "}
-                </strong>
+                About <strong>{data.title}</strong>
               </h2>
               <div className="grid grid-cols-1 gap-2">
                 {isTvShow ? (
@@ -428,14 +520,17 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                     <div>
                       <span className="text-white/50 text-sm">Creators: </span>
                       <span className="text-white/70 text-sm">
-                        Greg Berlanti, Geoff Johns, Andrew Kreisberg
+                        {creators.length > 0
+                          ? creators.join(", ")
+                          : "Information unavailable"}
                       </span>
                     </div>
                     <div>
                       <span className="text-white/50 text-sm">Cast: </span>
                       <span className="text-white/70 text-sm">
-                        Grant Gustin, Candice Patton, Danielle Panabaker, Carlos
-                        Valdes, Tom Cavanagh, Jesse L. Martin
+                        {castMembers.length > 0
+                          ? castMembers.join(", ")
+                          : "Cast information unavailable"}
                       </span>
                     </div>
                   </>
@@ -443,19 +538,26 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                   <>
                     <div>
                       <span className="text-white/50 text-sm">Director: </span>
-                      <span className="text-white/70 text-sm">Seth Gordon</span>
+                      <span className="text-white/70 text-sm">
+                        {creators.length > 0
+                          ? creators.join(", ")
+                          : "Information unavailable"}
+                      </span>
                     </div>
                     <div>
                       <span className="text-white/50 text-sm">Cast: </span>
                       <span className="text-white/70 text-sm">
-                        Jamie Foxx, Cameron Diaz, Glenn Close, Kyle Chandler,
-                        Andrew Scott
+                        {castMembers.length > 0
+                          ? castMembers.join(", ")
+                          : "Cast information unavailable"}
                       </span>
                     </div>
                     <div>
                       <span className="text-white/50 text-sm">Writer: </span>
                       <span className="text-white/70 text-sm">
-                        Seth Gordon, Brendan O&apos;Brien
+                        {writers.length > 0
+                          ? writers.join(", ")
+                          : "Information unavailable"}
                       </span>
                     </div>
                   </>
@@ -463,7 +565,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                 <div>
                   <span className="text-white/50 text-sm">Genres: </span>
                   <span className="text-white/70 text-sm">
-                    {sampleGenres.join(", ")}
+                    {formattedGenres.join(", ")}
                   </span>
                 </div>
                 <div>
@@ -471,7 +573,9 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                     This {isTvShow ? "Show" : "Movie"} Is:{" "}
                   </span>
                   <span className="text-white/70 text-sm">
-                    {movieKeywords.join(", ")}
+                    {keywordsList.length > 0
+                      ? keywordsList.join(", ")
+                      : "Exciting"}
                   </span>
                 </div>
                 <div>
@@ -480,7 +584,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                   </span>
                   <div className="inline-flex items-center">
                     <span className="text-white/70 text-xs border px-1 py-0.5 border-white/40 mr-3">
-                      {maturityRating}
+                      {contentRating}
                     </span>
                     <span className="text-white/70 text-sm">
                       {contentWarning}
