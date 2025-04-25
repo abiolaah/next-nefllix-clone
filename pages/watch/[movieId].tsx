@@ -3,11 +3,20 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import useMovieDetails from "@/hooks/useMovieDetails";
 import { AiOutlineArrowLeft, AiOutlinePause } from "react-icons/ai";
-import { BiFullscreen, BiVolumeFull, BiVolumeMute } from "react-icons/bi";
+import {
+  BiFullscreen,
+  BiSkipNext,
+  BiVolumeFull,
+  BiVolumeMute,
+  BiX,
+} from "react-icons/bi";
 import { FiPlay } from "react-icons/fi";
 import { MdForward10, MdReplay10 } from "react-icons/md";
 import { MdSubtitles } from "react-icons/md";
-// import { MediaItem } from "@/lib/types/api";
+import { TfiLayersAlt } from "react-icons/tfi";
+
+import Image from "next/image";
+import useTvShowDetails from "@/hooks/useTvShowDetails";
 
 const DEFAULT_VIDEO =
   "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
@@ -15,13 +24,29 @@ const DEFAULT_VIDEO =
 const Watch = () => {
   const router = useRouter();
   const { movieId } = router.query;
-  const { data } = useMovieDetails(movieId as string);
+
+  // State to track content type
+  const [contentType, setContentType] = useState<"movie" | "tv">("movie");
+
+  // Fetch both movie and TV show data
+  const { data: movieDetailsResponse, isLoading: movieLoading } =
+    useMovieDetails(contentType === "movie" ? (movieId as string) : "");
+  const { data: tvDetailsResponse, isLoading: tvLoading } = useTvShowDetails(
+    contentType === "tv" ? (movieId as string) : ""
+  );
+
+  // Cast to proper types
+  const movieData = movieDetailsResponse?.details;
+  const tvData = tvDetailsResponse?.details;
+
+  // Video player ref
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Use refs for timers to preserve values between renders
   const overlayTimerRef = useRef<NodeJS.Timeout | null>(null);
   const controlsTimerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Player state
   const [isPaused, setIsPaused] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -31,6 +56,39 @@ const Watch = () => {
   const [showControls, setShowControls] = useState(true);
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
 
+  // TV show specific state
+  const [currentSeason, setCurrentSeason] = useState(1);
+  const [currentEpisode, setCurrentEpisode] = useState(1);
+  const [showEpisodeList, setShowEpisodeList] = useState(false);
+
+  // Determine content type based on data availability
+  useEffect(() => {
+    // If we have TV data with episodes, it's definitely a TV show
+    if (tvData?.seasons && tvData.seasons.length > 0) {
+      setContentType("tv");
+      return;
+    }
+
+    // Check isTvShow flag if available
+    if (tvData?.isTvShow === true) {
+      setContentType("tv");
+      return;
+    }
+
+    if (movieData?.isTvShow === false) {
+      setContentType("movie");
+      return;
+    }
+
+    // Fallback based on which data is available
+    if (tvData && !tvLoading) {
+      setContentType("tv");
+    } else if (movieData && !movieLoading) {
+      setContentType("movie");
+    }
+  }, [movieData, tvData, movieLoading, tvLoading]);
+
+  // Handle video element events
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -76,16 +134,30 @@ const Watch = () => {
       }, 3000);
     };
 
+    // Check if video has ended
+    const onEnded = () => {
+      // For TV shows, play next episode if available
+      if (contentType === "tv") {
+        playNextEpisode();
+      } else {
+        setIsPaused(true);
+        setShowControls(true);
+        setShowOverlay(true);
+      }
+    };
+
     video.addEventListener("timeupdate", onTimeUpdate);
     video.addEventListener("loadedmetadata", onLoadedMetadata);
     video.addEventListener("pause", onPause);
     video.addEventListener("play", onPlay);
+    video.addEventListener("ended", onEnded);
 
     return () => {
       video.removeEventListener("timeupdate", onTimeUpdate);
       video.removeEventListener("loadedmetadata", onLoadedMetadata);
       video.removeEventListener("pause", onPause);
       video.removeEventListener("play", onPlay);
+      video.removeEventListener("ended", onEnded);
 
       if (overlayTimerRef.current) {
         clearTimeout(overlayTimerRef.current);
@@ -95,8 +167,104 @@ const Watch = () => {
         clearTimeout(controlsTimerRef.current);
       }
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contentType]);
 
+  // Determine active data based on content type
+  const activeData = contentType === "tv" ? tvData : movieData;
+
+  // Get episodes for the current season
+  const getCurrentSeasonEpisodes = () => {
+    if (contentType !== "tv" || !tvData) return [];
+
+    // Find the current season
+    const season = tvData.seasons?.find(
+      (s) => s.season_number === currentSeason
+    );
+
+    if (!season || !season.episodes) {
+      // Return default episodes if none available
+      return Array.from({ length: 5 }, (_, i) => ({
+        id: i + 1,
+        name: `Episode ${i + 1}`,
+        episodeNumber: i + 1,
+        description: "Episode description unavailable",
+        thumbnailUrl: tvData.thumbnailUrl,
+        duration: "30m",
+        videoUrl: DEFAULT_VIDEO,
+      }));
+    }
+
+    return season.episodes;
+  };
+
+  // Get current episode video URL
+  const getVideoUrl = () => {
+    if (contentType === "movie") {
+      return movieData?.videoUrl || DEFAULT_VIDEO;
+    } else {
+      // For TV shows, use the episode's video URL if available
+      const episodes = getCurrentSeasonEpisodes();
+      const currentEpisodeData = episodes.find(
+        (e) => e.episodeNumber === currentEpisode
+      );
+
+      // Use a default URL or determine based on what's available
+      return (
+        currentEpisodeData?.videoUrl || tvData?.trailerUrl || DEFAULT_VIDEO
+      );
+    }
+  };
+
+  // Get current episode information
+  const getCurrentEpisodeInfo = () => {
+    if (contentType !== "tv") return null;
+
+    const episodes = getCurrentSeasonEpisodes();
+    return episodes.find((e) => e.episodeNumber === currentEpisode);
+  };
+
+  // Play next episode function
+  const playNextEpisode = () => {
+    if (contentType !== "tv") return;
+
+    const episodes = getCurrentSeasonEpisodes();
+    const nextEpisodeNumber = currentEpisode + 1;
+    const nextEpisode = episodes.find(
+      (e) => e.episodeNumber === nextEpisodeNumber
+    );
+
+    if (nextEpisode) {
+      // Next episode in current season
+      setCurrentEpisode(nextEpisodeNumber);
+      // Reset video position and play
+      if (videoRef.current) {
+        videoRef.current.currentTime = 0;
+        videoRef.current.play();
+      }
+    } else {
+      // Check for next season
+      const nextSeasonNumber = currentSeason + 1;
+      const nextSeason = tvData?.seasons?.find(
+        (s) => s.season_number === nextSeasonNumber
+      );
+
+      if (nextSeason) {
+        setCurrentSeason(nextSeasonNumber);
+        setCurrentEpisode(1);
+        // Reset video position and play
+        if (videoRef.current) {
+          videoRef.current.currentTime = 0;
+          videoRef.current.play();
+        }
+      } else {
+        // End of series
+        setShowOverlay(true);
+      }
+    }
+  };
+
+  // Player Controls
   const handlePlayPause = () => {
     const video = videoRef.current;
     if (!video) return;
@@ -183,8 +351,37 @@ const Watch = () => {
     }
   };
 
-  if (!data) {
-    return null;
+  const toggleEpisodeList = () => {
+    setShowEpisodeList(!showEpisodeList);
+
+    // Pause video when showing episode list
+    if (!showEpisodeList && videoRef.current && !videoRef.current.paused) {
+      videoRef.current.pause();
+    }
+  };
+
+  const selectEpisode = (episodeNumber: number) => {
+    setCurrentEpisode(episodeNumber);
+    setShowEpisodeList(false);
+
+    // Reset video position and play
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play();
+    }
+  };
+
+  // Handle loading states
+  const isLoading =
+    (contentType === "tv" && tvLoading) ||
+    (contentType === "movie" && movieLoading);
+
+  if (!activeData || isLoading) {
+    return (
+      <div className="relative h-screen w-screen bg-black flex items-center justify-center">
+        <div className="text-white text-2xl">Loading...</div>
+      </div>
+    );
   }
 
   return (
@@ -201,36 +398,140 @@ const Watch = () => {
           aria-label="Go back to browse"
           title="Go back to browse"
         />
-        {/* <p className="text-white text-1xl md:text-3xl font-bold">
-          <span className="font-light">Watching:</span> {data.title}
-          {data.isTvShow && data.numberOfSeasons && (
-            <span className="font-light ml-2">
-              ({data.numberOfSeasons}{" "}
-              {data.numberOfSeasons === 1 ? "Season" : "Seasons"})
+
+        {contentType === "tv" && (
+          <div className="text-white">
+            <span className="font-bold">{activeData.title}</span>
+            <span className="mx-2">-</span>
+            <span>
+              S{currentSeason}:E{currentEpisode}
             </span>
-          )}
-        </p> */}
+            {getCurrentEpisodeInfo()?.name && (
+              <span className="ml-2">- {getCurrentEpisodeInfo()?.name}</span>
+            )}
+          </div>
+        )}
       </nav>
 
       {/* Video player */}
       <video
         ref={videoRef}
         autoPlay
-        // controls
-        src={data?.videoUrl || DEFAULT_VIDEO}
+        src={getVideoUrl()}
         className="h-full w-full"
         onClick={handlePlayPause}
-        aria-label={`Video player for ${data.title}`}
+        aria-label={`Video player for ${activeData.title}`}
       ></video>
+
+      {/* Episode list modal for TV shows */}
+      {contentType === "tv" && showEpisodeList && (
+        <div className="absolute top-0 left-0 right-0 bottom-0 bg-black/80 z-20 flex flex-col">
+          <div className="flex justify-between items-center p-4 border-b border-gray-700">
+            <h2 className="text-white text-xl font-bold">
+              {activeData.title} - Season {currentSeason}
+            </h2>
+            <button
+              onClick={toggleEpisodeList}
+              className="text-white"
+              aria-label="Close episode list"
+            >
+              <BiX size={30} />
+            </button>
+          </div>
+
+          <div className="flex justify-between items-center px-4 py-2 border-b border-gray-700">
+            <h3 className="text-white">Episodes</h3>
+            <div className="relative">
+              <select
+                value={currentSeason}
+                onChange={(e) => setCurrentSeason(Number(e.target.value))}
+                className="appearance-none bg-zinc-800 text-white pl-4 pr-10 py-2 rounded-md border border-zinc-700 cursor-pointer"
+                aria-label="Select season"
+              >
+                {tvData?.seasons
+                  ? tvData.seasons
+                      .filter((season) => season.season_number > 0)
+                      .map((season) => (
+                        <option key={season.id} value={season.season_number}>
+                          Season {season.season_number}
+                        </option>
+                      ))
+                  : Array.from(
+                      {
+                        length:
+                          typeof tvData?.numberOfSeasons === "string"
+                            ? parseInt(tvData.numberOfSeasons)
+                            : tvData?.numberOfSeasons || 1,
+                      },
+                      (_, i) => i + 1
+                    ).map((season) => (
+                      <option key={season} value={season}>
+                        Season {season}
+                      </option>
+                    ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="flex-1 overflow-y-auto p-4">
+            {getCurrentSeasonEpisodes().map((episode) => (
+              <div
+                key={episode.id}
+                className={`flex gap-4 p-3 hover:bg-zinc-800 rounded-md mb-2 cursor-pointer ${
+                  episode.episodeNumber === currentEpisode ? "bg-zinc-700" : ""
+                }`}
+                onClick={() => selectEpisode(episode.episodeNumber)}
+              >
+                <div className="flex-shrink-0 text-center text-white/70 w-6">
+                  {episode.episodeNumber}
+                </div>
+                <div className="relative h-24 w-40 flex-shrink-0">
+                  <Image
+                    src={
+                      episode.thumbnailUrl ||
+                      activeData.thumbnailUrl ||
+                      "/images/placeholder.jpg"
+                    }
+                    alt={episode.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover rounded-md"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 hover:opacity-100 transition">
+                    <FiPlay className="text-white w-12 h-12" />
+                  </div>
+                </div>
+                <div className="flex-grow">
+                  <div className="flex justify-between items-center mb-1">
+                    <h3 className="text-white font-medium">{episode.name}</h3>
+                    <span className="text-white/70 text-sm">
+                      {episode.duration}
+                    </span>
+                  </div>
+                  <p className="text-white/70 text-sm">{episode.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Overlay with title and description when paused */}
       {showOverlay && (
         <div className="absolute top-0 left-0 right-0 bottom-0 bg-black/50 flex flex-col items-center justify-center p-8 z-10">
           <h1 className="text-white text-4xl md:text-6xl font-bold mb-4">
-            {data.title}
+            {activeData.title}
           </h1>
+          {contentType === "tv" && getCurrentEpisodeInfo() && (
+            <h2 className="text-white text-2xl md:text-3xl mb-4">
+              S{currentSeason}:E{currentEpisode} -{" "}
+              {getCurrentEpisodeInfo()?.name}
+            </h2>
+          )}
           <p className="text-white text-lg md:text-xl max-w-3xl text-center">
-            {data.description}
+            {contentType === "tv" && getCurrentEpisodeInfo()
+              ? getCurrentEpisodeInfo()?.description
+              : activeData.description}
           </p>
           <p className="text-white uppercase mt-4">paused</p>
         </div>
@@ -407,11 +708,40 @@ const Watch = () => {
             {/* Title in the middle */}
             <div className="flex-1 text-center">
               <p className="text-white font-medium truncate mx-4">
-                {data.title}
+                {contentType === "tv" && getCurrentEpisodeInfo()
+                  ? `${
+                      activeData.title
+                    } - S${currentSeason}:E${currentEpisode} ${
+                      getCurrentEpisodeInfo()?.name
+                    }`
+                  : activeData.title}
               </p>
             </div>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 gap-4">
+              {contentType === "tv" && (
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    className="text-white"
+                    aria-label="Next Episode"
+                    title="Next"
+                    onClick={playNextEpisode}
+                  >
+                    <BiSkipNext size={45} />
+                  </button>
+                  <button
+                    type="button"
+                    className="text-white"
+                    aria-label="Episode List"
+                    title="Episode List"
+                    onClick={toggleEpisodeList}
+                  >
+                    <TfiLayersAlt size={25} />
+                  </button>
+                </div>
+              )}
+
               <button
                 type="button"
                 className="text-white"
