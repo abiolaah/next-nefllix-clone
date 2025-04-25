@@ -136,6 +136,7 @@ export interface TvShowDetailsResponse {
         description: string;
         duration: string;
         thumbnailUrl: string;
+        videoUrl?: string;
       }>;
     }>;
     createdBy?: Array<{
