@@ -10,6 +10,7 @@ import useFavourites from "@/hooks/useFavourites";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import { MediaItem } from "@/lib/types/api";
+import TopMovieList from "@/components/TopMovieList";
 
 // Using GetServerSideProps type and no mixing with getStaticProps/getStaticPaths
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -143,11 +144,15 @@ const Browse = () => {
           data={tredningTvShows?.tmdb || []}
         />
         <MovieList title="On Air TV Shows" data={onAirTvShows?.tmdb || []} />
-        <MovieList
+        {/* <MovieList
+          title="Top 10 Movies"
+          data={(movies?.tmdb || []).slice(0, 10)}
+        /> */}
+        <TopMovieList
           title="Top 10 Movies"
           data={(movies?.tmdb || []).slice(0, 10)}
         />
-        <MovieList
+        <TopMovieList
           title="Top 10 TV Shows"
           data={(tvShows?.tmdb || []).slice(0, 10)}
         />
