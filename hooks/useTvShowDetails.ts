@@ -1,9 +1,9 @@
 import useSWR from "swr";
 import fetcher from "@/lib/fetcher";
-import { MediaResponse } from "@/lib/types/api";
+import { TvShowDetailsResponse } from "@/lib/types/api";
 
 const useTvShowDetails = (id: string) => {
-  const { data, isLoading, error, mutate } = useSWR<MediaResponse>(
+  const { data, isLoading, error, mutate } = useSWR<TvShowDetailsResponse>(
     id ? `/api/tv/${id}` : null,
     fetcher,
     {
