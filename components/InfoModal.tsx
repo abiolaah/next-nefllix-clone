@@ -6,6 +6,7 @@ import { BsFillPlayFill, BsVolumeMute, BsVolumeUp } from "react-icons/bs";
 import { BiChevronDown } from "react-icons/bi";
 
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import FavouriteButton from "./FavouriteButton";
 import ReactionsButton from "./ReactionsButton";
@@ -37,6 +38,7 @@ interface SimilarContentItem {
 }
 
 const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(!!visible);
   const [selectedSeason, setSelectedSeason] = useState(1);
   const { movieId, contentType: storeContentType } = useInfoModal();
@@ -320,7 +322,10 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                 {data.title}
               </p>
               <div className="flex flex-row gap-4 items-center">
-                <button className="bg-white text-black rounded-md py-2 px-4 md:py-2 md:px-6 font-bold flex flex-row items-center gap-2">
+                <button
+                  onClick={() => router.push(`/watch/${data.id}`)}
+                  className="bg-white text-black rounded-md py-2 px-4 md:py-2 md:px-6 font-bold flex flex-row items-center gap-2"
+                >
                   <BsFillPlayFill className="w-6 h-6" />
                   {isAlreadyWatched ? <span>Resume</span> : <span>Play</span>}
                 </button>
