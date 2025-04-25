@@ -57,8 +57,6 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
   // Calculate position adjustments for the expanded card
   const getExpandedCardStyle = () => {
     const baseStyle = {
-      // position: "absolute" as const,
-      // zIndex: 9999,
       transition: "all 0.3s ease-in-out",
       boxShadow: "0 10px 25px rgba(0, 0, 0, 0.5)",
       pointerEvents: "auto" as const,
@@ -124,9 +122,12 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
           className="netflix-expanded-card z-100"
           style={getExpandedCardStyle()}
         >
-          <div className="relative w-full h-[8vw] rounded-t-md overflow-hidden mt-5">
+          <div
+            onClick={() => router.push(`/watch/${data.id}`)}
+            className="relative w-full h-[8vw] rounded-t-md overflow-hidden mt-5"
+          >
             <Image
-              src={imageUrl || "/placeholder.svg"}
+              src={imageUrl || "/images/placeholder.jpg"}
               alt={data.title}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
