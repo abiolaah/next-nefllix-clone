@@ -1,4 +1,3 @@
-//Resolve why video is not playing
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import useMovieDetails from "@/hooks/useMovieDetails";
