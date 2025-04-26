@@ -144,10 +144,7 @@ const Browse = () => {
           data={tredningTvShows?.tmdb || []}
         />
         <MovieList title="On Air TV Shows" data={onAirTvShows?.tmdb || []} />
-        {/* <MovieList
-          title="Top 10 Movies"
-          data={(movies?.tmdb || []).slice(0, 10)}
-        /> */}
+
         <TopMovieList
           title="Top 10 Movies"
           data={(movies?.tmdb || []).slice(0, 10)}
