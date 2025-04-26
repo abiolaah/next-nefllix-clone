@@ -73,10 +73,6 @@ const Browse = () => {
   );
   const watching: MediaItem[] = [];
 
-  // Debugging
-  console.log("Current Profile ID:", currentProfileId);
-  console.log("Favourites Data:", favourites);
-
   const { isOpen, closeModal } = useInfoModal();
 
   if (
