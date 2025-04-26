@@ -31,9 +31,6 @@ const useMovies = ({
   const fetchMovies = async (movieType = type, pageNumber = page) => {
     try {
       setIsLoading(true);
-      console.log(
-        `Fetching movies of type: ${movieType}, page: ${pageNumber}...`
-      );
       const response = await fetch(
         `/api/movies?type=${movieType}&page=${pageNumber}`,
         {
@@ -45,22 +42,16 @@ const useMovies = ({
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
-        console.error("API Error Response:", {
-          status: response.status,
-          statusText: response.statusText,
-          errorData,
-        });
 
         // Set empty data to prevent undefined errors in components
         setData({ local: [], tmdb: [] });
         setError(
-          `Failed to fetch movies: ${response.status} - ${response.statusText}`
+          `Failed to fetch movies: ${response.status} - ${response.statusText} -${errorData}`
         );
         return;
       }
 
       const responseData = await response.json();
-      console.log("Raw API Response:", responseData);
 
       // Ensure we have the correct data structure
       const moviesData: MoviesResponse = {
@@ -68,11 +59,9 @@ const useMovies = ({
         tmdb: Array.isArray(responseData?.tmdb) ? responseData.tmdb : [],
       };
 
-      console.log("Processed Movies Data:", moviesData);
       setData(moviesData);
       setError(null);
     } catch (err) {
-      console.error("Error in fetchMovies:", err);
       // Set empty data to prevent undefined errors in components
       setData({ local: [], tmdb: [] });
       setError(
