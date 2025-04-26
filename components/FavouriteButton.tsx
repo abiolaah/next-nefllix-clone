@@ -17,18 +17,17 @@ const FavouriteButton: React.FC<FavouriteButtonProps> = ({
   mediaType,
   profileId,
 }) => {
-  const { mutate: mutateFavourites } = useFavourites();
-  const { data: currentUser, mutate } = useCurrentUser();
+  const { data: favourites = [], mutate: mutateFavourites } =
+    useFavourites(profileId);
+  const { mutate } = useCurrentUser();
 
   // Check if movie is already in favourites
   const isFavourite = useMemo(() => {
-    if (!currentUser?.favorites) return false;
-
-    return currentUser.favorites.some(
-      (fav: { mediaId: string | number; mediaType: string }) =>
-        fav.mediaId === mediaId && fav.mediaType === mediaType
+    return favourites.some(
+      (fav: { id: string | number; isTvShow: boolean }) =>
+        fav.id === mediaId && fav.isTvShow === (mediaType === "tv")
     );
-  }, [currentUser, mediaId, mediaType]);
+  }, [favourites, mediaId, mediaType]);
 
   //Toggle Favourite
   const toggleFavourite = useCallback(async () => {
