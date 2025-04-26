@@ -1,18 +1,26 @@
-import useBillboard from "@/hooks/useBillboard";
 import React, { useCallback, useEffect, useState } from "react";
+
 import { AiOutlineInfoCircle } from "react-icons/ai";
+import { BsVolumeMute, BsVolumeUp } from "react-icons/bs";
 import PlayButton from "./PlayButton";
+
+import useBillboard from "@/hooks/useBillboard";
 import useInfoModal from "@/hooks/useInfoModal";
 
 const Billboard = () => {
   const { data, isLoading } = useBillboard();
   const [isMounted, setIsMounted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
 
   const { openModal } = useInfoModal();
 
   const handleOpenModal = useCallback(() => {
-    openModal(data?.id);
+    openModal(data?.id, "movie");
   }, [openModal, data?.id]);
+
+  const toggleMute = () => {
+    setIsMuted(!isMuted);
+  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -22,15 +30,23 @@ const Billboard = () => {
     return <div className="relative h-[56.25vw] bg-black"></div>;
   }
 
+  const contentRating = data.isTvShow
+    ? data.isAdult
+      ? "TV-MA"
+      : "TV-14"
+    : data.isAdult
+    ? "R"
+    : "PG-13";
+
   return (
     <div className="relative h-[56.25vw]">
       <video
         className="w-full h-[56.25vw] object-cover brightness-[60%]"
         autoPlay
-        muted
+        muted={isMuted}
         loop
         poster={data.thumbnailUrl}
-        src={data.videoUrl}
+        src={data.trailerUrl}
       ></video>
       <div className="absolute top-[30%] md:top-[40%] ml-4 md:ml-16">
         <p className="text-white text-xl md:text-5xl h-full w-[50%] lg:text-6xl font-bold drop-shadow-xl">
@@ -50,6 +66,23 @@ const Billboard = () => {
             More Info
           </button>
         </div>
+      </div>
+      {/* Volume Control and content ratimg */}
+      <div className="absolute bottom-10 right-10 flex items-center gap-4">
+        <button
+          onClick={toggleMute}
+          className="border-white/60 p-2 rounded-full hover:border-white/80 transition"
+        >
+          {isMuted ? (
+            <BsVolumeMute size={20} className="text-white" />
+          ) : (
+            <BsVolumeUp size={20} className="text-white" />
+          )}
+        </button>
+
+        <span className="text-white bg-white/60 px-2 py-1 rounded text-sm font-semibold">
+          {contentRating}
+        </span>
       </div>
     </div>
   );

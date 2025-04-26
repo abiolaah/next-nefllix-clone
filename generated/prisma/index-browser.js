@@ -118,8 +118,42 @@ exports.Prisma.UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   hashedPassword: 'hashedPassword',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  favouritesIds: 'favouritesIds'
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProfileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  avatar: 'avatar',
+  hasPin: 'hasPin',
+  pin: 'pin'
+};
+
+exports.Prisma.FavouriteScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  contentId: 'contentId',
+  contentType: 'contentType'
+};
+
+exports.Prisma.WatchedScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  contentId: 'contentId',
+  contentType: 'contentType'
+};
+
+exports.Prisma.WatchingScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  contentId: 'contentId',
+  contentType: 'contentType',
+  progress: 'progress',
+  lastWatched: 'lastWatched',
+  completed: 'completed',
+  season: 'season',
+  episode: 'episode'
 };
 
 exports.Prisma.AccountScalarFieldEnum = {
@@ -157,9 +191,41 @@ exports.Prisma.MovieScalarFieldEnum = {
   description: 'description',
   videoUrl: 'videoUrl',
   thumbnailUrl: 'thumbnailUrl',
+  trailerUrl: 'trailerUrl',
   genre: 'genre',
   rating: 'rating',
-  duration: 'duration'
+  duration: 'duration',
+  isAdult: 'isAdult'
+};
+
+exports.Prisma.TvShowScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  videoUrl: 'videoUrl',
+  thumbnailUrl: 'thumbnailUrl',
+  trailerUrl: 'trailerUrl',
+  genre: 'genre',
+  rating: 'rating',
+  numberOfSeasons: 'numberOfSeasons',
+  isAdult: 'isAdult'
+};
+
+exports.Prisma.SeasonScalarFieldEnum = {
+  id: 'id',
+  seasonNumber: 'seasonNumber',
+  tvShowId: 'tvShowId'
+};
+
+exports.Prisma.EpisodeScalarFieldEnum = {
+  id: 'id',
+  episodeNumber: 'episodeNumber',
+  title: 'title',
+  description: 'description',
+  duration: 'duration',
+  videoUrl: 'videoUrl',
+  thumbnailUrl: 'thumbnailUrl',
+  seasonId: 'seasonId'
 };
 
 exports.Prisma.SortOrder = {
@@ -175,10 +241,17 @@ exports.Prisma.QueryMode = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  Profile: 'Profile',
+  Favourite: 'Favourite',
+  Watched: 'Watched',
+  Watching: 'Watching',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
-  Movie: 'Movie'
+  Movie: 'Movie',
+  TvShow: 'TvShow',
+  Season: 'Season',
+  Episode: 'Episode'
 };
 
 /**

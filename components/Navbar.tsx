@@ -1,18 +1,43 @@
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { BsBell, BsChevronDown, BsSearch } from "react-icons/bs";
 import { IoMdArrowDropdown } from "react-icons/io";
 import NavbarItem from "./NavbarItem";
 import MobileMenu from "./MobileMenu";
 import AccountMenu from "./AccountMenu";
 import { navItem } from "@/constants/navItem";
+import Input from "./Input";
+import useCurrentUser from "@/hooks/useCurrentUser";
+
+interface ProfileProps {
+  id: string;
+  name: string;
+  avatar: string;
+}
 
 const TOP_OFFSET = 66;
 
 const Navbar = () => {
+  const { data: currentUser } = useCurrentUser();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showBackground, setShowBackground] = useState(false);
+
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  // Get the current profile from localStorage or use the first profile
+  const currentProfileId =
+    typeof window !== "undefined"
+      ? localStorage.getItem("currentProfile")
+      : null;
+
+  // Get the current profile from the currentUser data
+  const currentProfile =
+    currentUser?.profiles?.find(
+      (profile: ProfileProps) => profile.id === currentProfileId
+    ) || currentUser?.profiles?.[0];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,11 +49,29 @@ const Navbar = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  // Handle clicks outside the search input
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node) &&
+        showSearch
+      ) {
+        setShowSearch(false);
+        setSearchQuery("");
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showSearch]);
 
   const toggleMobileMenu = useCallback(() => {
     setShowMobileMenu((current) => !current);
@@ -38,11 +81,23 @@ const Navbar = () => {
     setShowAccountMenu((current) => !current);
   }, []);
 
+  const toggleSearch = useCallback(() => {
+    setShowSearch((current) => !current);
+    if (showSearch) {
+      setSearchQuery(""); // Clear search when closing
+    }
+  }, [showSearch]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    // You can add search functionality here
+  };
+
   return (
     <nav className="w-full fixed z-40">
       <div
         className={`px-4 md:px-16 py-6 flex flex-row items-center transition duration-500 ${
-          showBackground ? `bg-zinc-900/90` : ``
+          showBackground ? `bg-green-900/90` : `bg-transparent`
         }`}
       >
         <Image
@@ -54,7 +109,7 @@ const Navbar = () => {
         />
         <div className="flex-row ml-8 gap-7 hidden lg:flex">
           {navItem.map((item) => (
-            <NavbarItem key={item.id} label={item.name} />
+            <NavbarItem key={item.id} label={item.name} link={item.link} />
           ))}
         </div>
 
@@ -71,9 +126,28 @@ const Navbar = () => {
           <MobileMenu visible={showMobileMenu} />
         </div>
         <div className="flex flex-row ml-auto gap-7 items-center">
-          <div className="text-gray-200 hover:text-gray-300 cursor-pointer transition">
-            <BsSearch />
-          </div>
+          {showSearch ? (
+            <div
+              ref={searchRef}
+              className="relative w-48 md:w-64 transition-all duration-300"
+            >
+              <Input
+                id="search"
+                onChange={handleSearchChange}
+                value={searchQuery}
+                label="Search movies..."
+                type="text"
+                className="block rounded-md px-6 pt-4 pb-2 w-full text-md text-white bg-neutral-700 appearance-none focus:outline-none focus:ring-0 peer"
+              />
+            </div>
+          ) : (
+            <div
+              onClick={toggleSearch}
+              className="text-gray-200 hover:text-gray-300 cursor-pointer transition"
+            >
+              <BsSearch />
+            </div>
+          )}
           <div className="text-gray-200 hover:text-gray-300 cursor-pointer transition">
             <BsBell />
           </div>
@@ -84,10 +158,10 @@ const Navbar = () => {
           >
             <div className="w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden">
               <Image
-                src="https://res.cloudinary.com/dixwarqdb/image/upload/v1744696100/default-blue_oqkthi.png"
+                src={currentProfile?.avatar}
                 width={30}
                 height={30}
-                alt="Profile"
+                alt={currentProfile?.name}
               />
             </div>
             <IoMdArrowDropdown

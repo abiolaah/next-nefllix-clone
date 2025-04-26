@@ -1,7 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { without } from "lodash";
-
 import prismadb from "@/lib/prismadb";
 import serverAuth from "@/lib/serverAuth";
 
@@ -13,55 +11,91 @@ export default async function handler(
     if (req.method === "POST") {
       const { currentUser } = await serverAuth(req, res);
 
-      const { movieId } = req.body;
+      const { mediaId, profileId, mediaType } = req.body;
 
-      const existingMovie = await prismadb.movie.findUnique({
-        where: { id: movieId },
+      // Validate profile belongs to user
+      const profile = await prismadb.profile.findFirst({
+        where: {
+          id: profileId,
+          userId: currentUser.id,
+        },
       });
 
-      if (!existingMovie) {
-        throw new Error("Invalid ID");
+      if (!profile) {
+        throw new Error("Invalid profile");
       }
 
-      const user = await prismadb.user.update({
+      // Check if media exists in the appropriate table
+      if (mediaType === "movie") {
+        const existingMovie = await prismadb.movie.findUnique({
+          where: { id: mediaId },
+        });
+        if (!existingMovie) {
+          throw new Error("Invalid movie ID");
+        }
+      } else if (mediaType === "tv") {
+        const existingTv = await prismadb.tvShow.findUnique({
+          where: { id: mediaId },
+        });
+
+        if (!existingTv) {
+          throw new Error("Invalid TV ID");
+        }
+      } else {
+        throw new Error("Invalid media type");
+      }
+
+      // Check if already favourited
+      const existingFavourites = await prismadb.favourite.findFirst({
         where: {
-          email: currentUser.email || "",
-        },
-        data: {
-          favouritesIds: {
-            push: movieId,
-          },
+          profileId,
+          contentId: mediaId,
+          contentType: mediaType,
         },
       });
-      return res.status(200).json(user);
+
+      if (existingFavourites) {
+        return res.status(200).json(existingFavourites);
+      }
+
+      const favourite = await prismadb.favourite.create({
+        data: {
+          profileId,
+          contentId: mediaId,
+          contentType: mediaType,
+        },
+      });
+
+      return res.status(200).json(favourite);
     }
 
     if (req.method === "DELETE") {
       const { currentUser } = await serverAuth(req, res);
 
-      const { movieId } = req.body;
+      const { mediaId, profileId } = req.body;
 
-      const existingMovie = await prismadb.movie.findUnique({
+      // Validate profile belongs to user
+      const profile = await prismadb.profile.findFirst({
         where: {
-          id: movieId,
+          id: profileId,
+          userId: currentUser.id,
+        },
+        include: {
+          user: true,
         },
       });
 
-      if (!existingMovie) {
-        throw new Error("Invalid ID");
+      if (!profile) {
+        throw new Error("Invalid profile");
       }
 
-      const updatedFavouriteIds = without(currentUser.favouritesIds, movieId);
-
-      const user = await prismadb.user.update({
+      const deleteFavourite = await prismadb.favourite.deleteMany({
         where: {
-          email: currentUser.email || "",
-        },
-        data: {
-          favouritesIds: updatedFavouriteIds,
+          profileId,
+          contentId: mediaId,
         },
       });
-      return res.status(200).json(user);
+      return res.status(200).json(deleteFavourite);
     }
 
     return res.status(405).end();

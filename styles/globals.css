@@ -1,13 +1,88 @@
 @import "tailwindcss";
 
+/* Custom Netflix-like styles */
 body {
-  @apply bg-zinc-900 h-full overflow-x-hidden;
+  background-color: var(--color-zinc-900);
+  height: 100%;
+  overflow-x: hidden;
 }
 
 #__next {
-  @apply h-full;
+  height: 100%;
+  overflow-x: hidden;
+  position: relative;
 }
 
 html {
-  @apply h-full;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.show-card {
+  transition: transform 0.3s ease, z-index 0.1s;
+  position: relative;
+  z-index: 10;
+}
+
+.show-card:hover {
+  transform: scale(1.05);
+  z-index: 20;
+}
+
+/* Netflix card styling */
+.netflix-list-container {
+  position: relative;
+  margin: 2rem 0;
+  overflow: visible;
+}
+
+/* Make scroll container take full width */
+.netflix-list-container .scrollbar-hide.scroll-smooth {
+  width: 100%;
+  position: relative;
+}
+
+/* Show arrows on hover */
+.netflix-list-container:hover button {
+  opacity: 1;
+}
+
+/* Make sure arrows stay outside content area */
+.netflix-list-container button {
+  opacity: 0;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+/* Make sure the scroll area has enough padding for the expanded cards */
+.netflix-list-container .scrollbar-hide {
+  padding-top: 1.5rem;
+  padding-bottom: 8rem;
+  margin-top: -1.5rem;
+  /* margin-bottom: -8rem; */
+}
+
+.netflix-card-container {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.netflix-card-wrapper {
+  position: relative;
+  transition: transform 0.3s ease, z-index 0.3s ease;
+}
+
+.netflix-expanded-card {
+  position: fixed;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+  will-change: transform;
 }

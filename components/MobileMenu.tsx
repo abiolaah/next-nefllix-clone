@@ -1,4 +1,5 @@
 import { navItem } from "@/constants/navItem";
+import { useRouter } from "next/router";
 import React from "react";
 
 interface MobileMenuProps {
@@ -6,6 +7,7 @@ interface MobileMenuProps {
 }
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ visible }) => {
+  const router = useRouter();
   if (!visible) {
     return null;
   }
@@ -16,6 +18,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ visible }) => {
         {navItem.map((item) => (
           <div
             key={item.id}
+            onClick={() => router.push(item.link)}
             className="px-3 text-center text-white hover:underline"
           >
             {item.name}

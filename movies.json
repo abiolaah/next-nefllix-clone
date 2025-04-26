@@ -1,38 +1,145 @@
 [
   {
+    "type": "movie",
     "title": "Big Buck Bunny",
     "description": "Three rodents amuse themselves by harassing creatures of the forest. However, when they mess with a bunny, he decides to teach them a lesson.",
     "videoUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
     "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/7/70/Big.Buck.Bunny.-.Opening.Screen.png",
-    "genre": "Comedy",
-    "rating": 0,
+    "trailerUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    "genre": ["Comedy", "Animation"],
+    "rating": 8.5,
     "duration": "10 minutes"
   },
   {
+    "type": "movie",
     "title": "Sintel",
     "description": "A lonely young woman, Sintel, helps and befriends a dragon, whom she calls Scales. But when he is kidnapped by an adult dragon, Sintel decides to embark on a dangerous quest to find her lost friend Scales.",
     "videoUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
     "thumbnailUrl": "https://www.cartoonbrew.com/wp-content/uploads/2014/04/sintel-sony-380x213.jpg",
-    "genre": "Adventure",
-    "rating": 0,
+    "trailerUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+    "genre": ["Adventure", "Fantasy", "Animation"],
+    "rating": 9.0,
     "duration": "15 minutes"
   },
   {
+    "type": "movie",
     "title": "Tears of Steel",
     "description": "In an apocalyptic future, a group of soldiers and scientists takes refuge in Amsterdam to try to stop an army of robots that threatens the planet.",
     "videoUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
     "thumbnailUrl": "https://mango.blender.org/wp-content/uploads/2013/05/01_thom_celia_bridge.jpg",
-    "genre": "Action",
-    "rating": 0,
+    "trailerUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+    "genre": ["Action", "Sci-Fi"],
+    "rating": 8.2,
     "duration": "12 minutes"
   },
   {
+    "type": "movie",
     "title": "Elephant's Dream",
     "description": "Friends Proog and Emo journey inside the folds of a seemingly infinite Machine, exploring the dark and twisted complex of wires, gears, and cogs, until a moment of conflict negates all their assumptions.",
     "videoUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
     "thumbnailUrl": "https://download.blender.org/ED/cover.jpg",
-    "genre": "Sci-Fi",
-    "rating": 0,
+    "trailerUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+    "genre": ["Sci-Fi", "Animation"],
+    "rating": 7.8,
     "duration": "15 minutes"
+  },
+  {
+    "type": "movie",
+    "title": "Inception",
+    "description": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
+    "videoUrl": "https://youtu.be/YoHD9XEInc0?si=IMRdL31bcfKhXVwK",
+    "thumbnailUrl": "https://beam-images.warnermediacdn.com/BEAM_LWM_DELIVERABLES/14552c93-d318-4563-a00b-343df7e35d0b/4beb5159-7570-4f7e-bd37-6f7ea0ccff52?host=wbd-images.prod-vod.h264.io&partner=beamcom",
+    "trailerUrl": "https://youtu.be/YoHD9XEInc0?si=IMRdL31bcfKhXVwK",
+    "genre": ["Action", "Sci-Fi", "Thriller"],
+    "rating": 8.8,
+    "duration": "148 minutes"
+  },
+  {
+    "type": "movie",
+    "title": "The Shawshank Redemption",
+    "description": "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
+    "videoUrl": "https://youtu.be/YoHD9XEInc0?si=IMRdL31bcfKhXVwK",
+    "thumbnailUrl": "https://images.squarespace-cdn.com/content/5c75dfa97d0c9166551f52b1/1639184505697-PU99E09B8ZDV3RHUHZAC/9964546b0ba1f6e14a6045e34b341f8ca2a3569752c5afed95b89682fcde1a68._RI_V_TTW_.jpg?format=1500w&content-type=image%2Fjpeg",
+    "trailerUrl": "https://youtu.be/YoHD9XEInc0?si=IMRdL31bcfKhXVwK",
+    "genre": ["Drama"],
+    "rating": 9.3,
+    "duration": "142 minutes"
+  },
+  {
+    "type": "tvShow",
+    "title": "The Last Kingdom",
+    "description": "As Alfred the Great defends his kingdom from Norse invaders, Uhtred--born a Saxon but raised by Vikings--seeks to claim his ancestral birthright.",
+    "videoUrl": "https://youtu.be/YoHD9XEInc0?si=IMRdL31bcfKhXVwK",
+    "thumbnailUrl": "https://m.media-amazon.com/images/M/MV5BMjE1MzYzNjk3OF5BMl5BanBnXkFtZTgwMzk0MzYwNzE@._V1_FMjpg_UX1000_.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=WxPApTGWwas",
+    "genre": ["Action", "Drama", "History"],
+    "rating": 8.8,
+    "numberOfSeasons": 5
+  },
+  {
+    "type": "tvShow",
+    "title": "Stranger Things",
+    "description": "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl.",
+    "videoUrl": "https://youtu.be/YoHD9XEInc0?si=IMRdL31bcfKhXVwK",
+    "thumbnailUrl": "https://m.media-amazon.com/images/M/MV5BOWU2NjY5NWQtMjdkZi00ODJlLThkZTAtMzFlYmJmMGE2NjZkXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=sBEvEcpnG7k",
+    "genre": ["Sci-Fi", "Horror", "Drama"],
+    "rating": 8.7,
+    "numberOfSeasons": 4
+  },
+  {
+    "type": "tvShow",
+    "title": "The Mandalorian",
+    "description": "The travels of a lone bounty hunter in the outer reaches of the galaxy, far from the authority of the New Republic.",
+    "videoUrl": "https://youtu.be/YoHD9XEInc0?si=IMRdL31bcfKhXVwK",
+    "thumbnailUrl": "https://m.media-amazon.com/images/I/71bBDuXUvOL._AC_UF1000,1000_QL80_.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=Znsa4Deavgg",
+    "genre": ["Sci-Fi", "Action", "Adventure"],
+    "rating": 8.7,
+    "numberOfSeasons": 3
+  },
+  {
+    "type": "tvShow",
+    "title": "Breaking Bad",
+    "description": "A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine in order to secure his family's future.",
+    "videoUrl": "https://youtu.be/YoHD9XEInc0?si=IMRdL31bcfKhXVwK",
+    "thumbnailUrl": "https://mediaproxy.tvtropes.org/width/1200/https://static.tvtropes.org/pmwiki/pub/images/breaking_bad_4.png",
+    "trailerUrl": "https://www.youtube.com/watch?v=HhesaQXLuRY",
+    "genre": ["Crime", "Drama", "Thriller"],
+    "rating": 9.5,
+    "numberOfSeasons": 5
+  },
+  {
+    "type": "tvShow",
+    "title": "The Crown",
+    "description": "This drama follows the political rivalries and romance of Queen Elizabeth II's reign and the events that shaped the second half of the 20th century.",
+    "videoUrl": "https://youtu.be/YoHD9XEInc0?si=IMRdL31bcfKhXVwK",
+    "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/en/2/21/The_Crown_season_3.jpeg",
+    "trailerUrl": "https://www.youtube.com/watch?v=JWtnJjn6ng0",
+    "genre": ["Drama", "History"],
+    "rating": 8.6,
+    "numberOfSeasons": 6
+  },
+  {
+    "type": "movie",
+    "title": "The Dark Knight",
+    "description": "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
+    "videoUrl": "https://youtu.be/YoHD9XEInc0?si=IMRdL31bcfKhXVwK",
+    "thumbnailUrl": "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=EXeTwQWrcwY",
+    "genre": ["Action", "Crime", "Drama"],
+    "rating": 9.0,
+    "duration": "152 minutes"
+  },
+  {
+    "type": "movie",
+    "title": "Parasite",
+    "description": "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.",
+    "videoUrl": "https://youtu.be/YoHD9XEInc0?si=IMRdL31bcfKhXVwK",
+    "thumbnailUrl": "https://s3.amazonaws.com/nightjarprod/content/uploads/sites/130/2024/03/29150816/7IiTTgloJzvGI1TAYymCfbfl3vT-scaled.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=isOGD_7hNIY",
+    "genre": ["Comedy", "Drama", "Thriller"],
+    "rating": 8.6,
+    "duration": "132 minutes"
   }
 ]
