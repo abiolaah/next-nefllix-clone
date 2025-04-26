@@ -118,8 +118,30 @@ exports.Prisma.UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   hashedPassword: 'hashedPassword',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  favouritesIds: 'favouritesIds'
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProfileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  avatar: 'avatar',
+  hasPin: 'hasPin',
+  pin: 'pin',
+  favouritesIds: 'favouritesIds',
+  watchedIds: 'watchedIds'
+};
+
+exports.Prisma.WatchingScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  contentId: 'contentId',
+  contentType: 'contentType',
+  progress: 'progress',
+  lastWatched: 'lastWatched',
+  completed: 'completed',
+  season: 'season',
+  episode: 'episode'
 };
 
 exports.Prisma.AccountScalarFieldEnum = {
@@ -188,6 +210,8 @@ exports.Prisma.QueryMode = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  Profile: 'Profile',
+  Watching: 'Watching',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',

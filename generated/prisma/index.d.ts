@@ -19,6 +19,16 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model Profile
+ * 
+ */
+export type Profile = $Result.DefaultSelection<Prisma.$ProfilePayload>
+/**
+ * Model Watching
+ * 
+ */
+export type Watching = $Result.DefaultSelection<Prisma.$WatchingPayload>
+/**
  * Model Account
  * 
  */
@@ -145,6 +155,26 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.profile`: Exposes CRUD operations for the **Profile** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Profiles
+    * const profiles = await prisma.profile.findMany()
+    * ```
+    */
+  get profile(): Prisma.ProfileDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.watching`: Exposes CRUD operations for the **Watching** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Watchings
+    * const watchings = await prisma.watching.findMany()
+    * ```
+    */
+  get watching(): Prisma.WatchingDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.account`: Exposes CRUD operations for the **Account** model.
@@ -636,6 +666,8 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
+    Profile: 'Profile',
+    Watching: 'Watching',
     Account: 'Account',
     Session: 'Session',
     VerificationToken: 'VerificationToken',
@@ -659,7 +691,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "account" | "session" | "verificationToken" | "movie" | "tvShow"
+      modelProps: "user" | "profile" | "watching" | "account" | "session" | "verificationToken" | "movie" | "tvShow"
       txIsolationLevel: never
     }
     model: {
@@ -734,6 +766,154 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      Profile: {
+        payload: Prisma.$ProfilePayload<ExtArgs>
+        fields: Prisma.ProfileFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProfileFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfilePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProfileFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfilePayload>
+          }
+          findFirst: {
+            args: Prisma.ProfileFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfilePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProfileFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfilePayload>
+          }
+          findMany: {
+            args: Prisma.ProfileFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfilePayload>[]
+          }
+          create: {
+            args: Prisma.ProfileCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfilePayload>
+          }
+          createMany: {
+            args: Prisma.ProfileCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.ProfileDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfilePayload>
+          }
+          update: {
+            args: Prisma.ProfileUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfilePayload>
+          }
+          deleteMany: {
+            args: Prisma.ProfileDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProfileUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.ProfileUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfilePayload>
+          }
+          aggregate: {
+            args: Prisma.ProfileAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProfile>
+          }
+          groupBy: {
+            args: Prisma.ProfileGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProfileGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.ProfileFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.ProfileAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.ProfileCountArgs<ExtArgs>
+            result: $Utils.Optional<ProfileCountAggregateOutputType> | number
+          }
+        }
+      }
+      Watching: {
+        payload: Prisma.$WatchingPayload<ExtArgs>
+        fields: Prisma.WatchingFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.WatchingFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WatchingPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.WatchingFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WatchingPayload>
+          }
+          findFirst: {
+            args: Prisma.WatchingFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WatchingPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.WatchingFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WatchingPayload>
+          }
+          findMany: {
+            args: Prisma.WatchingFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WatchingPayload>[]
+          }
+          create: {
+            args: Prisma.WatchingCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WatchingPayload>
+          }
+          createMany: {
+            args: Prisma.WatchingCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.WatchingDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WatchingPayload>
+          }
+          update: {
+            args: Prisma.WatchingUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WatchingPayload>
+          }
+          deleteMany: {
+            args: Prisma.WatchingDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.WatchingUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.WatchingUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WatchingPayload>
+          }
+          aggregate: {
+            args: Prisma.WatchingAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWatching>
+          }
+          groupBy: {
+            args: Prisma.WatchingGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WatchingGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.WatchingFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.WatchingAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.WatchingCountArgs<ExtArgs>
+            result: $Utils.Optional<WatchingCountAggregateOutputType> | number
           }
         }
       }
@@ -1179,6 +1359,8 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
+    profile?: ProfileOmit
+    watching?: WatchingOmit
     account?: AccountOmit
     session?: SessionOmit
     verificationToken?: VerificationTokenOmit
@@ -1278,11 +1460,13 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
+    profiles: number
     sessions: number
     accounts: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    profiles?: boolean | UserCountOutputTypeCountProfilesArgs
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   }
@@ -1301,6 +1485,13 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountProfilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProfileWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SessionWhereInput
   }
@@ -1310,6 +1501,37 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AccountWhereInput
+  }
+
+
+  /**
+   * Count Type ProfileCountOutputType
+   */
+
+  export type ProfileCountOutputType = {
+    watching: number
+  }
+
+  export type ProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    watching?: boolean | ProfileCountOutputTypeCountWatchingArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ProfileCountOutputType without action
+   */
+  export type ProfileCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfileCountOutputType
+     */
+    select?: ProfileCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ProfileCountOutputType without action
+   */
+  export type ProfileCountOutputTypeCountWatchingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WatchingWhereInput
   }
 
 
@@ -1358,7 +1580,6 @@ export namespace Prisma {
     hashedPassword: number
     createdAt: number
     updatedAt: number
-    favouritesIds: number
     _all: number
   }
 
@@ -1394,7 +1615,6 @@ export namespace Prisma {
     hashedPassword?: true
     createdAt?: true
     updatedAt?: true
-    favouritesIds?: true
     _all?: true
   }
 
@@ -1479,7 +1699,6 @@ export namespace Prisma {
     hashedPassword: string | null
     createdAt: Date
     updatedAt: Date
-    favouritesIds: string[]
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -1508,7 +1727,7 @@ export namespace Prisma {
     hashedPassword?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    favouritesIds?: boolean
+    profiles?: boolean | User$profilesArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1525,11 +1744,11 @@ export namespace Prisma {
     hashedPassword?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    favouritesIds?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "image" | "email" | "emailVerified" | "hashedPassword" | "createdAt" | "updatedAt" | "favouritesIds", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "image" | "email" | "emailVerified" | "hashedPassword" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    profiles?: boolean | User$profilesArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1538,6 +1757,7 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
+      profiles: Prisma.$ProfilePayload<ExtArgs>[]
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       accounts: Prisma.$AccountPayload<ExtArgs>[]
     }
@@ -1550,7 +1770,6 @@ export namespace Prisma {
       hashedPassword: string | null
       createdAt: Date
       updatedAt: Date
-      favouritesIds: string[]
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -1914,6 +2133,7 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    profiles<T extends User$profilesArgs<ExtArgs> = {}>(args?: Subset<T, User$profilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -1953,7 +2173,6 @@ export namespace Prisma {
     readonly hashedPassword: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
-    readonly favouritesIds: FieldRef<"User", 'String[]'>
   }
     
 
@@ -2324,6 +2543,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.profiles
+   */
+  export type User$profilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Profile
+     */
+    select?: ProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Profile
+     */
+    omit?: ProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+    where?: ProfileWhereInput
+    orderBy?: ProfileOrderByWithRelationInput | ProfileOrderByWithRelationInput[]
+    cursor?: ProfileWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProfileScalarFieldEnum | ProfileScalarFieldEnum[]
+  }
+
+  /**
    * User.sessions
    */
   export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2387,6 +2630,2105 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Profile
+   */
+
+  export type AggregateProfile = {
+    _count: ProfileCountAggregateOutputType | null
+    _min: ProfileMinAggregateOutputType | null
+    _max: ProfileMaxAggregateOutputType | null
+  }
+
+  export type ProfileMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    avatar: string | null
+    hasPin: boolean | null
+    pin: string | null
+  }
+
+  export type ProfileMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    avatar: string | null
+    hasPin: boolean | null
+    pin: string | null
+  }
+
+  export type ProfileCountAggregateOutputType = {
+    id: number
+    userId: number
+    name: number
+    avatar: number
+    hasPin: number
+    pin: number
+    favouritesIds: number
+    watchedIds: number
+    _all: number
+  }
+
+
+  export type ProfileMinAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    avatar?: true
+    hasPin?: true
+    pin?: true
+  }
+
+  export type ProfileMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    avatar?: true
+    hasPin?: true
+    pin?: true
+  }
+
+  export type ProfileCountAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    avatar?: true
+    hasPin?: true
+    pin?: true
+    favouritesIds?: true
+    watchedIds?: true
+    _all?: true
+  }
+
+  export type ProfileAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Profile to aggregate.
+     */
+    where?: ProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Profiles to fetch.
+     */
+    orderBy?: ProfileOrderByWithRelationInput | ProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Profiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Profiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Profiles
+    **/
+    _count?: true | ProfileCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProfileMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProfileMaxAggregateInputType
+  }
+
+  export type GetProfileAggregateType<T extends ProfileAggregateArgs> = {
+        [P in keyof T & keyof AggregateProfile]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProfile[P]>
+      : GetScalarType<T[P], AggregateProfile[P]>
+  }
+
+
+
+
+  export type ProfileGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProfileWhereInput
+    orderBy?: ProfileOrderByWithAggregationInput | ProfileOrderByWithAggregationInput[]
+    by: ProfileScalarFieldEnum[] | ProfileScalarFieldEnum
+    having?: ProfileScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProfileCountAggregateInputType | true
+    _min?: ProfileMinAggregateInputType
+    _max?: ProfileMaxAggregateInputType
+  }
+
+  export type ProfileGroupByOutputType = {
+    id: string
+    userId: string
+    name: string
+    avatar: string | null
+    hasPin: boolean
+    pin: string | null
+    favouritesIds: string[]
+    watchedIds: string[]
+    _count: ProfileCountAggregateOutputType | null
+    _min: ProfileMinAggregateOutputType | null
+    _max: ProfileMaxAggregateOutputType | null
+  }
+
+  type GetProfileGroupByPayload<T extends ProfileGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProfileGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProfileGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProfileGroupByOutputType[P]>
+            : GetScalarType<T[P], ProfileGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProfileSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    avatar?: boolean
+    hasPin?: boolean
+    pin?: boolean
+    favouritesIds?: boolean
+    watchedIds?: boolean
+    watching?: boolean | Profile$watchingArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["profile"]>
+
+
+
+  export type ProfileSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    avatar?: boolean
+    hasPin?: boolean
+    pin?: boolean
+    favouritesIds?: boolean
+    watchedIds?: boolean
+  }
+
+  export type ProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "avatar" | "hasPin" | "pin" | "favouritesIds" | "watchedIds", ExtArgs["result"]["profile"]>
+  export type ProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    watching?: boolean | Profile$watchingArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $ProfilePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Profile"
+    objects: {
+      watching: Prisma.$WatchingPayload<ExtArgs>[]
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      name: string
+      avatar: string | null
+      hasPin: boolean
+      pin: string | null
+      favouritesIds: string[]
+      watchedIds: string[]
+    }, ExtArgs["result"]["profile"]>
+    composites: {}
+  }
+
+  type ProfileGetPayload<S extends boolean | null | undefined | ProfileDefaultArgs> = $Result.GetResult<Prisma.$ProfilePayload, S>
+
+  type ProfileCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProfileFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProfileCountAggregateInputType | true
+    }
+
+  export interface ProfileDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Profile'], meta: { name: 'Profile' } }
+    /**
+     * Find zero or one Profile that matches the filter.
+     * @param {ProfileFindUniqueArgs} args - Arguments to find a Profile
+     * @example
+     * // Get one Profile
+     * const profile = await prisma.profile.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProfileFindUniqueArgs>(args: SelectSubset<T, ProfileFindUniqueArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Profile that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProfileFindUniqueOrThrowArgs} args - Arguments to find a Profile
+     * @example
+     * // Get one Profile
+     * const profile = await prisma.profile.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProfileFindUniqueOrThrowArgs>(args: SelectSubset<T, ProfileFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Profile that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProfileFindFirstArgs} args - Arguments to find a Profile
+     * @example
+     * // Get one Profile
+     * const profile = await prisma.profile.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProfileFindFirstArgs>(args?: SelectSubset<T, ProfileFindFirstArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Profile that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProfileFindFirstOrThrowArgs} args - Arguments to find a Profile
+     * @example
+     * // Get one Profile
+     * const profile = await prisma.profile.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProfileFindFirstOrThrowArgs>(args?: SelectSubset<T, ProfileFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Profiles that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProfileFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Profiles
+     * const profiles = await prisma.profile.findMany()
+     * 
+     * // Get first 10 Profiles
+     * const profiles = await prisma.profile.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const profileWithIdOnly = await prisma.profile.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProfileFindManyArgs>(args?: SelectSubset<T, ProfileFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Profile.
+     * @param {ProfileCreateArgs} args - Arguments to create a Profile.
+     * @example
+     * // Create one Profile
+     * const Profile = await prisma.profile.create({
+     *   data: {
+     *     // ... data to create a Profile
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProfileCreateArgs>(args: SelectSubset<T, ProfileCreateArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Profiles.
+     * @param {ProfileCreateManyArgs} args - Arguments to create many Profiles.
+     * @example
+     * // Create many Profiles
+     * const profile = await prisma.profile.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProfileCreateManyArgs>(args?: SelectSubset<T, ProfileCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Profile.
+     * @param {ProfileDeleteArgs} args - Arguments to delete one Profile.
+     * @example
+     * // Delete one Profile
+     * const Profile = await prisma.profile.delete({
+     *   where: {
+     *     // ... filter to delete one Profile
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProfileDeleteArgs>(args: SelectSubset<T, ProfileDeleteArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Profile.
+     * @param {ProfileUpdateArgs} args - Arguments to update one Profile.
+     * @example
+     * // Update one Profile
+     * const profile = await prisma.profile.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProfileUpdateArgs>(args: SelectSubset<T, ProfileUpdateArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Profiles.
+     * @param {ProfileDeleteManyArgs} args - Arguments to filter Profiles to delete.
+     * @example
+     * // Delete a few Profiles
+     * const { count } = await prisma.profile.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProfileDeleteManyArgs>(args?: SelectSubset<T, ProfileDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Profiles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProfileUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Profiles
+     * const profile = await prisma.profile.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProfileUpdateManyArgs>(args: SelectSubset<T, ProfileUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Profile.
+     * @param {ProfileUpsertArgs} args - Arguments to update or create a Profile.
+     * @example
+     * // Update or create a Profile
+     * const profile = await prisma.profile.upsert({
+     *   create: {
+     *     // ... data to create a Profile
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Profile we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProfileUpsertArgs>(args: SelectSubset<T, ProfileUpsertArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Profiles that matches the filter.
+     * @param {ProfileFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const profile = await prisma.profile.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: ProfileFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a Profile.
+     * @param {ProfileAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const profile = await prisma.profile.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: ProfileAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of Profiles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProfileCountArgs} args - Arguments to filter Profiles to count.
+     * @example
+     * // Count the number of Profiles
+     * const count = await prisma.profile.count({
+     *   where: {
+     *     // ... the filter for the Profiles we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProfileCountArgs>(
+      args?: Subset<T, ProfileCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProfileCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Profile.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProfileAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProfileAggregateArgs>(args: Subset<T, ProfileAggregateArgs>): Prisma.PrismaPromise<GetProfileAggregateType<T>>
+
+    /**
+     * Group by Profile.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProfileGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProfileGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProfileGroupByArgs['orderBy'] }
+        : { orderBy?: ProfileGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProfileGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProfileGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Profile model
+   */
+  readonly fields: ProfileFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Profile.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    watching<T extends Profile$watchingArgs<ExtArgs> = {}>(args?: Subset<T, Profile$watchingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WatchingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Profile model
+   */
+  interface ProfileFieldRefs {
+    readonly id: FieldRef<"Profile", 'String'>
+    readonly userId: FieldRef<"Profile", 'String'>
+    readonly name: FieldRef<"Profile", 'String'>
+    readonly avatar: FieldRef<"Profile", 'String'>
+    readonly hasPin: FieldRef<"Profile", 'Boolean'>
+    readonly pin: FieldRef<"Profile", 'String'>
+    readonly favouritesIds: FieldRef<"Profile", 'String[]'>
+    readonly watchedIds: FieldRef<"Profile", 'String[]'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Profile findUnique
+   */
+  export type ProfileFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Profile
+     */
+    select?: ProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Profile
+     */
+    omit?: ProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which Profile to fetch.
+     */
+    where: ProfileWhereUniqueInput
+  }
+
+  /**
+   * Profile findUniqueOrThrow
+   */
+  export type ProfileFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Profile
+     */
+    select?: ProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Profile
+     */
+    omit?: ProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which Profile to fetch.
+     */
+    where: ProfileWhereUniqueInput
+  }
+
+  /**
+   * Profile findFirst
+   */
+  export type ProfileFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Profile
+     */
+    select?: ProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Profile
+     */
+    omit?: ProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which Profile to fetch.
+     */
+    where?: ProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Profiles to fetch.
+     */
+    orderBy?: ProfileOrderByWithRelationInput | ProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Profiles.
+     */
+    cursor?: ProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Profiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Profiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Profiles.
+     */
+    distinct?: ProfileScalarFieldEnum | ProfileScalarFieldEnum[]
+  }
+
+  /**
+   * Profile findFirstOrThrow
+   */
+  export type ProfileFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Profile
+     */
+    select?: ProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Profile
+     */
+    omit?: ProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which Profile to fetch.
+     */
+    where?: ProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Profiles to fetch.
+     */
+    orderBy?: ProfileOrderByWithRelationInput | ProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Profiles.
+     */
+    cursor?: ProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Profiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Profiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Profiles.
+     */
+    distinct?: ProfileScalarFieldEnum | ProfileScalarFieldEnum[]
+  }
+
+  /**
+   * Profile findMany
+   */
+  export type ProfileFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Profile
+     */
+    select?: ProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Profile
+     */
+    omit?: ProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which Profiles to fetch.
+     */
+    where?: ProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Profiles to fetch.
+     */
+    orderBy?: ProfileOrderByWithRelationInput | ProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Profiles.
+     */
+    cursor?: ProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Profiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Profiles.
+     */
+    skip?: number
+    distinct?: ProfileScalarFieldEnum | ProfileScalarFieldEnum[]
+  }
+
+  /**
+   * Profile create
+   */
+  export type ProfileCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Profile
+     */
+    select?: ProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Profile
+     */
+    omit?: ProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Profile.
+     */
+    data: XOR<ProfileCreateInput, ProfileUncheckedCreateInput>
+  }
+
+  /**
+   * Profile createMany
+   */
+  export type ProfileCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Profiles.
+     */
+    data: ProfileCreateManyInput | ProfileCreateManyInput[]
+  }
+
+  /**
+   * Profile update
+   */
+  export type ProfileUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Profile
+     */
+    select?: ProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Profile
+     */
+    omit?: ProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Profile.
+     */
+    data: XOR<ProfileUpdateInput, ProfileUncheckedUpdateInput>
+    /**
+     * Choose, which Profile to update.
+     */
+    where: ProfileWhereUniqueInput
+  }
+
+  /**
+   * Profile updateMany
+   */
+  export type ProfileUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Profiles.
+     */
+    data: XOR<ProfileUpdateManyMutationInput, ProfileUncheckedUpdateManyInput>
+    /**
+     * Filter which Profiles to update
+     */
+    where?: ProfileWhereInput
+    /**
+     * Limit how many Profiles to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Profile upsert
+   */
+  export type ProfileUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Profile
+     */
+    select?: ProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Profile
+     */
+    omit?: ProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Profile to update in case it exists.
+     */
+    where: ProfileWhereUniqueInput
+    /**
+     * In case the Profile found by the `where` argument doesn't exist, create a new Profile with this data.
+     */
+    create: XOR<ProfileCreateInput, ProfileUncheckedCreateInput>
+    /**
+     * In case the Profile was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProfileUpdateInput, ProfileUncheckedUpdateInput>
+  }
+
+  /**
+   * Profile delete
+   */
+  export type ProfileDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Profile
+     */
+    select?: ProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Profile
+     */
+    omit?: ProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+    /**
+     * Filter which Profile to delete.
+     */
+    where: ProfileWhereUniqueInput
+  }
+
+  /**
+   * Profile deleteMany
+   */
+  export type ProfileDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Profiles to delete
+     */
+    where?: ProfileWhereInput
+    /**
+     * Limit how many Profiles to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Profile findRaw
+   */
+  export type ProfileFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * Profile aggregateRaw
+   */
+  export type ProfileAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * Profile.watching
+   */
+  export type Profile$watchingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Watching
+     */
+    select?: WatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Watching
+     */
+    omit?: WatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WatchingInclude<ExtArgs> | null
+    where?: WatchingWhereInput
+    orderBy?: WatchingOrderByWithRelationInput | WatchingOrderByWithRelationInput[]
+    cursor?: WatchingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WatchingScalarFieldEnum | WatchingScalarFieldEnum[]
+  }
+
+  /**
+   * Profile without action
+   */
+  export type ProfileDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Profile
+     */
+    select?: ProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Profile
+     */
+    omit?: ProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Watching
+   */
+
+  export type AggregateWatching = {
+    _count: WatchingCountAggregateOutputType | null
+    _avg: WatchingAvgAggregateOutputType | null
+    _sum: WatchingSumAggregateOutputType | null
+    _min: WatchingMinAggregateOutputType | null
+    _max: WatchingMaxAggregateOutputType | null
+  }
+
+  export type WatchingAvgAggregateOutputType = {
+    progress: number | null
+    season: number | null
+    episode: number | null
+  }
+
+  export type WatchingSumAggregateOutputType = {
+    progress: number | null
+    season: number | null
+    episode: number | null
+  }
+
+  export type WatchingMinAggregateOutputType = {
+    id: string | null
+    profileId: string | null
+    contentId: string | null
+    contentType: string | null
+    progress: number | null
+    lastWatched: Date | null
+    completed: boolean | null
+    season: number | null
+    episode: number | null
+  }
+
+  export type WatchingMaxAggregateOutputType = {
+    id: string | null
+    profileId: string | null
+    contentId: string | null
+    contentType: string | null
+    progress: number | null
+    lastWatched: Date | null
+    completed: boolean | null
+    season: number | null
+    episode: number | null
+  }
+
+  export type WatchingCountAggregateOutputType = {
+    id: number
+    profileId: number
+    contentId: number
+    contentType: number
+    progress: number
+    lastWatched: number
+    completed: number
+    season: number
+    episode: number
+    _all: number
+  }
+
+
+  export type WatchingAvgAggregateInputType = {
+    progress?: true
+    season?: true
+    episode?: true
+  }
+
+  export type WatchingSumAggregateInputType = {
+    progress?: true
+    season?: true
+    episode?: true
+  }
+
+  export type WatchingMinAggregateInputType = {
+    id?: true
+    profileId?: true
+    contentId?: true
+    contentType?: true
+    progress?: true
+    lastWatched?: true
+    completed?: true
+    season?: true
+    episode?: true
+  }
+
+  export type WatchingMaxAggregateInputType = {
+    id?: true
+    profileId?: true
+    contentId?: true
+    contentType?: true
+    progress?: true
+    lastWatched?: true
+    completed?: true
+    season?: true
+    episode?: true
+  }
+
+  export type WatchingCountAggregateInputType = {
+    id?: true
+    profileId?: true
+    contentId?: true
+    contentType?: true
+    progress?: true
+    lastWatched?: true
+    completed?: true
+    season?: true
+    episode?: true
+    _all?: true
+  }
+
+  export type WatchingAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Watching to aggregate.
+     */
+    where?: WatchingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Watchings to fetch.
+     */
+    orderBy?: WatchingOrderByWithRelationInput | WatchingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: WatchingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Watchings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Watchings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Watchings
+    **/
+    _count?: true | WatchingCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: WatchingAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: WatchingSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: WatchingMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: WatchingMaxAggregateInputType
+  }
+
+  export type GetWatchingAggregateType<T extends WatchingAggregateArgs> = {
+        [P in keyof T & keyof AggregateWatching]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWatching[P]>
+      : GetScalarType<T[P], AggregateWatching[P]>
+  }
+
+
+
+
+  export type WatchingGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WatchingWhereInput
+    orderBy?: WatchingOrderByWithAggregationInput | WatchingOrderByWithAggregationInput[]
+    by: WatchingScalarFieldEnum[] | WatchingScalarFieldEnum
+    having?: WatchingScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: WatchingCountAggregateInputType | true
+    _avg?: WatchingAvgAggregateInputType
+    _sum?: WatchingSumAggregateInputType
+    _min?: WatchingMinAggregateInputType
+    _max?: WatchingMaxAggregateInputType
+  }
+
+  export type WatchingGroupByOutputType = {
+    id: string
+    profileId: string
+    contentId: string
+    contentType: string
+    progress: number
+    lastWatched: Date
+    completed: boolean
+    season: number | null
+    episode: number | null
+    _count: WatchingCountAggregateOutputType | null
+    _avg: WatchingAvgAggregateOutputType | null
+    _sum: WatchingSumAggregateOutputType | null
+    _min: WatchingMinAggregateOutputType | null
+    _max: WatchingMaxAggregateOutputType | null
+  }
+
+  type GetWatchingGroupByPayload<T extends WatchingGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<WatchingGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof WatchingGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], WatchingGroupByOutputType[P]>
+            : GetScalarType<T[P], WatchingGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type WatchingSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    profileId?: boolean
+    contentId?: boolean
+    contentType?: boolean
+    progress?: boolean
+    lastWatched?: boolean
+    completed?: boolean
+    season?: boolean
+    episode?: boolean
+    profile?: boolean | ProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["watching"]>
+
+
+
+  export type WatchingSelectScalar = {
+    id?: boolean
+    profileId?: boolean
+    contentId?: boolean
+    contentType?: boolean
+    progress?: boolean
+    lastWatched?: boolean
+    completed?: boolean
+    season?: boolean
+    episode?: boolean
+  }
+
+  export type WatchingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId" | "contentId" | "contentType" | "progress" | "lastWatched" | "completed" | "season" | "episode", ExtArgs["result"]["watching"]>
+  export type WatchingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    profile?: boolean | ProfileDefaultArgs<ExtArgs>
+  }
+
+  export type $WatchingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Watching"
+    objects: {
+      profile: Prisma.$ProfilePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      profileId: string
+      contentId: string
+      contentType: string
+      progress: number
+      lastWatched: Date
+      completed: boolean
+      season: number | null
+      episode: number | null
+    }, ExtArgs["result"]["watching"]>
+    composites: {}
+  }
+
+  type WatchingGetPayload<S extends boolean | null | undefined | WatchingDefaultArgs> = $Result.GetResult<Prisma.$WatchingPayload, S>
+
+  type WatchingCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<WatchingFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: WatchingCountAggregateInputType | true
+    }
+
+  export interface WatchingDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Watching'], meta: { name: 'Watching' } }
+    /**
+     * Find zero or one Watching that matches the filter.
+     * @param {WatchingFindUniqueArgs} args - Arguments to find a Watching
+     * @example
+     * // Get one Watching
+     * const watching = await prisma.watching.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends WatchingFindUniqueArgs>(args: SelectSubset<T, WatchingFindUniqueArgs<ExtArgs>>): Prisma__WatchingClient<$Result.GetResult<Prisma.$WatchingPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Watching that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {WatchingFindUniqueOrThrowArgs} args - Arguments to find a Watching
+     * @example
+     * // Get one Watching
+     * const watching = await prisma.watching.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends WatchingFindUniqueOrThrowArgs>(args: SelectSubset<T, WatchingFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WatchingClient<$Result.GetResult<Prisma.$WatchingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Watching that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WatchingFindFirstArgs} args - Arguments to find a Watching
+     * @example
+     * // Get one Watching
+     * const watching = await prisma.watching.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends WatchingFindFirstArgs>(args?: SelectSubset<T, WatchingFindFirstArgs<ExtArgs>>): Prisma__WatchingClient<$Result.GetResult<Prisma.$WatchingPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Watching that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WatchingFindFirstOrThrowArgs} args - Arguments to find a Watching
+     * @example
+     * // Get one Watching
+     * const watching = await prisma.watching.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends WatchingFindFirstOrThrowArgs>(args?: SelectSubset<T, WatchingFindFirstOrThrowArgs<ExtArgs>>): Prisma__WatchingClient<$Result.GetResult<Prisma.$WatchingPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Watchings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WatchingFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Watchings
+     * const watchings = await prisma.watching.findMany()
+     * 
+     * // Get first 10 Watchings
+     * const watchings = await prisma.watching.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const watchingWithIdOnly = await prisma.watching.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends WatchingFindManyArgs>(args?: SelectSubset<T, WatchingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WatchingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Watching.
+     * @param {WatchingCreateArgs} args - Arguments to create a Watching.
+     * @example
+     * // Create one Watching
+     * const Watching = await prisma.watching.create({
+     *   data: {
+     *     // ... data to create a Watching
+     *   }
+     * })
+     * 
+     */
+    create<T extends WatchingCreateArgs>(args: SelectSubset<T, WatchingCreateArgs<ExtArgs>>): Prisma__WatchingClient<$Result.GetResult<Prisma.$WatchingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Watchings.
+     * @param {WatchingCreateManyArgs} args - Arguments to create many Watchings.
+     * @example
+     * // Create many Watchings
+     * const watching = await prisma.watching.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends WatchingCreateManyArgs>(args?: SelectSubset<T, WatchingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Watching.
+     * @param {WatchingDeleteArgs} args - Arguments to delete one Watching.
+     * @example
+     * // Delete one Watching
+     * const Watching = await prisma.watching.delete({
+     *   where: {
+     *     // ... filter to delete one Watching
+     *   }
+     * })
+     * 
+     */
+    delete<T extends WatchingDeleteArgs>(args: SelectSubset<T, WatchingDeleteArgs<ExtArgs>>): Prisma__WatchingClient<$Result.GetResult<Prisma.$WatchingPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Watching.
+     * @param {WatchingUpdateArgs} args - Arguments to update one Watching.
+     * @example
+     * // Update one Watching
+     * const watching = await prisma.watching.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends WatchingUpdateArgs>(args: SelectSubset<T, WatchingUpdateArgs<ExtArgs>>): Prisma__WatchingClient<$Result.GetResult<Prisma.$WatchingPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Watchings.
+     * @param {WatchingDeleteManyArgs} args - Arguments to filter Watchings to delete.
+     * @example
+     * // Delete a few Watchings
+     * const { count } = await prisma.watching.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends WatchingDeleteManyArgs>(args?: SelectSubset<T, WatchingDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Watchings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WatchingUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Watchings
+     * const watching = await prisma.watching.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends WatchingUpdateManyArgs>(args: SelectSubset<T, WatchingUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Watching.
+     * @param {WatchingUpsertArgs} args - Arguments to update or create a Watching.
+     * @example
+     * // Update or create a Watching
+     * const watching = await prisma.watching.upsert({
+     *   create: {
+     *     // ... data to create a Watching
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Watching we want to update
+     *   }
+     * })
+     */
+    upsert<T extends WatchingUpsertArgs>(args: SelectSubset<T, WatchingUpsertArgs<ExtArgs>>): Prisma__WatchingClient<$Result.GetResult<Prisma.$WatchingPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Watchings that matches the filter.
+     * @param {WatchingFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const watching = await prisma.watching.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: WatchingFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a Watching.
+     * @param {WatchingAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const watching = await prisma.watching.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: WatchingAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of Watchings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WatchingCountArgs} args - Arguments to filter Watchings to count.
+     * @example
+     * // Count the number of Watchings
+     * const count = await prisma.watching.count({
+     *   where: {
+     *     // ... the filter for the Watchings we want to count
+     *   }
+     * })
+    **/
+    count<T extends WatchingCountArgs>(
+      args?: Subset<T, WatchingCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], WatchingCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Watching.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WatchingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends WatchingAggregateArgs>(args: Subset<T, WatchingAggregateArgs>): Prisma.PrismaPromise<GetWatchingAggregateType<T>>
+
+    /**
+     * Group by Watching.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WatchingGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends WatchingGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: WatchingGroupByArgs['orderBy'] }
+        : { orderBy?: WatchingGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, WatchingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWatchingGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Watching model
+   */
+  readonly fields: WatchingFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Watching.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__WatchingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    profile<T extends ProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfileDefaultArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Watching model
+   */
+  interface WatchingFieldRefs {
+    readonly id: FieldRef<"Watching", 'String'>
+    readonly profileId: FieldRef<"Watching", 'String'>
+    readonly contentId: FieldRef<"Watching", 'String'>
+    readonly contentType: FieldRef<"Watching", 'String'>
+    readonly progress: FieldRef<"Watching", 'Float'>
+    readonly lastWatched: FieldRef<"Watching", 'DateTime'>
+    readonly completed: FieldRef<"Watching", 'Boolean'>
+    readonly season: FieldRef<"Watching", 'Int'>
+    readonly episode: FieldRef<"Watching", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Watching findUnique
+   */
+  export type WatchingFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Watching
+     */
+    select?: WatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Watching
+     */
+    omit?: WatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WatchingInclude<ExtArgs> | null
+    /**
+     * Filter, which Watching to fetch.
+     */
+    where: WatchingWhereUniqueInput
+  }
+
+  /**
+   * Watching findUniqueOrThrow
+   */
+  export type WatchingFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Watching
+     */
+    select?: WatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Watching
+     */
+    omit?: WatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WatchingInclude<ExtArgs> | null
+    /**
+     * Filter, which Watching to fetch.
+     */
+    where: WatchingWhereUniqueInput
+  }
+
+  /**
+   * Watching findFirst
+   */
+  export type WatchingFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Watching
+     */
+    select?: WatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Watching
+     */
+    omit?: WatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WatchingInclude<ExtArgs> | null
+    /**
+     * Filter, which Watching to fetch.
+     */
+    where?: WatchingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Watchings to fetch.
+     */
+    orderBy?: WatchingOrderByWithRelationInput | WatchingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Watchings.
+     */
+    cursor?: WatchingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Watchings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Watchings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Watchings.
+     */
+    distinct?: WatchingScalarFieldEnum | WatchingScalarFieldEnum[]
+  }
+
+  /**
+   * Watching findFirstOrThrow
+   */
+  export type WatchingFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Watching
+     */
+    select?: WatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Watching
+     */
+    omit?: WatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WatchingInclude<ExtArgs> | null
+    /**
+     * Filter, which Watching to fetch.
+     */
+    where?: WatchingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Watchings to fetch.
+     */
+    orderBy?: WatchingOrderByWithRelationInput | WatchingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Watchings.
+     */
+    cursor?: WatchingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Watchings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Watchings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Watchings.
+     */
+    distinct?: WatchingScalarFieldEnum | WatchingScalarFieldEnum[]
+  }
+
+  /**
+   * Watching findMany
+   */
+  export type WatchingFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Watching
+     */
+    select?: WatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Watching
+     */
+    omit?: WatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WatchingInclude<ExtArgs> | null
+    /**
+     * Filter, which Watchings to fetch.
+     */
+    where?: WatchingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Watchings to fetch.
+     */
+    orderBy?: WatchingOrderByWithRelationInput | WatchingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Watchings.
+     */
+    cursor?: WatchingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Watchings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Watchings.
+     */
+    skip?: number
+    distinct?: WatchingScalarFieldEnum | WatchingScalarFieldEnum[]
+  }
+
+  /**
+   * Watching create
+   */
+  export type WatchingCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Watching
+     */
+    select?: WatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Watching
+     */
+    omit?: WatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WatchingInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Watching.
+     */
+    data: XOR<WatchingCreateInput, WatchingUncheckedCreateInput>
+  }
+
+  /**
+   * Watching createMany
+   */
+  export type WatchingCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Watchings.
+     */
+    data: WatchingCreateManyInput | WatchingCreateManyInput[]
+  }
+
+  /**
+   * Watching update
+   */
+  export type WatchingUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Watching
+     */
+    select?: WatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Watching
+     */
+    omit?: WatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WatchingInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Watching.
+     */
+    data: XOR<WatchingUpdateInput, WatchingUncheckedUpdateInput>
+    /**
+     * Choose, which Watching to update.
+     */
+    where: WatchingWhereUniqueInput
+  }
+
+  /**
+   * Watching updateMany
+   */
+  export type WatchingUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Watchings.
+     */
+    data: XOR<WatchingUpdateManyMutationInput, WatchingUncheckedUpdateManyInput>
+    /**
+     * Filter which Watchings to update
+     */
+    where?: WatchingWhereInput
+    /**
+     * Limit how many Watchings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Watching upsert
+   */
+  export type WatchingUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Watching
+     */
+    select?: WatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Watching
+     */
+    omit?: WatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WatchingInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Watching to update in case it exists.
+     */
+    where: WatchingWhereUniqueInput
+    /**
+     * In case the Watching found by the `where` argument doesn't exist, create a new Watching with this data.
+     */
+    create: XOR<WatchingCreateInput, WatchingUncheckedCreateInput>
+    /**
+     * In case the Watching was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<WatchingUpdateInput, WatchingUncheckedUpdateInput>
+  }
+
+  /**
+   * Watching delete
+   */
+  export type WatchingDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Watching
+     */
+    select?: WatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Watching
+     */
+    omit?: WatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WatchingInclude<ExtArgs> | null
+    /**
+     * Filter which Watching to delete.
+     */
+    where: WatchingWhereUniqueInput
+  }
+
+  /**
+   * Watching deleteMany
+   */
+  export type WatchingDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Watchings to delete
+     */
+    where?: WatchingWhereInput
+    /**
+     * Limit how many Watchings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Watching findRaw
+   */
+  export type WatchingFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * Watching aggregateRaw
+   */
+  export type WatchingAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * Watching without action
+   */
+  export type WatchingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Watching
+     */
+    select?: WatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Watching
+     */
+    omit?: WatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WatchingInclude<ExtArgs> | null
   }
 
 
@@ -7397,11 +9739,39 @@ export namespace Prisma {
     emailVerified: 'emailVerified',
     hashedPassword: 'hashedPassword',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    favouritesIds: 'favouritesIds'
+    updatedAt: 'updatedAt'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const ProfileScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    name: 'name',
+    avatar: 'avatar',
+    hasPin: 'hasPin',
+    pin: 'pin',
+    favouritesIds: 'favouritesIds',
+    watchedIds: 'watchedIds'
+  };
+
+  export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
+
+
+  export const WatchingScalarFieldEnum: {
+    id: 'id',
+    profileId: 'profileId',
+    contentId: 'contentId',
+    contentType: 'contentType',
+    progress: 'progress',
+    lastWatched: 'lastWatched',
+    completed: 'completed',
+    season: 'season',
+    episode: 'episode'
+  };
+
+  export type WatchingScalarFieldEnum = (typeof WatchingScalarFieldEnum)[keyof typeof WatchingScalarFieldEnum]
 
 
   export const AccountScalarFieldEnum: {
@@ -7522,16 +9892,9 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int'
+   * Reference to a field of type 'Boolean'
    */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -7546,6 +9909,20 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
   /**
    * Deep Input Types
@@ -7564,7 +9941,7 @@ export namespace Prisma {
     hashedPassword?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    favouritesIds?: StringNullableListFilter<"User">
+    profiles?: ProfileListRelationFilter
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
   }
@@ -7578,7 +9955,7 @@ export namespace Prisma {
     hashedPassword?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    favouritesIds?: SortOrder
+    profiles?: ProfileOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
     accounts?: AccountOrderByRelationAggregateInput
   }
@@ -7595,7 +9972,7 @@ export namespace Prisma {
     hashedPassword?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    favouritesIds?: StringNullableListFilter<"User">
+    profiles?: ProfileListRelationFilter
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
   }, "id" | "email">
@@ -7609,7 +9986,6 @@ export namespace Prisma {
     hashedPassword?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    favouritesIds?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -7627,7 +10003,157 @@ export namespace Prisma {
     hashedPassword?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
-    favouritesIds?: StringNullableListFilter<"User">
+  }
+
+  export type ProfileWhereInput = {
+    AND?: ProfileWhereInput | ProfileWhereInput[]
+    OR?: ProfileWhereInput[]
+    NOT?: ProfileWhereInput | ProfileWhereInput[]
+    id?: StringFilter<"Profile"> | string
+    userId?: StringFilter<"Profile"> | string
+    name?: StringFilter<"Profile"> | string
+    avatar?: StringNullableFilter<"Profile"> | string | null
+    hasPin?: BoolFilter<"Profile"> | boolean
+    pin?: StringNullableFilter<"Profile"> | string | null
+    favouritesIds?: StringNullableListFilter<"Profile">
+    watchedIds?: StringNullableListFilter<"Profile">
+    watching?: WatchingListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type ProfileOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    avatar?: SortOrder
+    hasPin?: SortOrder
+    pin?: SortOrder
+    favouritesIds?: SortOrder
+    watchedIds?: SortOrder
+    watching?: WatchingOrderByRelationAggregateInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type ProfileWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ProfileWhereInput | ProfileWhereInput[]
+    OR?: ProfileWhereInput[]
+    NOT?: ProfileWhereInput | ProfileWhereInput[]
+    userId?: StringFilter<"Profile"> | string
+    name?: StringFilter<"Profile"> | string
+    avatar?: StringNullableFilter<"Profile"> | string | null
+    hasPin?: BoolFilter<"Profile"> | boolean
+    pin?: StringNullableFilter<"Profile"> | string | null
+    favouritesIds?: StringNullableListFilter<"Profile">
+    watchedIds?: StringNullableListFilter<"Profile">
+    watching?: WatchingListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type ProfileOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    avatar?: SortOrder
+    hasPin?: SortOrder
+    pin?: SortOrder
+    favouritesIds?: SortOrder
+    watchedIds?: SortOrder
+    _count?: ProfileCountOrderByAggregateInput
+    _max?: ProfileMaxOrderByAggregateInput
+    _min?: ProfileMinOrderByAggregateInput
+  }
+
+  export type ProfileScalarWhereWithAggregatesInput = {
+    AND?: ProfileScalarWhereWithAggregatesInput | ProfileScalarWhereWithAggregatesInput[]
+    OR?: ProfileScalarWhereWithAggregatesInput[]
+    NOT?: ProfileScalarWhereWithAggregatesInput | ProfileScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Profile"> | string
+    userId?: StringWithAggregatesFilter<"Profile"> | string
+    name?: StringWithAggregatesFilter<"Profile"> | string
+    avatar?: StringNullableWithAggregatesFilter<"Profile"> | string | null
+    hasPin?: BoolWithAggregatesFilter<"Profile"> | boolean
+    pin?: StringNullableWithAggregatesFilter<"Profile"> | string | null
+    favouritesIds?: StringNullableListFilter<"Profile">
+    watchedIds?: StringNullableListFilter<"Profile">
+  }
+
+  export type WatchingWhereInput = {
+    AND?: WatchingWhereInput | WatchingWhereInput[]
+    OR?: WatchingWhereInput[]
+    NOT?: WatchingWhereInput | WatchingWhereInput[]
+    id?: StringFilter<"Watching"> | string
+    profileId?: StringFilter<"Watching"> | string
+    contentId?: StringFilter<"Watching"> | string
+    contentType?: StringFilter<"Watching"> | string
+    progress?: FloatFilter<"Watching"> | number
+    lastWatched?: DateTimeFilter<"Watching"> | Date | string
+    completed?: BoolFilter<"Watching"> | boolean
+    season?: IntNullableFilter<"Watching"> | number | null
+    episode?: IntNullableFilter<"Watching"> | number | null
+    profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
+  }
+
+  export type WatchingOrderByWithRelationInput = {
+    id?: SortOrder
+    profileId?: SortOrder
+    contentId?: SortOrder
+    contentType?: SortOrder
+    progress?: SortOrder
+    lastWatched?: SortOrder
+    completed?: SortOrder
+    season?: SortOrder
+    episode?: SortOrder
+    profile?: ProfileOrderByWithRelationInput
+  }
+
+  export type WatchingWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    profileId_contentId?: WatchingProfileIdContentIdCompoundUniqueInput
+    AND?: WatchingWhereInput | WatchingWhereInput[]
+    OR?: WatchingWhereInput[]
+    NOT?: WatchingWhereInput | WatchingWhereInput[]
+    profileId?: StringFilter<"Watching"> | string
+    contentId?: StringFilter<"Watching"> | string
+    contentType?: StringFilter<"Watching"> | string
+    progress?: FloatFilter<"Watching"> | number
+    lastWatched?: DateTimeFilter<"Watching"> | Date | string
+    completed?: BoolFilter<"Watching"> | boolean
+    season?: IntNullableFilter<"Watching"> | number | null
+    episode?: IntNullableFilter<"Watching"> | number | null
+    profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
+  }, "id" | "profileId_contentId">
+
+  export type WatchingOrderByWithAggregationInput = {
+    id?: SortOrder
+    profileId?: SortOrder
+    contentId?: SortOrder
+    contentType?: SortOrder
+    progress?: SortOrder
+    lastWatched?: SortOrder
+    completed?: SortOrder
+    season?: SortOrder
+    episode?: SortOrder
+    _count?: WatchingCountOrderByAggregateInput
+    _avg?: WatchingAvgOrderByAggregateInput
+    _max?: WatchingMaxOrderByAggregateInput
+    _min?: WatchingMinOrderByAggregateInput
+    _sum?: WatchingSumOrderByAggregateInput
+  }
+
+  export type WatchingScalarWhereWithAggregatesInput = {
+    AND?: WatchingScalarWhereWithAggregatesInput | WatchingScalarWhereWithAggregatesInput[]
+    OR?: WatchingScalarWhereWithAggregatesInput[]
+    NOT?: WatchingScalarWhereWithAggregatesInput | WatchingScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Watching"> | string
+    profileId?: StringWithAggregatesFilter<"Watching"> | string
+    contentId?: StringWithAggregatesFilter<"Watching"> | string
+    contentType?: StringWithAggregatesFilter<"Watching"> | string
+    progress?: FloatWithAggregatesFilter<"Watching"> | number
+    lastWatched?: DateTimeWithAggregatesFilter<"Watching"> | Date | string
+    completed?: BoolWithAggregatesFilter<"Watching"> | boolean
+    season?: IntNullableWithAggregatesFilter<"Watching"> | number | null
+    episode?: IntNullableWithAggregatesFilter<"Watching"> | number | null
   }
 
   export type AccountWhereInput = {
@@ -7978,7 +10504,7 @@ export namespace Prisma {
     hashedPassword?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    favouritesIds?: UserCreatefavouritesIdsInput | string[]
+    profiles?: ProfileCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
   }
@@ -7992,7 +10518,7 @@ export namespace Prisma {
     hashedPassword?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    favouritesIds?: UserCreatefavouritesIdsInput | string[]
+    profiles?: ProfileUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
   }
@@ -8005,7 +10531,7 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    favouritesIds?: UserUpdatefavouritesIdsInput | string[]
+    profiles?: ProfileUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
   }
@@ -8018,7 +10544,7 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    favouritesIds?: UserUpdatefavouritesIdsInput | string[]
+    profiles?: ProfileUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -8032,7 +10558,6 @@ export namespace Prisma {
     hashedPassword?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    favouritesIds?: UserCreatefavouritesIdsInput | string[]
   }
 
   export type UserUpdateManyMutationInput = {
@@ -8043,7 +10568,6 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    favouritesIds?: UserUpdatefavouritesIdsInput | string[]
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -8054,7 +10578,161 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    favouritesIds?: UserUpdatefavouritesIdsInput | string[]
+  }
+
+  export type ProfileCreateInput = {
+    id?: string
+    name: string
+    avatar?: string | null
+    hasPin?: boolean
+    pin?: string | null
+    favouritesIds?: ProfileCreatefavouritesIdsInput | string[]
+    watchedIds?: ProfileCreatewatchedIdsInput | string[]
+    watching?: WatchingCreateNestedManyWithoutProfileInput
+    user: UserCreateNestedOneWithoutProfilesInput
+  }
+
+  export type ProfileUncheckedCreateInput = {
+    id?: string
+    userId: string
+    name: string
+    avatar?: string | null
+    hasPin?: boolean
+    pin?: string | null
+    favouritesIds?: ProfileCreatefavouritesIdsInput | string[]
+    watchedIds?: ProfileCreatewatchedIdsInput | string[]
+    watching?: WatchingUncheckedCreateNestedManyWithoutProfileInput
+  }
+
+  export type ProfileUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    hasPin?: BoolFieldUpdateOperationsInput | boolean
+    pin?: NullableStringFieldUpdateOperationsInput | string | null
+    favouritesIds?: ProfileUpdatefavouritesIdsInput | string[]
+    watchedIds?: ProfileUpdatewatchedIdsInput | string[]
+    watching?: WatchingUpdateManyWithoutProfileNestedInput
+    user?: UserUpdateOneRequiredWithoutProfilesNestedInput
+  }
+
+  export type ProfileUncheckedUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    hasPin?: BoolFieldUpdateOperationsInput | boolean
+    pin?: NullableStringFieldUpdateOperationsInput | string | null
+    favouritesIds?: ProfileUpdatefavouritesIdsInput | string[]
+    watchedIds?: ProfileUpdatewatchedIdsInput | string[]
+    watching?: WatchingUncheckedUpdateManyWithoutProfileNestedInput
+  }
+
+  export type ProfileCreateManyInput = {
+    id?: string
+    userId: string
+    name: string
+    avatar?: string | null
+    hasPin?: boolean
+    pin?: string | null
+    favouritesIds?: ProfileCreatefavouritesIdsInput | string[]
+    watchedIds?: ProfileCreatewatchedIdsInput | string[]
+  }
+
+  export type ProfileUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    hasPin?: BoolFieldUpdateOperationsInput | boolean
+    pin?: NullableStringFieldUpdateOperationsInput | string | null
+    favouritesIds?: ProfileUpdatefavouritesIdsInput | string[]
+    watchedIds?: ProfileUpdatewatchedIdsInput | string[]
+  }
+
+  export type ProfileUncheckedUpdateManyInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    hasPin?: BoolFieldUpdateOperationsInput | boolean
+    pin?: NullableStringFieldUpdateOperationsInput | string | null
+    favouritesIds?: ProfileUpdatefavouritesIdsInput | string[]
+    watchedIds?: ProfileUpdatewatchedIdsInput | string[]
+  }
+
+  export type WatchingCreateInput = {
+    id?: string
+    contentId: string
+    contentType: string
+    progress: number
+    lastWatched?: Date | string
+    completed?: boolean
+    season?: number | null
+    episode?: number | null
+    profile: ProfileCreateNestedOneWithoutWatchingInput
+  }
+
+  export type WatchingUncheckedCreateInput = {
+    id?: string
+    profileId: string
+    contentId: string
+    contentType: string
+    progress: number
+    lastWatched?: Date | string
+    completed?: boolean
+    season?: number | null
+    episode?: number | null
+  }
+
+  export type WatchingUpdateInput = {
+    contentId?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    progress?: FloatFieldUpdateOperationsInput | number
+    lastWatched?: DateTimeFieldUpdateOperationsInput | Date | string
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    season?: NullableIntFieldUpdateOperationsInput | number | null
+    episode?: NullableIntFieldUpdateOperationsInput | number | null
+    profile?: ProfileUpdateOneRequiredWithoutWatchingNestedInput
+  }
+
+  export type WatchingUncheckedUpdateInput = {
+    profileId?: StringFieldUpdateOperationsInput | string
+    contentId?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    progress?: FloatFieldUpdateOperationsInput | number
+    lastWatched?: DateTimeFieldUpdateOperationsInput | Date | string
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    season?: NullableIntFieldUpdateOperationsInput | number | null
+    episode?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type WatchingCreateManyInput = {
+    id?: string
+    profileId: string
+    contentId: string
+    contentType: string
+    progress: number
+    lastWatched?: Date | string
+    completed?: boolean
+    season?: number | null
+    episode?: number | null
+  }
+
+  export type WatchingUpdateManyMutationInput = {
+    contentId?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    progress?: FloatFieldUpdateOperationsInput | number
+    lastWatched?: DateTimeFieldUpdateOperationsInput | Date | string
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    season?: NullableIntFieldUpdateOperationsInput | number | null
+    episode?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type WatchingUncheckedUpdateManyInput = {
+    profileId?: StringFieldUpdateOperationsInput | string
+    contentId?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    progress?: FloatFieldUpdateOperationsInput | number
+    lastWatched?: DateTimeFieldUpdateOperationsInput | Date | string
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    season?: NullableIntFieldUpdateOperationsInput | number | null
+    episode?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type AccountCreateInput = {
@@ -8460,12 +11138,10 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    has?: string | StringFieldRefInput<$PrismaModel> | null
-    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
-    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
+  export type ProfileListRelationFilter = {
+    every?: ProfileWhereInput
+    some?: ProfileWhereInput
+    none?: ProfileWhereInput
   }
 
   export type SessionListRelationFilter = {
@@ -8478,6 +11154,10 @@ export namespace Prisma {
     every?: AccountWhereInput
     some?: AccountWhereInput
     none?: AccountWhereInput
+  }
+
+  export type ProfileOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type SessionOrderByRelationAggregateInput = {
@@ -8497,7 +11177,6 @@ export namespace Prisma {
     hashedPassword?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    favouritesIds?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -8588,6 +11267,82 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type WatchingListRelationFilter = {
+    every?: WatchingWhereInput
+    some?: WatchingWhereInput
+    none?: WatchingWhereInput
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type WatchingOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProfileCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    avatar?: SortOrder
+    hasPin?: SortOrder
+    pin?: SortOrder
+    favouritesIds?: SortOrder
+    watchedIds?: SortOrder
+  }
+
+  export type ProfileMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    avatar?: SortOrder
+    hasPin?: SortOrder
+    pin?: SortOrder
+  }
+
+  export type ProfileMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    avatar?: SortOrder
+    hasPin?: SortOrder
+    pin?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -8600,9 +11355,95 @@ export namespace Prisma {
     isSet?: boolean
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
+  export type ProfileScalarRelationFilter = {
+    is?: ProfileWhereInput
+    isNot?: ProfileWhereInput
+  }
+
+  export type WatchingProfileIdContentIdCompoundUniqueInput = {
+    profileId: string
+    contentId: string
+  }
+
+  export type WatchingCountOrderByAggregateInput = {
+    id?: SortOrder
+    profileId?: SortOrder
+    contentId?: SortOrder
+    contentType?: SortOrder
+    progress?: SortOrder
+    lastWatched?: SortOrder
+    completed?: SortOrder
+    season?: SortOrder
+    episode?: SortOrder
+  }
+
+  export type WatchingAvgOrderByAggregateInput = {
+    progress?: SortOrder
+    season?: SortOrder
+    episode?: SortOrder
+  }
+
+  export type WatchingMaxOrderByAggregateInput = {
+    id?: SortOrder
+    profileId?: SortOrder
+    contentId?: SortOrder
+    contentType?: SortOrder
+    progress?: SortOrder
+    lastWatched?: SortOrder
+    completed?: SortOrder
+    season?: SortOrder
+    episode?: SortOrder
+  }
+
+  export type WatchingMinOrderByAggregateInput = {
+    id?: SortOrder
+    profileId?: SortOrder
+    contentId?: SortOrder
+    contentType?: SortOrder
+    progress?: SortOrder
+    lastWatched?: SortOrder
+    completed?: SortOrder
+    season?: SortOrder
+    episode?: SortOrder
+  }
+
+  export type WatchingSumOrderByAggregateInput = {
+    progress?: SortOrder
+    season?: SortOrder
+    episode?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+    isSet?: boolean
   }
 
   export type AccountProviderProviderAccountIdCompoundUniqueInput = {
@@ -8661,23 +11502,6 @@ export namespace Prisma {
 
   export type AccountSumOrderByAggregateInput = {
     expires_at?: SortOrder
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-    isSet?: boolean
   }
 
   export type SessionCountOrderByAggregateInput = {
@@ -8869,8 +11693,11 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type UserCreatefavouritesIdsInput = {
-    set: string[]
+  export type ProfileCreateNestedManyWithoutUserInput = {
+    create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput> | ProfileCreateWithoutUserInput[] | ProfileUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProfileCreateOrConnectWithoutUserInput | ProfileCreateOrConnectWithoutUserInput[]
+    createMany?: ProfileCreateManyUserInputEnvelope
+    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
   }
 
   export type SessionCreateNestedManyWithoutUserInput = {
@@ -8885,6 +11712,13 @@ export namespace Prisma {
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
     createMany?: AccountCreateManyUserInputEnvelope
     connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  }
+
+  export type ProfileUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput> | ProfileCreateWithoutUserInput[] | ProfileUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProfileCreateOrConnectWithoutUserInput | ProfileCreateOrConnectWithoutUserInput[]
+    createMany?: ProfileCreateManyUserInputEnvelope
+    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
   }
 
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
@@ -8919,9 +11753,18 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type UserUpdatefavouritesIdsInput = {
-    set?: string[]
-    push?: string | string[]
+  export type ProfileUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput> | ProfileCreateWithoutUserInput[] | ProfileUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProfileCreateOrConnectWithoutUserInput | ProfileCreateOrConnectWithoutUserInput[]
+    upsert?: ProfileUpsertWithWhereUniqueWithoutUserInput | ProfileUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ProfileCreateManyUserInputEnvelope
+    set?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
+    disconnect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
+    delete?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
+    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
+    update?: ProfileUpdateWithWhereUniqueWithoutUserInput | ProfileUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ProfileUpdateManyWithWhereWithoutUserInput | ProfileUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
   }
 
   export type SessionUpdateManyWithoutUserNestedInput = {
@@ -8952,6 +11795,20 @@ export namespace Prisma {
     deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
   }
 
+  export type ProfileUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput> | ProfileCreateWithoutUserInput[] | ProfileUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProfileCreateOrConnectWithoutUserInput | ProfileCreateOrConnectWithoutUserInput[]
+    upsert?: ProfileUpsertWithWhereUniqueWithoutUserInput | ProfileUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ProfileCreateManyUserInputEnvelope
+    set?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
+    disconnect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
+    delete?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
+    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
+    update?: ProfileUpdateWithWhereUniqueWithoutUserInput | ProfileUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ProfileUpdateManyWithWhereWithoutUserInput | ProfileUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -8980,10 +11837,96 @@ export namespace Prisma {
     deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutAccountsInput = {
-    create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
+  export type ProfileCreatefavouritesIdsInput = {
+    set: string[]
+  }
+
+  export type ProfileCreatewatchedIdsInput = {
+    set: string[]
+  }
+
+  export type WatchingCreateNestedManyWithoutProfileInput = {
+    create?: XOR<WatchingCreateWithoutProfileInput, WatchingUncheckedCreateWithoutProfileInput> | WatchingCreateWithoutProfileInput[] | WatchingUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: WatchingCreateOrConnectWithoutProfileInput | WatchingCreateOrConnectWithoutProfileInput[]
+    createMany?: WatchingCreateManyProfileInputEnvelope
+    connect?: WatchingWhereUniqueInput | WatchingWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedOneWithoutProfilesInput = {
+    create?: XOR<UserCreateWithoutProfilesInput, UserUncheckedCreateWithoutProfilesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutProfilesInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type WatchingUncheckedCreateNestedManyWithoutProfileInput = {
+    create?: XOR<WatchingCreateWithoutProfileInput, WatchingUncheckedCreateWithoutProfileInput> | WatchingCreateWithoutProfileInput[] | WatchingUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: WatchingCreateOrConnectWithoutProfileInput | WatchingCreateOrConnectWithoutProfileInput[]
+    createMany?: WatchingCreateManyProfileInputEnvelope
+    connect?: WatchingWhereUniqueInput | WatchingWhereUniqueInput[]
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type ProfileUpdatefavouritesIdsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type ProfileUpdatewatchedIdsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type WatchingUpdateManyWithoutProfileNestedInput = {
+    create?: XOR<WatchingCreateWithoutProfileInput, WatchingUncheckedCreateWithoutProfileInput> | WatchingCreateWithoutProfileInput[] | WatchingUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: WatchingCreateOrConnectWithoutProfileInput | WatchingCreateOrConnectWithoutProfileInput[]
+    upsert?: WatchingUpsertWithWhereUniqueWithoutProfileInput | WatchingUpsertWithWhereUniqueWithoutProfileInput[]
+    createMany?: WatchingCreateManyProfileInputEnvelope
+    set?: WatchingWhereUniqueInput | WatchingWhereUniqueInput[]
+    disconnect?: WatchingWhereUniqueInput | WatchingWhereUniqueInput[]
+    delete?: WatchingWhereUniqueInput | WatchingWhereUniqueInput[]
+    connect?: WatchingWhereUniqueInput | WatchingWhereUniqueInput[]
+    update?: WatchingUpdateWithWhereUniqueWithoutProfileInput | WatchingUpdateWithWhereUniqueWithoutProfileInput[]
+    updateMany?: WatchingUpdateManyWithWhereWithoutProfileInput | WatchingUpdateManyWithWhereWithoutProfileInput[]
+    deleteMany?: WatchingScalarWhereInput | WatchingScalarWhereInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutProfilesNestedInput = {
+    create?: XOR<UserCreateWithoutProfilesInput, UserUncheckedCreateWithoutProfilesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutProfilesInput
+    upsert?: UserUpsertWithoutProfilesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProfilesInput, UserUpdateWithoutProfilesInput>, UserUncheckedUpdateWithoutProfilesInput>
+  }
+
+  export type WatchingUncheckedUpdateManyWithoutProfileNestedInput = {
+    create?: XOR<WatchingCreateWithoutProfileInput, WatchingUncheckedCreateWithoutProfileInput> | WatchingCreateWithoutProfileInput[] | WatchingUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: WatchingCreateOrConnectWithoutProfileInput | WatchingCreateOrConnectWithoutProfileInput[]
+    upsert?: WatchingUpsertWithWhereUniqueWithoutProfileInput | WatchingUpsertWithWhereUniqueWithoutProfileInput[]
+    createMany?: WatchingCreateManyProfileInputEnvelope
+    set?: WatchingWhereUniqueInput | WatchingWhereUniqueInput[]
+    disconnect?: WatchingWhereUniqueInput | WatchingWhereUniqueInput[]
+    delete?: WatchingWhereUniqueInput | WatchingWhereUniqueInput[]
+    connect?: WatchingWhereUniqueInput | WatchingWhereUniqueInput[]
+    update?: WatchingUpdateWithWhereUniqueWithoutProfileInput | WatchingUpdateWithWhereUniqueWithoutProfileInput[]
+    updateMany?: WatchingUpdateManyWithWhereWithoutProfileInput | WatchingUpdateManyWithWhereWithoutProfileInput[]
+    deleteMany?: WatchingScalarWhereInput | WatchingScalarWhereInput[]
+  }
+
+  export type ProfileCreateNestedOneWithoutWatchingInput = {
+    create?: XOR<ProfileCreateWithoutWatchingInput, ProfileUncheckedCreateWithoutWatchingInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutWatchingInput
+    connect?: ProfileWhereUniqueInput
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -8993,6 +11936,20 @@ export namespace Prisma {
     multiply?: number
     divide?: number
     unset?: boolean
+  }
+
+  export type ProfileUpdateOneRequiredWithoutWatchingNestedInput = {
+    create?: XOR<ProfileCreateWithoutWatchingInput, ProfileUncheckedCreateWithoutWatchingInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutWatchingInput
+    upsert?: ProfileUpsertWithoutWatchingInput
+    connect?: ProfileWhereUniqueInput
+    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutWatchingInput, ProfileUpdateWithoutWatchingInput>, ProfileUncheckedUpdateWithoutWatchingInput>
+  }
+
+  export type UserCreateNestedOneWithoutAccountsInput = {
+    create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
@@ -9191,6 +12148,46 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -9253,15 +12250,35 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
+  export type ProfileCreateWithoutUserInput = {
+    id?: string
+    name: string
+    avatar?: string | null
+    hasPin?: boolean
+    pin?: string | null
+    favouritesIds?: ProfileCreatefavouritesIdsInput | string[]
+    watchedIds?: ProfileCreatewatchedIdsInput | string[]
+    watching?: WatchingCreateNestedManyWithoutProfileInput
+  }
+
+  export type ProfileUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    avatar?: string | null
+    hasPin?: boolean
+    pin?: string | null
+    favouritesIds?: ProfileCreatefavouritesIdsInput | string[]
+    watchedIds?: ProfileCreatewatchedIdsInput | string[]
+    watching?: WatchingUncheckedCreateNestedManyWithoutProfileInput
+  }
+
+  export type ProfileCreateOrConnectWithoutUserInput = {
+    where: ProfileWhereUniqueInput
+    create: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
+  }
+
+  export type ProfileCreateManyUserInputEnvelope = {
+    data: ProfileCreateManyUserInput | ProfileCreateManyUserInput[]
   }
 
   export type SessionCreateWithoutUserInput = {
@@ -9320,6 +12337,36 @@ export namespace Prisma {
 
   export type AccountCreateManyUserInputEnvelope = {
     data: AccountCreateManyUserInput | AccountCreateManyUserInput[]
+  }
+
+  export type ProfileUpsertWithWhereUniqueWithoutUserInput = {
+    where: ProfileWhereUniqueInput
+    update: XOR<ProfileUpdateWithoutUserInput, ProfileUncheckedUpdateWithoutUserInput>
+    create: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
+  }
+
+  export type ProfileUpdateWithWhereUniqueWithoutUserInput = {
+    where: ProfileWhereUniqueInput
+    data: XOR<ProfileUpdateWithoutUserInput, ProfileUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ProfileUpdateManyWithWhereWithoutUserInput = {
+    where: ProfileScalarWhereInput
+    data: XOR<ProfileUpdateManyMutationInput, ProfileUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ProfileScalarWhereInput = {
+    AND?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
+    OR?: ProfileScalarWhereInput[]
+    NOT?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
+    id?: StringFilter<"Profile"> | string
+    userId?: StringFilter<"Profile"> | string
+    name?: StringFilter<"Profile"> | string
+    avatar?: StringNullableFilter<"Profile"> | string | null
+    hasPin?: BoolFilter<"Profile"> | boolean
+    pin?: StringNullableFilter<"Profile"> | string | null
+    favouritesIds?: StringNullableListFilter<"Profile">
+    watchedIds?: StringNullableListFilter<"Profile">
   }
 
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
@@ -9382,6 +12429,192 @@ export namespace Prisma {
     session_state?: StringNullableFilter<"Account"> | string | null
   }
 
+  export type WatchingCreateWithoutProfileInput = {
+    id?: string
+    contentId: string
+    contentType: string
+    progress: number
+    lastWatched?: Date | string
+    completed?: boolean
+    season?: number | null
+    episode?: number | null
+  }
+
+  export type WatchingUncheckedCreateWithoutProfileInput = {
+    id?: string
+    contentId: string
+    contentType: string
+    progress: number
+    lastWatched?: Date | string
+    completed?: boolean
+    season?: number | null
+    episode?: number | null
+  }
+
+  export type WatchingCreateOrConnectWithoutProfileInput = {
+    where: WatchingWhereUniqueInput
+    create: XOR<WatchingCreateWithoutProfileInput, WatchingUncheckedCreateWithoutProfileInput>
+  }
+
+  export type WatchingCreateManyProfileInputEnvelope = {
+    data: WatchingCreateManyProfileInput | WatchingCreateManyProfileInput[]
+  }
+
+  export type UserCreateWithoutProfilesInput = {
+    id?: string
+    name: string
+    image?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    hashedPassword?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutProfilesInput = {
+    id?: string
+    name: string
+    image?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    hashedPassword?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutProfilesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutProfilesInput, UserUncheckedCreateWithoutProfilesInput>
+  }
+
+  export type WatchingUpsertWithWhereUniqueWithoutProfileInput = {
+    where: WatchingWhereUniqueInput
+    update: XOR<WatchingUpdateWithoutProfileInput, WatchingUncheckedUpdateWithoutProfileInput>
+    create: XOR<WatchingCreateWithoutProfileInput, WatchingUncheckedCreateWithoutProfileInput>
+  }
+
+  export type WatchingUpdateWithWhereUniqueWithoutProfileInput = {
+    where: WatchingWhereUniqueInput
+    data: XOR<WatchingUpdateWithoutProfileInput, WatchingUncheckedUpdateWithoutProfileInput>
+  }
+
+  export type WatchingUpdateManyWithWhereWithoutProfileInput = {
+    where: WatchingScalarWhereInput
+    data: XOR<WatchingUpdateManyMutationInput, WatchingUncheckedUpdateManyWithoutProfileInput>
+  }
+
+  export type WatchingScalarWhereInput = {
+    AND?: WatchingScalarWhereInput | WatchingScalarWhereInput[]
+    OR?: WatchingScalarWhereInput[]
+    NOT?: WatchingScalarWhereInput | WatchingScalarWhereInput[]
+    id?: StringFilter<"Watching"> | string
+    profileId?: StringFilter<"Watching"> | string
+    contentId?: StringFilter<"Watching"> | string
+    contentType?: StringFilter<"Watching"> | string
+    progress?: FloatFilter<"Watching"> | number
+    lastWatched?: DateTimeFilter<"Watching"> | Date | string
+    completed?: BoolFilter<"Watching"> | boolean
+    season?: IntNullableFilter<"Watching"> | number | null
+    episode?: IntNullableFilter<"Watching"> | number | null
+  }
+
+  export type UserUpsertWithoutProfilesInput = {
+    update: XOR<UserUpdateWithoutProfilesInput, UserUncheckedUpdateWithoutProfilesInput>
+    create: XOR<UserCreateWithoutProfilesInput, UserUncheckedCreateWithoutProfilesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutProfilesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutProfilesInput, UserUncheckedUpdateWithoutProfilesInput>
+  }
+
+  export type UserUpdateWithoutProfilesInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutProfilesInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ProfileCreateWithoutWatchingInput = {
+    id?: string
+    name: string
+    avatar?: string | null
+    hasPin?: boolean
+    pin?: string | null
+    favouritesIds?: ProfileCreatefavouritesIdsInput | string[]
+    watchedIds?: ProfileCreatewatchedIdsInput | string[]
+    user: UserCreateNestedOneWithoutProfilesInput
+  }
+
+  export type ProfileUncheckedCreateWithoutWatchingInput = {
+    id?: string
+    userId: string
+    name: string
+    avatar?: string | null
+    hasPin?: boolean
+    pin?: string | null
+    favouritesIds?: ProfileCreatefavouritesIdsInput | string[]
+    watchedIds?: ProfileCreatewatchedIdsInput | string[]
+  }
+
+  export type ProfileCreateOrConnectWithoutWatchingInput = {
+    where: ProfileWhereUniqueInput
+    create: XOR<ProfileCreateWithoutWatchingInput, ProfileUncheckedCreateWithoutWatchingInput>
+  }
+
+  export type ProfileUpsertWithoutWatchingInput = {
+    update: XOR<ProfileUpdateWithoutWatchingInput, ProfileUncheckedUpdateWithoutWatchingInput>
+    create: XOR<ProfileCreateWithoutWatchingInput, ProfileUncheckedCreateWithoutWatchingInput>
+    where?: ProfileWhereInput
+  }
+
+  export type ProfileUpdateToOneWithWhereWithoutWatchingInput = {
+    where?: ProfileWhereInput
+    data: XOR<ProfileUpdateWithoutWatchingInput, ProfileUncheckedUpdateWithoutWatchingInput>
+  }
+
+  export type ProfileUpdateWithoutWatchingInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    hasPin?: BoolFieldUpdateOperationsInput | boolean
+    pin?: NullableStringFieldUpdateOperationsInput | string | null
+    favouritesIds?: ProfileUpdatefavouritesIdsInput | string[]
+    watchedIds?: ProfileUpdatewatchedIdsInput | string[]
+    user?: UserUpdateOneRequiredWithoutProfilesNestedInput
+  }
+
+  export type ProfileUncheckedUpdateWithoutWatchingInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    hasPin?: BoolFieldUpdateOperationsInput | boolean
+    pin?: NullableStringFieldUpdateOperationsInput | string | null
+    favouritesIds?: ProfileUpdatefavouritesIdsInput | string[]
+    watchedIds?: ProfileUpdatewatchedIdsInput | string[]
+  }
+
   export type UserCreateWithoutAccountsInput = {
     id?: string
     name: string
@@ -9391,7 +12624,7 @@ export namespace Prisma {
     hashedPassword?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    favouritesIds?: UserCreatefavouritesIdsInput | string[]
+    profiles?: ProfileCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
@@ -9404,7 +12637,7 @@ export namespace Prisma {
     hashedPassword?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    favouritesIds?: UserCreatefavouritesIdsInput | string[]
+    profiles?: ProfileUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -9432,7 +12665,7 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    favouritesIds?: UserUpdatefavouritesIdsInput | string[]
+    profiles?: ProfileUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
@@ -9444,7 +12677,7 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    favouritesIds?: UserUpdatefavouritesIdsInput | string[]
+    profiles?: ProfileUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -9457,7 +12690,7 @@ export namespace Prisma {
     hashedPassword?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    favouritesIds?: UserCreatefavouritesIdsInput | string[]
+    profiles?: ProfileCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
   }
 
@@ -9470,7 +12703,7 @@ export namespace Prisma {
     hashedPassword?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    favouritesIds?: UserCreatefavouritesIdsInput | string[]
+    profiles?: ProfileUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -9498,7 +12731,7 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    favouritesIds?: UserUpdatefavouritesIdsInput | string[]
+    profiles?: ProfileUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
   }
 
@@ -9510,8 +12743,18 @@ export namespace Prisma {
     hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    favouritesIds?: UserUpdatefavouritesIdsInput | string[]
+    profiles?: ProfileUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ProfileCreateManyUserInput = {
+    id?: string
+    name: string
+    avatar?: string | null
+    hasPin?: boolean
+    pin?: string | null
+    favouritesIds?: ProfileCreatefavouritesIdsInput | string[]
+    watchedIds?: ProfileCreatewatchedIdsInput | string[]
   }
 
   export type SessionCreateManyUserInput = {
@@ -9532,6 +12775,35 @@ export namespace Prisma {
     scope?: string | null
     id_token?: string | null
     session_state?: string | null
+  }
+
+  export type ProfileUpdateWithoutUserInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    hasPin?: BoolFieldUpdateOperationsInput | boolean
+    pin?: NullableStringFieldUpdateOperationsInput | string | null
+    favouritesIds?: ProfileUpdatefavouritesIdsInput | string[]
+    watchedIds?: ProfileUpdatewatchedIdsInput | string[]
+    watching?: WatchingUpdateManyWithoutProfileNestedInput
+  }
+
+  export type ProfileUncheckedUpdateWithoutUserInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    hasPin?: BoolFieldUpdateOperationsInput | boolean
+    pin?: NullableStringFieldUpdateOperationsInput | string | null
+    favouritesIds?: ProfileUpdatefavouritesIdsInput | string[]
+    watchedIds?: ProfileUpdatewatchedIdsInput | string[]
+    watching?: WatchingUncheckedUpdateManyWithoutProfileNestedInput
+  }
+
+  export type ProfileUncheckedUpdateManyWithoutUserInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    hasPin?: BoolFieldUpdateOperationsInput | boolean
+    pin?: NullableStringFieldUpdateOperationsInput | string | null
+    favouritesIds?: ProfileUpdatefavouritesIdsInput | string[]
+    watchedIds?: ProfileUpdatewatchedIdsInput | string[]
   }
 
   export type SessionUpdateWithoutUserInput = {
@@ -9586,6 +12858,47 @@ export namespace Prisma {
     scope?: NullableStringFieldUpdateOperationsInput | string | null
     id_token?: NullableStringFieldUpdateOperationsInput | string | null
     session_state?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type WatchingCreateManyProfileInput = {
+    id?: string
+    contentId: string
+    contentType: string
+    progress: number
+    lastWatched?: Date | string
+    completed?: boolean
+    season?: number | null
+    episode?: number | null
+  }
+
+  export type WatchingUpdateWithoutProfileInput = {
+    contentId?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    progress?: FloatFieldUpdateOperationsInput | number
+    lastWatched?: DateTimeFieldUpdateOperationsInput | Date | string
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    season?: NullableIntFieldUpdateOperationsInput | number | null
+    episode?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type WatchingUncheckedUpdateWithoutProfileInput = {
+    contentId?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    progress?: FloatFieldUpdateOperationsInput | number
+    lastWatched?: DateTimeFieldUpdateOperationsInput | Date | string
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    season?: NullableIntFieldUpdateOperationsInput | number | null
+    episode?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type WatchingUncheckedUpdateManyWithoutProfileInput = {
+    contentId?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    progress?: FloatFieldUpdateOperationsInput | number
+    lastWatched?: DateTimeFieldUpdateOperationsInput | Date | string
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    season?: NullableIntFieldUpdateOperationsInput | number | null
+    episode?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
 
