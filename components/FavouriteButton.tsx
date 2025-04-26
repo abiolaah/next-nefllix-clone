@@ -7,38 +7,51 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 import useFavourites from "@/hooks/useFavourites";
 
 interface FavouriteButtonProps {
-  movieId: string | number;
+  mediaId: string | number;
+  mediaType: "movie" | "tv";
+  profileId: string;
 }
 
-const FavouriteButton: React.FC<FavouriteButtonProps> = ({ movieId }) => {
+const FavouriteButton: React.FC<FavouriteButtonProps> = ({
+  mediaId,
+  mediaType,
+  profileId,
+}) => {
   const { mutate: mutateFavourites } = useFavourites();
   const { data: currentUser, mutate } = useCurrentUser();
 
   // Check if movie is already in favourites
   const isFavourite = useMemo(() => {
-    const list = currentUser?.favouritesIds || [];
+    if (!currentUser?.favorites) return false;
 
-    return list.includes(movieId);
-  }, [currentUser, movieId]);
+    return currentUser.favorites.some(
+      (fav: { mediaId: string | number; mediaType: string }) =>
+        fav.mediaId === mediaId && fav.mediaType === mediaType
+    );
+  }, [currentUser, mediaId, mediaType]);
 
   //Toggle Favourite
   const toggleFavourite = useCallback(async () => {
-    let response;
-    if (isFavourite) {
-      response = await axios.delete(`/api/favourite`, { data: { movieId } });
-    } else {
-      response = await axios.post(`/api/favourite`, { movieId });
+    try {
+      if (isFavourite) {
+        await axios.delete("/api/favourite", {
+          data: { mediaId, profileId },
+        });
+      } else {
+        await axios.post("/api/favourite", {
+          mediaId,
+          profileId,
+          mediaType,
+        });
+      }
+
+      // Update local state
+      mutate();
+      mutateFavourites();
+    } catch (error) {
+      console.error("Error toggling favourite:", error);
     }
-
-    const updatedFavouriteIds = response?.data?.favouritesIds;
-
-    mutate({
-      ...currentUser,
-      favouritesIds: updatedFavouriteIds,
-    });
-
-    mutateFavourites();
-  }, [movieId, isFavourite, mutate, mutateFavourites, currentUser]);
+  }, [mediaId, mediaType, profileId, isFavourite, mutate, mutateFavourites]);
 
   // Dynamic icon
   const Icon = isFavourite ? AiOutlineCheck : AiOutlinePlus;
