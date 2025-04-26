@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BsBell, BsChevronDown, BsSearch } from "react-icons/bs";
 import { IoMdArrowDropdown } from "react-icons/io";
 import NavbarItem from "./NavbarItem";
@@ -34,10 +34,20 @@ const Navbar = () => {
       : null;
 
   // Get the current profile from the currentUser data
-  const currentProfile =
-    currentUser?.profiles?.find(
-      (profile: ProfileProps) => profile.id === currentProfileId
-    ) || currentUser?.profiles?.[0];
+  const currentProfile = useMemo(() => {
+    const profile =
+      currentUser?.profiles?.find(
+        (profile: ProfileProps) => profile.id === currentProfileId
+      ) || currentUser?.profiles?.[0];
+
+    return {
+      ...profile,
+      avatar:
+        profile?.avatar ||
+        "https://res.cloudinary.com/dixwarqdb/image/upload/v1744696100/default-blue_oqkthi.png",
+      name: profile?.name || "Profile",
+    };
+  }, [currentUser, currentProfileId]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -101,11 +111,11 @@ const Navbar = () => {
         }`}
       >
         <Image
-          className="h-4 lg:h-7"
+          className="h-4 lg:h-7 w-auto"
           src="https://res.cloudinary.com/dixwarqdb/image/upload/v1744696101/logo_uwzr3q.png"
           width={100}
           height={100}
-          alt="Logo"
+          alt="Streaming Service Logo"
         />
         <div className="flex-row ml-8 gap-7 hidden lg:flex">
           {navItem.map((item) => (
@@ -158,10 +168,15 @@ const Navbar = () => {
           >
             <div className="w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden">
               <Image
-                src={currentProfile?.avatar}
+                src={currentProfile.avatar}
                 width={30}
                 height={30}
-                alt={currentProfile?.name}
+                alt={`Avatar for ${currentProfile.name}`}
+                onError={(e) => {
+                  // Fallback to default avatar if the image fails to load
+                  (e.target as HTMLImageElement).src =
+                    "https://res.cloudinary.com/dixwarqdb/image/upload/v1744696100/default-blue_oqkthi.png";
+                }}
               />
             </div>
             <IoMdArrowDropdown
