@@ -43,7 +43,7 @@ model Profile {
 model Favourite {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   profileId   String   @db.ObjectId
-  contentId   String   @db.ObjectId
+  contentId   String
   contentType String   // "movie" or "tvshow"
   source      String   @default("local")// "local" or "external"
   
@@ -55,7 +55,7 @@ model Favourite {
 model Watched {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   profileId   String   @db.ObjectId
-  contentId   String   @db.ObjectId
+  contentId   String 
   contentType String   // "movie" or "tvshow"
   source      String   @default("local")// "local" or "external"
   
