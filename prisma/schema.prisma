@@ -32,12 +32,35 @@ model Profile {
   avatar        String?   @default("https://res.cloudinary.com/dixwarqdb/image/upload/v1744696100/default-blue_oqkthi.png")
   hasPin        Boolean   @default(false)
   pin           String?
-  favouritesIds String[]  @db.ObjectId
-  watchedIds String[]  @db.ObjectId
+  favourites    Favourite[]  
+  watcheds      Watched[]  
   watching      Watching[]
   user          User      @relation("UserProfiles", fields: [userId], references: [id], onDelete: Cascade)
   
   @@index([userId])
+}
+
+model Favourite {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  profileId   String   @db.ObjectId
+  contentId   String   @db.ObjectId
+  contentType String   // "movie" or "tvshow"
+  
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  @@index([profileId])
+  @@unique([profileId, contentId])
+}
+model Watched {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  profileId   String   @db.ObjectId
+  contentId   String   @db.ObjectId
+  contentType String   // "movie" or "tvshow"
+  
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  @@index([profileId])
+  @@unique([profileId, contentId])
 }
 
 model Watching {
@@ -104,6 +127,7 @@ model Movie {
   genre        String[]
   rating       Float?
   duration     String
+  isAdult      Boolean  @default(false)
 }
 
 model TvShow {
@@ -116,4 +140,28 @@ model TvShow {
   genre           String[]
   rating          Float?
   numberOfSeasons Int
+  isAdult         Boolean  @default(false)
+  seasons         Season[]
+}
+
+model Season {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  seasonNumber Int
+  episodes     Episode[]
+  tvShowId     String   @db.ObjectId
+  
+  tvShow       TvShow   @relation(fields: [tvShowId], references: [id], onDelete: Cascade)
+}
+
+model Episode {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  episodeNumber Int
+  title       String
+  description String
+  duration    String
+  videoUrl    String
+  thumbnailUrl String
+  seasonId    String   @db.ObjectId
+  
+  season      Season   @relation(fields: [seasonId], references: [id], onDelete: Cascade)
 }
