@@ -7,10 +7,18 @@ import MobileMenu from "./MobileMenu";
 import AccountMenu from "./AccountMenu";
 import { navItem } from "@/constants/navItem";
 import Input from "./Input";
+import useCurrentUser from "@/hooks/useCurrentUser";
+
+interface ProfileProps {
+  id: string;
+  name: string;
+  avatar: string;
+}
 
 const TOP_OFFSET = 66;
 
 const Navbar = () => {
+  const { data: currentUser } = useCurrentUser();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showBackground, setShowBackground] = useState(false);
@@ -18,6 +26,18 @@ const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const searchRef = useRef<HTMLDivElement>(null);
+
+  // Get the current profile from localStorage or use the first profile
+  const currentProfileId =
+    typeof window !== "undefined"
+      ? localStorage.getItem("currentProfile")
+      : null;
+
+  // Get the current profile from the currentUser data
+  const currentProfile =
+    currentUser?.profiles?.find(
+      (profile: ProfileProps) => profile.id === currentProfileId
+    ) || currentUser?.profiles?.[0];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,7 +49,6 @@ const Navbar = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -78,7 +97,7 @@ const Navbar = () => {
     <nav className="w-full fixed z-40">
       <div
         className={`px-4 md:px-16 py-6 flex flex-row items-center transition duration-500 ${
-          showBackground ? `bg-zinc-900/90` : ``
+          showBackground ? `bg-green-900/90` : `bg-transparent`
         }`}
       >
         <Image
@@ -139,10 +158,10 @@ const Navbar = () => {
           >
             <div className="w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden">
               <Image
-                src="https://res.cloudinary.com/dixwarqdb/image/upload/v1744696100/default-blue_oqkthi.png"
+                src={currentProfile?.avatar}
                 width={30}
                 height={30}
-                alt="Profile"
+                alt={currentProfile?.name}
               />
             </div>
             <IoMdArrowDropdown
