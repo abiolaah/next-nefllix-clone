@@ -127,9 +127,21 @@ exports.Prisma.ProfileScalarFieldEnum = {
   name: 'name',
   avatar: 'avatar',
   hasPin: 'hasPin',
-  pin: 'pin',
-  favouritesIds: 'favouritesIds',
-  watchedIds: 'watchedIds'
+  pin: 'pin'
+};
+
+exports.Prisma.FavouriteScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  contentId: 'contentId',
+  contentType: 'contentType'
+};
+
+exports.Prisma.WatchedScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  contentId: 'contentId',
+  contentType: 'contentType'
 };
 
 exports.Prisma.WatchingScalarFieldEnum = {
@@ -182,7 +194,8 @@ exports.Prisma.MovieScalarFieldEnum = {
   trailerUrl: 'trailerUrl',
   genre: 'genre',
   rating: 'rating',
-  duration: 'duration'
+  duration: 'duration',
+  isAdult: 'isAdult'
 };
 
 exports.Prisma.TvShowScalarFieldEnum = {
@@ -194,7 +207,25 @@ exports.Prisma.TvShowScalarFieldEnum = {
   trailerUrl: 'trailerUrl',
   genre: 'genre',
   rating: 'rating',
-  numberOfSeasons: 'numberOfSeasons'
+  numberOfSeasons: 'numberOfSeasons',
+  isAdult: 'isAdult'
+};
+
+exports.Prisma.SeasonScalarFieldEnum = {
+  id: 'id',
+  seasonNumber: 'seasonNumber',
+  tvShowId: 'tvShowId'
+};
+
+exports.Prisma.EpisodeScalarFieldEnum = {
+  id: 'id',
+  episodeNumber: 'episodeNumber',
+  title: 'title',
+  description: 'description',
+  duration: 'duration',
+  videoUrl: 'videoUrl',
+  thumbnailUrl: 'thumbnailUrl',
+  seasonId: 'seasonId'
 };
 
 exports.Prisma.SortOrder = {
@@ -211,12 +242,16 @@ exports.Prisma.QueryMode = {
 exports.Prisma.ModelName = {
   User: 'User',
   Profile: 'Profile',
+  Favourite: 'Favourite',
+  Watched: 'Watched',
   Watching: 'Watching',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Movie: 'Movie',
-  TvShow: 'TvShow'
+  TvShow: 'TvShow',
+  Season: 'Season',
+  Episode: 'Episode'
 };
 
 /**
