@@ -1,5 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
+import prismadb from "@/lib/prismadb";
+
 import serverAuth from "@/lib/serverAuth";
 
 export default async function handler(
@@ -13,7 +15,17 @@ export default async function handler(
   try {
     const { currentUser } = await serverAuth(req, res);
 
-    return res.status(200).json(currentUser);
+    // Include profiles in the response
+    const userWithProfiles = await prismadb.user.findUnique({
+      where: {
+        email: currentUser.email || "",
+      },
+      include: {
+        profiles: true,
+      },
+    });
+
+    return res.status(200).json(userWithProfiles);
   } catch (error) {
     console.log(error);
     return res.status(400).end();
