@@ -28,7 +28,7 @@ export default async function handler(
     });
 
     if (!profile) {
-      throw new Error("Invalid profile");
+      return res.status(404).json({ error: "Profile not found" });
     }
 
     // Get all favourites for the profile
@@ -65,10 +65,19 @@ export default async function handler(
       }),
     ]);
 
-    return res.status(200).json({
-      movies: favouriteMovies,
-      tvShows: favouriteTvShows,
-    });
+    // Combine results with proper MediaItem type
+    const combinedResults = [
+      ...favouriteMovies.map((movie) => ({
+        ...movie,
+        isTvShow: false,
+      })),
+      ...favouriteTvShows.map((tvShow) => ({
+        ...tvShow,
+        isTvShow: true,
+      })),
+    ];
+
+    return res.status(200).json(combinedResults);
   } catch (error) {
     console.log(error);
     return res.status(400).end();
