@@ -30,6 +30,17 @@ export default async function handler(
         hashedPassword,
         image: "",
         emailVerified: new Date(),
+        profiles: {
+          create: {
+            name: name,
+            avatar:
+              "https://res.cloudinary.com/dixwarqdb/image/upload/v1744696100/default-blue_oqkthi.png",
+            hasPin: false,
+          },
+        },
+      },
+      include: {
+        profiles: true,
       },
     });
     return res.status(200).json(user);
