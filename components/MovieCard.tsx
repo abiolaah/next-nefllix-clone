@@ -78,6 +78,11 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
     setIsHovered(false);
   };
 
+  const currentProfileId =
+    typeof window !== "undefined"
+      ? localStorage.getItem("currentProfile")
+      : null;
+
   return (
     <div
       className="relative"
@@ -154,7 +159,11 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
               >
                 <BsFillPlayFill className="text-white" size={25} />
               </div>
-              <FavouriteButton movieId={data.id} />
+              <FavouriteButton
+                mediaId={data.id}
+                mediaType={data.isTvShow ? "tv" : "movie"}
+                profileId={currentProfileId || ""}
+              />
               <ReactionsButton />
               <div
                 onClick={handleOpenModal}

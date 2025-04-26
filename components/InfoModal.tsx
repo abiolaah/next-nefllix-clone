@@ -267,6 +267,11 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
     ? `${numberOfSeasons} ${numberOfSeasons === 1 ? "Season" : "Seasons"}`
     : (data as MovieDetailsResponse["details"]).duration || "N/A";
 
+  const currentProfileId =
+    typeof window !== "undefined"
+      ? localStorage.getItem("currentProfile")
+      : null;
+
   return (
     <div className="z-50 transition duration-300 bg-black/80 flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0">
       <div className="relative w-auto mx-auto max-w-4xl rounded-md overflow-hidden">
@@ -329,7 +334,11 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                   <BsFillPlayFill className="w-6 h-6" />
                   {isAlreadyWatched ? <span>Resume</span> : <span>Play</span>}
                 </button>
-                <FavouriteButton movieId={data.id.toString()} />
+                <FavouriteButton
+                  mediaId={data.id}
+                  mediaType={data.isTvShow ? "tv" : "movie"}
+                  profileId={currentProfileId || ""}
+                />
                 <ReactionsButton />
               </div>
             </div>
