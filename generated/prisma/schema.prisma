@@ -45,6 +45,7 @@ model Favourite {
   profileId   String @db.ObjectId
   contentId   String @db.ObjectId
   contentType String // "movie" or "tvshow"
+  source      String @default("local") // "local" or "external"
 
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
@@ -57,6 +58,7 @@ model Watched {
   profileId   String @db.ObjectId
   contentId   String @db.ObjectId
   contentType String // "movie" or "tvshow"
+  source      String @default("local") // "local" or "external"
 
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
