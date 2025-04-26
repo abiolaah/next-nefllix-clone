@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -15,32 +12,64 @@ datasource db {
 }
 
 model User {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  name String
-  image String?
-  email String? @unique
-  emailVerified DateTime?
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  image          String?
+  email          String?   @unique
+  emailVerified  DateTime?
   hashedPassword String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  favouritesIds String[] @db.ObjectId
-  sessions Session[]
-  accounts Account[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  profiles       Profile[] @relation("UserProfiles")
+  sessions       Session[]
+  accounts       Account[]
+}
+
+model Profile {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String    @db.ObjectId
+  name          String
+  avatar        String?   @default("https://res.cloudinary.com/dixwarqdb/image/upload/v1744696100/default-blue_oqkthi.png")
+  hasPin        Boolean   @default(false)
+  pin           String?
+  favouritesIds String[]  @db.ObjectId
+  watchedIds String[]  @db.ObjectId
+  watching      Watching[]
+  user          User      @relation("UserProfiles", fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+}
+
+model Watching {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  profileId   String   @db.ObjectId
+  contentId   String   @db.ObjectId
+  contentType String   // "movie" or "tvshow"
+  progress    Float    // percentage watched (0-100)
+  lastWatched DateTime @default(now())
+  completed   Boolean  @default(false)
+  season      Int?     // for TV shows
+  episode     Int?     // for TV shows
+  
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  @@index([profileId])
+  @@unique([profileId, contentId])
 }
 
 model Account {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @db.ObjectId
-  type String
-  provider String
-  providerAccountId String
-  refresh_token String? @db.String
-  access_token String? @db.String
-  expires_at Int?
-  token_type String?
-  scope String?
-  id_token String? @db.String
-  session_state String?
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId             String   @db.ObjectId
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.String
+  access_token       String?  @db.String
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.String
+  session_state      String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -48,43 +77,43 @@ model Account {
 }
 
 model Session {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  sessionToken String @unique
-  userId String @db.ObjectId
-  expires DateTime?
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken   String   @unique
+  userId         String   @db.ObjectId
+  expires        DateTime?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   identifier String
-  token String @unique
-  expires DateTime
+  token      String   @unique
+  expires    DateTime
 
   @@unique([identifier, token])
 }
 
-model Movie{
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  title String
-  description String
-  videoUrl String
+model Movie {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  description  String
+  videoUrl     String
   thumbnailUrl String
-  trailerUrl String
-  genre String[]
-  rating Float?
-  duration String
+  trailerUrl   String
+  genre        String[]
+  rating       Float?
+  duration     String
 }
 
 model TvShow {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String
-  videoUrl    String
-  thumbnailUrl String
-  trailerUrl String
-  genre       String[]
-  rating      Float?
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+  description     String
+  videoUrl        String
+  thumbnailUrl    String
+  trailerUrl      String
+  genre           String[]
+  rating          Float?
   numberOfSeasons Int
 }
