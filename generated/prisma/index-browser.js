@@ -134,14 +134,16 @@ exports.Prisma.FavouriteScalarFieldEnum = {
   id: 'id',
   profileId: 'profileId',
   contentId: 'contentId',
-  contentType: 'contentType'
+  contentType: 'contentType',
+  source: 'source'
 };
 
 exports.Prisma.WatchedScalarFieldEnum = {
   id: 'id',
   profileId: 'profileId',
   contentId: 'contentId',
-  contentType: 'contentType'
+  contentType: 'contentType',
+  source: 'source'
 };
 
 exports.Prisma.WatchingScalarFieldEnum = {

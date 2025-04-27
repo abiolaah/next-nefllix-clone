@@ -4168,6 +4168,7 @@ export namespace Prisma {
     profileId: string | null
     contentId: string | null
     contentType: string | null
+    source: string | null
   }
 
   export type FavouriteMaxAggregateOutputType = {
@@ -4175,6 +4176,7 @@ export namespace Prisma {
     profileId: string | null
     contentId: string | null
     contentType: string | null
+    source: string | null
   }
 
   export type FavouriteCountAggregateOutputType = {
@@ -4182,6 +4184,7 @@ export namespace Prisma {
     profileId: number
     contentId: number
     contentType: number
+    source: number
     _all: number
   }
 
@@ -4191,6 +4194,7 @@ export namespace Prisma {
     profileId?: true
     contentId?: true
     contentType?: true
+    source?: true
   }
 
   export type FavouriteMaxAggregateInputType = {
@@ -4198,6 +4202,7 @@ export namespace Prisma {
     profileId?: true
     contentId?: true
     contentType?: true
+    source?: true
   }
 
   export type FavouriteCountAggregateInputType = {
@@ -4205,6 +4210,7 @@ export namespace Prisma {
     profileId?: true
     contentId?: true
     contentType?: true
+    source?: true
     _all?: true
   }
 
@@ -4285,6 +4291,7 @@ export namespace Prisma {
     profileId: string
     contentId: string
     contentType: string
+    source: string
     _count: FavouriteCountAggregateOutputType | null
     _min: FavouriteMinAggregateOutputType | null
     _max: FavouriteMaxAggregateOutputType | null
@@ -4309,6 +4316,7 @@ export namespace Prisma {
     profileId?: boolean
     contentId?: boolean
     contentType?: boolean
+    source?: boolean
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["favourite"]>
 
@@ -4319,9 +4327,10 @@ export namespace Prisma {
     profileId?: boolean
     contentId?: boolean
     contentType?: boolean
+    source?: boolean
   }
 
-  export type FavouriteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId" | "contentId" | "contentType", ExtArgs["result"]["favourite"]>
+  export type FavouriteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId" | "contentId" | "contentType" | "source", ExtArgs["result"]["favourite"]>
   export type FavouriteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
   }
@@ -4336,6 +4345,7 @@ export namespace Prisma {
       profileId: string
       contentId: string
       contentType: string
+      source: string
     }, ExtArgs["result"]["favourite"]>
     composites: {}
   }
@@ -4733,6 +4743,7 @@ export namespace Prisma {
     readonly profileId: FieldRef<"Favourite", 'String'>
     readonly contentId: FieldRef<"Favourite", 'String'>
     readonly contentType: FieldRef<"Favourite", 'String'>
+    readonly source: FieldRef<"Favourite", 'String'>
   }
     
 
@@ -5136,6 +5147,7 @@ export namespace Prisma {
     profileId: string | null
     contentId: string | null
     contentType: string | null
+    source: string | null
   }
 
   export type WatchedMaxAggregateOutputType = {
@@ -5143,6 +5155,7 @@ export namespace Prisma {
     profileId: string | null
     contentId: string | null
     contentType: string | null
+    source: string | null
   }
 
   export type WatchedCountAggregateOutputType = {
@@ -5150,6 +5163,7 @@ export namespace Prisma {
     profileId: number
     contentId: number
     contentType: number
+    source: number
     _all: number
   }
 
@@ -5159,6 +5173,7 @@ export namespace Prisma {
     profileId?: true
     contentId?: true
     contentType?: true
+    source?: true
   }
 
   export type WatchedMaxAggregateInputType = {
@@ -5166,6 +5181,7 @@ export namespace Prisma {
     profileId?: true
     contentId?: true
     contentType?: true
+    source?: true
   }
 
   export type WatchedCountAggregateInputType = {
@@ -5173,6 +5189,7 @@ export namespace Prisma {
     profileId?: true
     contentId?: true
     contentType?: true
+    source?: true
     _all?: true
   }
 
@@ -5253,6 +5270,7 @@ export namespace Prisma {
     profileId: string
     contentId: string
     contentType: string
+    source: string
     _count: WatchedCountAggregateOutputType | null
     _min: WatchedMinAggregateOutputType | null
     _max: WatchedMaxAggregateOutputType | null
@@ -5277,6 +5295,7 @@ export namespace Prisma {
     profileId?: boolean
     contentId?: boolean
     contentType?: boolean
+    source?: boolean
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["watched"]>
 
@@ -5287,9 +5306,10 @@ export namespace Prisma {
     profileId?: boolean
     contentId?: boolean
     contentType?: boolean
+    source?: boolean
   }
 
-  export type WatchedOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId" | "contentId" | "contentType", ExtArgs["result"]["watched"]>
+  export type WatchedOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId" | "contentId" | "contentType" | "source", ExtArgs["result"]["watched"]>
   export type WatchedInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
   }
@@ -5304,6 +5324,7 @@ export namespace Prisma {
       profileId: string
       contentId: string
       contentType: string
+      source: string
     }, ExtArgs["result"]["watched"]>
     composites: {}
   }
@@ -5701,6 +5722,7 @@ export namespace Prisma {
     readonly profileId: FieldRef<"Watched", 'String'>
     readonly contentId: FieldRef<"Watched", 'String'>
     readonly contentType: FieldRef<"Watched", 'String'>
+    readonly source: FieldRef<"Watched", 'String'>
   }
     
 
@@ -14345,7 +14367,8 @@ export namespace Prisma {
     id: 'id',
     profileId: 'profileId',
     contentId: 'contentId',
-    contentType: 'contentType'
+    contentType: 'contentType',
+    source: 'source'
   };
 
   export type FavouriteScalarFieldEnum = (typeof FavouriteScalarFieldEnum)[keyof typeof FavouriteScalarFieldEnum]
@@ -14355,7 +14378,8 @@ export namespace Prisma {
     id: 'id',
     profileId: 'profileId',
     contentId: 'contentId',
-    contentType: 'contentType'
+    contentType: 'contentType',
+    source: 'source'
   };
 
   export type WatchedScalarFieldEnum = (typeof WatchedScalarFieldEnum)[keyof typeof WatchedScalarFieldEnum]
@@ -14709,6 +14733,7 @@ export namespace Prisma {
     profileId?: StringFilter<"Favourite"> | string
     contentId?: StringFilter<"Favourite"> | string
     contentType?: StringFilter<"Favourite"> | string
+    source?: StringFilter<"Favourite"> | string
     profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
   }
 
@@ -14717,6 +14742,7 @@ export namespace Prisma {
     profileId?: SortOrder
     contentId?: SortOrder
     contentType?: SortOrder
+    source?: SortOrder
     profile?: ProfileOrderByWithRelationInput
   }
 
@@ -14729,6 +14755,7 @@ export namespace Prisma {
     profileId?: StringFilter<"Favourite"> | string
     contentId?: StringFilter<"Favourite"> | string
     contentType?: StringFilter<"Favourite"> | string
+    source?: StringFilter<"Favourite"> | string
     profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
   }, "id" | "profileId_contentId">
 
@@ -14737,6 +14764,7 @@ export namespace Prisma {
     profileId?: SortOrder
     contentId?: SortOrder
     contentType?: SortOrder
+    source?: SortOrder
     _count?: FavouriteCountOrderByAggregateInput
     _max?: FavouriteMaxOrderByAggregateInput
     _min?: FavouriteMinOrderByAggregateInput
@@ -14750,6 +14778,7 @@ export namespace Prisma {
     profileId?: StringWithAggregatesFilter<"Favourite"> | string
     contentId?: StringWithAggregatesFilter<"Favourite"> | string
     contentType?: StringWithAggregatesFilter<"Favourite"> | string
+    source?: StringWithAggregatesFilter<"Favourite"> | string
   }
 
   export type WatchedWhereInput = {
@@ -14760,6 +14789,7 @@ export namespace Prisma {
     profileId?: StringFilter<"Watched"> | string
     contentId?: StringFilter<"Watched"> | string
     contentType?: StringFilter<"Watched"> | string
+    source?: StringFilter<"Watched"> | string
     profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
   }
 
@@ -14768,6 +14798,7 @@ export namespace Prisma {
     profileId?: SortOrder
     contentId?: SortOrder
     contentType?: SortOrder
+    source?: SortOrder
     profile?: ProfileOrderByWithRelationInput
   }
 
@@ -14780,6 +14811,7 @@ export namespace Prisma {
     profileId?: StringFilter<"Watched"> | string
     contentId?: StringFilter<"Watched"> | string
     contentType?: StringFilter<"Watched"> | string
+    source?: StringFilter<"Watched"> | string
     profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
   }, "id" | "profileId_contentId">
 
@@ -14788,6 +14820,7 @@ export namespace Prisma {
     profileId?: SortOrder
     contentId?: SortOrder
     contentType?: SortOrder
+    source?: SortOrder
     _count?: WatchedCountOrderByAggregateInput
     _max?: WatchedMaxOrderByAggregateInput
     _min?: WatchedMinOrderByAggregateInput
@@ -14801,6 +14834,7 @@ export namespace Prisma {
     profileId?: StringWithAggregatesFilter<"Watched"> | string
     contentId?: StringWithAggregatesFilter<"Watched"> | string
     contentType?: StringWithAggregatesFilter<"Watched"> | string
+    source?: StringWithAggregatesFilter<"Watched"> | string
   }
 
   export type WatchingWhereInput = {
@@ -15514,6 +15548,7 @@ export namespace Prisma {
     id?: string
     contentId: string
     contentType: string
+    source?: string
     profile: ProfileCreateNestedOneWithoutFavouritesInput
   }
 
@@ -15522,11 +15557,13 @@ export namespace Prisma {
     profileId: string
     contentId: string
     contentType: string
+    source?: string
   }
 
   export type FavouriteUpdateInput = {
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
     profile?: ProfileUpdateOneRequiredWithoutFavouritesNestedInput
   }
 
@@ -15534,6 +15571,7 @@ export namespace Prisma {
     profileId?: StringFieldUpdateOperationsInput | string
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type FavouriteCreateManyInput = {
@@ -15541,23 +15579,27 @@ export namespace Prisma {
     profileId: string
     contentId: string
     contentType: string
+    source?: string
   }
 
   export type FavouriteUpdateManyMutationInput = {
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type FavouriteUncheckedUpdateManyInput = {
     profileId?: StringFieldUpdateOperationsInput | string
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type WatchedCreateInput = {
     id?: string
     contentId: string
     contentType: string
+    source?: string
     profile: ProfileCreateNestedOneWithoutWatchedsInput
   }
 
@@ -15566,11 +15608,13 @@ export namespace Prisma {
     profileId: string
     contentId: string
     contentType: string
+    source?: string
   }
 
   export type WatchedUpdateInput = {
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
     profile?: ProfileUpdateOneRequiredWithoutWatchedsNestedInput
   }
 
@@ -15578,6 +15622,7 @@ export namespace Prisma {
     profileId?: StringFieldUpdateOperationsInput | string
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type WatchedCreateManyInput = {
@@ -15585,17 +15630,20 @@ export namespace Prisma {
     profileId: string
     contentId: string
     contentType: string
+    source?: string
   }
 
   export type WatchedUpdateManyMutationInput = {
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type WatchedUncheckedUpdateManyInput = {
     profileId?: StringFieldUpdateOperationsInput | string
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type WatchingCreateInput = {
@@ -16430,6 +16478,7 @@ export namespace Prisma {
     profileId?: SortOrder
     contentId?: SortOrder
     contentType?: SortOrder
+    source?: SortOrder
   }
 
   export type FavouriteMaxOrderByAggregateInput = {
@@ -16437,6 +16486,7 @@ export namespace Prisma {
     profileId?: SortOrder
     contentId?: SortOrder
     contentType?: SortOrder
+    source?: SortOrder
   }
 
   export type FavouriteMinOrderByAggregateInput = {
@@ -16444,6 +16494,7 @@ export namespace Prisma {
     profileId?: SortOrder
     contentId?: SortOrder
     contentType?: SortOrder
+    source?: SortOrder
   }
 
   export type WatchedProfileIdContentIdCompoundUniqueInput = {
@@ -16456,6 +16507,7 @@ export namespace Prisma {
     profileId?: SortOrder
     contentId?: SortOrder
     contentType?: SortOrder
+    source?: SortOrder
   }
 
   export type WatchedMaxOrderByAggregateInput = {
@@ -16463,6 +16515,7 @@ export namespace Prisma {
     profileId?: SortOrder
     contentId?: SortOrder
     contentType?: SortOrder
+    source?: SortOrder
   }
 
   export type WatchedMinOrderByAggregateInput = {
@@ -16470,6 +16523,7 @@ export namespace Prisma {
     profileId?: SortOrder
     contentId?: SortOrder
     contentType?: SortOrder
+    source?: SortOrder
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -17883,12 +17937,14 @@ export namespace Prisma {
     id?: string
     contentId: string
     contentType: string
+    source?: string
   }
 
   export type FavouriteUncheckedCreateWithoutProfileInput = {
     id?: string
     contentId: string
     contentType: string
+    source?: string
   }
 
   export type FavouriteCreateOrConnectWithoutProfileInput = {
@@ -17904,12 +17960,14 @@ export namespace Prisma {
     id?: string
     contentId: string
     contentType: string
+    source?: string
   }
 
   export type WatchedUncheckedCreateWithoutProfileInput = {
     id?: string
     contentId: string
     contentType: string
+    source?: string
   }
 
   export type WatchedCreateOrConnectWithoutProfileInput = {
@@ -18007,6 +18065,7 @@ export namespace Prisma {
     profileId?: StringFilter<"Favourite"> | string
     contentId?: StringFilter<"Favourite"> | string
     contentType?: StringFilter<"Favourite"> | string
+    source?: StringFilter<"Favourite"> | string
   }
 
   export type WatchedUpsertWithWhereUniqueWithoutProfileInput = {
@@ -18033,6 +18092,7 @@ export namespace Prisma {
     profileId?: StringFilter<"Watched"> | string
     contentId?: StringFilter<"Watched"> | string
     contentType?: StringFilter<"Watched"> | string
+    source?: StringFilter<"Watched"> | string
   }
 
   export type WatchingUpsertWithWhereUniqueWithoutProfileInput = {
@@ -18729,12 +18789,14 @@ export namespace Prisma {
     id?: string
     contentId: string
     contentType: string
+    source?: string
   }
 
   export type WatchedCreateManyProfileInput = {
     id?: string
     contentId: string
     contentType: string
+    source?: string
   }
 
   export type WatchingCreateManyProfileInput = {
@@ -18751,31 +18813,37 @@ export namespace Prisma {
   export type FavouriteUpdateWithoutProfileInput = {
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type FavouriteUncheckedUpdateWithoutProfileInput = {
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type FavouriteUncheckedUpdateManyWithoutProfileInput = {
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type WatchedUpdateWithoutProfileInput = {
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type WatchedUncheckedUpdateWithoutProfileInput = {
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type WatchedUncheckedUpdateManyWithoutProfileInput = {
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type WatchingUpdateWithoutProfileInput = {

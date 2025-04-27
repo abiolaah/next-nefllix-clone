@@ -29,6 +29,7 @@ export interface TransformedMovie extends Omit<Movie, "id"> {
   genre: string[];
   isTvShow: false;
   isAdult: boolean;
+  source?: "local" | "tmdb"; // Add source here
 }
 
 export interface TransformedTvShow extends Omit<TvShow, "id"> {
@@ -36,6 +37,7 @@ export interface TransformedTvShow extends Omit<TvShow, "id"> {
   genre: string[];
   isTvShow: true;
   isAdult: boolean;
+  source?: "local" | "tmdb"; // Add source here
 }
 
 export type MediaItem = TransformedMovie | TransformedTvShow;

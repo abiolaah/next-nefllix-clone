@@ -31,6 +31,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Browse = () => {
+  const currentProfileId =
+    typeof window !== "undefined"
+      ? localStorage.getItem("currentProfile")
+      : null;
+
   const { data: movies, isLoading: moviesLoading } = useMovies({
     type: "trending",
   });
@@ -63,7 +68,9 @@ const Browse = () => {
   const { data: tredningTvShows, isLoading: tredningTvShowsLoading } =
     useTvShows({ type: "trending", page: 2 });
 
-  const { data: favourites, isLoading: favouritesLoading } = useFavourites();
+  const { data: favourites, isLoading: favouritesLoading } = useFavourites(
+    currentProfileId || undefined
+  );
   const watching: MediaItem[] = [];
 
   const { isOpen, closeModal } = useInfoModal();
