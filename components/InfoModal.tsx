@@ -74,6 +74,11 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
   const movieData = movieDetailsResponse?.details;
   const tvData = tvDetailsResponse?.details;
 
+  const movieSource = movieDetailsResponse?.source || "tmdb";
+  const tvSource = tvDetailsResponse?.source || "tmdb";
+
+  const dataSource = contentType === "movie" ? movieSource : tvSource;
+
   // Toggle for muted
   const toggleMute = () => {
     setIsMuted(!isMuted);
@@ -338,6 +343,9 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                   mediaId={data.id}
                   mediaType={data.isTvShow ? "tv" : "movie"}
                   profileId={currentProfileId || ""}
+                  source={
+                    (dataSource as "tmdb" | "local" | undefined) || "tmdb"
+                  }
                 />
                 <ReactionsButton />
               </div>

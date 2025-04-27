@@ -163,6 +163,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
                 mediaId={data.id}
                 mediaType={data.isTvShow ? "tv" : "movie"}
                 profileId={currentProfileId || ""}
+                source={data.source || "tmdb"}
               />
               <ReactionsButton />
               <div

@@ -10,12 +10,14 @@ interface FavouriteButtonProps {
   mediaId: string | number;
   mediaType: "movie" | "tv";
   profileId: string;
+  source?: "local" | "tmdb"; // Optional source prop
 }
 
 const FavouriteButton: React.FC<FavouriteButtonProps> = ({
   mediaId,
   mediaType,
   profileId,
+  source = "tmdb", // Default to "tmdb" if not provided
 }) => {
   const { data: favourites = [], mutate: mutateFavourites } =
     useFavourites(profileId);
@@ -24,23 +26,26 @@ const FavouriteButton: React.FC<FavouriteButtonProps> = ({
   // Check if movie is already in favourites
   const isFavourite = useMemo(() => {
     return favourites.some(
-      (fav: { id: string | number; isTvShow: boolean }) =>
-        fav.id === mediaId && fav.isTvShow === (mediaType === "tv")
+      (fav: { id: string | number; isTvShow: boolean; source?: string }) =>
+        fav.id === mediaId &&
+        fav.isTvShow === (mediaType === "tv") &&
+        fav.source === source // Match source too
     );
-  }, [favourites, mediaId, mediaType]);
+  }, [favourites, mediaId, mediaType, source]);
 
   //Toggle Favourite
   const toggleFavourite = useCallback(async () => {
     try {
       if (isFavourite) {
         await axios.delete("/api/favourite", {
-          data: { mediaId, profileId },
+          data: { mediaId, profileId, source }, // Include source in the delete request
         });
       } else {
         await axios.post("/api/favourite", {
           mediaId,
           profileId,
           mediaType,
+          source, // Include source in the post request
         });
       }
 
@@ -50,7 +55,15 @@ const FavouriteButton: React.FC<FavouriteButtonProps> = ({
     } catch (error) {
       console.error("Error toggling favourite:", error);
     }
-  }, [mediaId, mediaType, profileId, isFavourite, mutate, mutateFavourites]);
+  }, [
+    mediaId,
+    mediaType,
+    profileId,
+    isFavourite,
+    mutate,
+    mutateFavourites,
+    source,
+  ]);
 
   // Dynamic icon
   const Icon = isFavourite ? AiOutlineCheck : AiOutlinePlus;
