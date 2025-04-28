@@ -128,7 +128,11 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
           style={getExpandedCardStyle()}
         >
           <div
-            onClick={() => router.push(`/watch/${data.id}`)}
+            onClick={() =>
+              router.push(
+                `/watch/${data.id}?type=${data.isTvShow ? "tv" : "movie"}`
+              )
+            }
             className="relative w-full h-[8vw] rounded-t-md overflow-hidden mt-5"
           >
             <Image
@@ -154,7 +158,11 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
             {/* Action Buttons */}
             <div className="flex flex-row items-center gap-3 mb-4">
               <div
-                onClick={() => router.push(`/watch/${data.id}`)}
+                onClick={() =>
+                  router.push(
+                    `/watch/${data.id}?type=${data.isTvShow ? "tv" : "movie"}`
+                  )
+                }
                 className="cursor-pointer w-6 h-6 lg:w-10 lg:h-10 border-2 border-white/60 rounded-full flex justify-center items-center transition hover:border-white"
               >
                 <BsFillPlayFill className="text-white" size={25} />
