@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import { useRouter } from "next/router";
 import useMovieDetails from "@/hooks/useMovieDetails";
 import { AiOutlineArrowLeft, AiOutlinePause } from "react-icons/ai";
@@ -17,15 +23,19 @@ import { TfiLayersAlt } from "react-icons/tfi";
 import Image from "next/image";
 import useTvShowDetails from "@/hooks/useTvShowDetails";
 
-const DEFAULT_VIDEO =
-  "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+const DEFAULT_VIDEOS = [
+  "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+  "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+  "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+  "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+];
 
 const Watch = () => {
   const router = useRouter();
-  const { mediaId } = router.query;
+  const { mediaId, type } = router.query;
 
-  // State to track content type
-  const [contentType, setContentType] = useState<"movie" | "tv">("movie");
+  // Track content type retrived from the URL
+  const contentType = type === "tv" ? "tv" : "movie";
 
   // Fetch both movie and TV show data
   const { data: movieDetailsResponse, isLoading: movieLoading } =
@@ -38,147 +48,68 @@ const Watch = () => {
   const movieData = movieDetailsResponse?.details;
   const tvData = tvDetailsResponse?.details;
 
-  // Video player ref
-  const videoRef = useRef<HTMLVideoElement>(null);
-
   // Use refs for timers to preserve values between renders
   const overlayTimerRef = useRef<NodeJS.Timeout | null>(null);
   const controlsTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Player state
-  const [isPaused, setIsPaused] = useState(false);
-  const [showOverlay, setShowOverlay] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(1);
-  const [isMuted, setIsMuted] = useState(false);
-  const [showControls, setShowControls] = useState(true);
-  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
+  // Video player ref
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  // TV show specific state
-  const [currentSeason, setCurrentSeason] = useState(1);
-  const [currentEpisode, setCurrentEpisode] = useState(1);
-  const [showEpisodeList, setShowEpisodeList] = useState(false);
+  // State that triggers re-renders
+  const [playerState, setPlayerState] = useState({
+    isPaused: false,
+    showOverlay: false,
+    progress: 0,
+    duration: 0,
+    volume: 1,
+    isMuted: false,
+    showControls: true,
+    showVolumeSlider: false,
+    isVideoLoading: true,
+    videoError: false,
+    usingFallbackVideo: false,
+    currentFallbackVideoIndex: 0,
+  });
 
-  // Determine content type based on data availability
-  useEffect(() => {
-    // If we have TV data with episodes, it's definitely a TV show
-    if (tvData?.seasons && tvData.seasons.length > 0) {
-      setContentType("tv");
-      return;
+  const [tvShowState, setTvShowState] = useState({
+    currentSeason: 1,
+    currentEpisode: 1,
+    showEpisodeList: false,
+  });
+
+  // Helper to update player state without overwriting other properties
+  const updatePlayerState = useCallback(
+    (newState: Partial<typeof playerState>) => {
+      setPlayerState((prev) => ({ ...prev, ...newState }));
+    },
+    []
+  );
+
+  // Helper to update TV show state
+  const updateTvShowState = useCallback(
+    (newState: Partial<typeof tvShowState>) => {
+      setTvShowState((prev) => ({ ...prev, ...newState }));
+    },
+    []
+  );
+
+  // Helper function to validte URLs
+  const isValidUrl = useCallback((url: string) => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
     }
-
-    // Check isTvShow flag if available
-    if (tvData?.isTvShow === true) {
-      setContentType("tv");
-      return;
-    }
-
-    if (movieData?.isTvShow === false) {
-      setContentType("movie");
-      return;
-    }
-
-    // Fallback based on which data is available
-    if (tvData && !tvLoading) {
-      setContentType("tv");
-    } else if (movieData && !movieLoading) {
-      setContentType("movie");
-    }
-  }, [movieData, tvData, movieLoading, tvLoading]);
-
-  // Handle video element events
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const onTimeUpdate = () => {
-      const progress = (video.currentTime / video.duration) * 100;
-      setProgress(progress);
-    };
-
-    const onLoadedMetadata = () => {
-      setDuration(video.duration);
-    };
-
-    const onPause = () => {
-      setIsPaused(true);
-      setShowControls(true);
-
-      // Show overlay after 2 seconds of being paused
-      if (overlayTimerRef.current) {
-        clearTimeout(overlayTimerRef.current);
-      }
-
-      overlayTimerRef.current = setTimeout(() => {
-        setShowOverlay(true);
-      }, 2000);
-    };
-
-    const onPlay = () => {
-      setIsPaused(false);
-      setShowOverlay(false);
-
-      if (overlayTimerRef.current) {
-        clearTimeout(overlayTimerRef.current);
-      }
-
-      // Hide controls after 3 seconds of playing
-      if (controlsTimerRef.current) {
-        clearTimeout(controlsTimerRef.current);
-      }
-
-      controlsTimerRef.current = setTimeout(() => {
-        setShowControls(false);
-      }, 3000);
-    };
-
-    // Check if video has ended
-    const onEnded = () => {
-      // For TV shows, play next episode if available
-      if (contentType === "tv") {
-        playNextEpisode();
-      } else {
-        setIsPaused(true);
-        setShowControls(true);
-        setShowOverlay(true);
-      }
-    };
-
-    video.addEventListener("timeupdate", onTimeUpdate);
-    video.addEventListener("loadedmetadata", onLoadedMetadata);
-    video.addEventListener("pause", onPause);
-    video.addEventListener("play", onPlay);
-    video.addEventListener("ended", onEnded);
-
-    return () => {
-      video.removeEventListener("timeupdate", onTimeUpdate);
-      video.removeEventListener("loadedmetadata", onLoadedMetadata);
-      video.removeEventListener("pause", onPause);
-      video.removeEventListener("play", onPlay);
-      video.removeEventListener("ended", onEnded);
-
-      if (overlayTimerRef.current) {
-        clearTimeout(overlayTimerRef.current);
-      }
-
-      if (controlsTimerRef.current) {
-        clearTimeout(controlsTimerRef.current);
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [contentType]);
-
-  // Determine active data based on content type
-  const activeData = contentType === "tv" ? tvData : movieData;
+  }, []);
 
   // Get episodes for the current season
-  const getCurrentSeasonEpisodes = () => {
+  const getCurrentSeasonEpisodes = useCallback(() => {
     if (contentType !== "tv" || !tvData) return [];
 
     // Find the current season
     const season = tvData.seasons?.find(
-      (s) => s.season_number === currentSeason
+      (s) => s.season_number === tvShowState.currentSeason
     );
 
     if (!season || !season.episodes) {
@@ -190,52 +121,85 @@ const Watch = () => {
         description: "Episode description unavailable",
         thumbnailUrl: tvData.thumbnailUrl,
         duration: "30m",
-        videoUrl: DEFAULT_VIDEO,
+        videoUrl: DEFAULT_VIDEOS[0],
       }));
     }
 
     return season.episodes;
-  };
+  }, [contentType, tvShowState.currentSeason, tvData]);
 
   // Get current episode video URL
-  const getVideoUrl = () => {
+  const getVideoUrl = useMemo(() => {
+    let primaryUrl = "";
+
     if (contentType === "movie") {
-      return movieData?.videoUrl || DEFAULT_VIDEO;
+      primaryUrl = movieData?.videoUrl || "";
     } else {
-      // For TV shows, use the episode's video URL if available
       const episodes = getCurrentSeasonEpisodes();
       const currentEpisodeData = episodes.find(
-        (e) => e.episodeNumber === currentEpisode
+        (e) => e.episodeNumber === tvShowState.currentEpisode
       );
-
-      // Use a default URL or determine based on what's available
-      return (
-        currentEpisodeData?.videoUrl || tvData?.trailerUrl || DEFAULT_VIDEO
-      );
+      primaryUrl = currentEpisodeData?.videoUrl || tvData?.trailerUrl || "";
     }
-  };
 
-  // Get current episode information
-  const getCurrentEpisodeInfo = () => {
-    if (contentType !== "tv") return null;
+    if (primaryUrl && isValidUrl(primaryUrl)) {
+      return primaryUrl;
+    }
 
-    const episodes = getCurrentSeasonEpisodes();
-    return episodes.find((e) => e.episodeNumber === currentEpisode);
-  };
+    return DEFAULT_VIDEOS[
+      playerState.currentFallbackVideoIndex % DEFAULT_VIDEOS.length
+    ];
+  }, [
+    contentType,
+    isValidUrl,
+    playerState.currentFallbackVideoIndex,
+    movieData?.videoUrl,
+    getCurrentSeasonEpisodes,
+    tvData?.trailerUrl,
+    tvShowState.currentEpisode,
+  ]);
+
+  // Update usingFallbackVideo state when videoUrl changes, but not during render
+  useEffect(() => {
+    const primaryUrl =
+      contentType === "movie"
+        ? movieData?.videoUrl || ""
+        : getCurrentSeasonEpisodes().find(
+            (e) => e.episodeNumber === tvShowState.currentEpisode
+          )?.videoUrl ||
+          tvData?.trailerUrl ||
+          "";
+
+    const needsFallback = !primaryUrl || !isValidUrl(primaryUrl);
+
+    if (needsFallback != playerState.usingFallbackVideo) {
+      updatePlayerState({ usingFallbackVideo: needsFallback });
+    }
+  }, [
+    getVideoUrl,
+    contentType,
+    movieData?.videoUrl,
+    tvData?.trailerUrl,
+    getCurrentSeasonEpisodes,
+    tvShowState.currentEpisode,
+    playerState.usingFallbackVideo,
+    isValidUrl,
+    updatePlayerState,
+  ]);
 
   // Play next episode function
-  const playNextEpisode = () => {
+  const playNextEpisode = useCallback(() => {
     if (contentType !== "tv") return;
 
     const episodes = getCurrentSeasonEpisodes();
-    const nextEpisodeNumber = currentEpisode + 1;
+    const nextEpisodeNumber = tvShowState.currentEpisode + 1;
     const nextEpisode = episodes.find(
       (e) => e.episodeNumber === nextEpisodeNumber
     );
 
     if (nextEpisode) {
       // Next episode in current season
-      setCurrentEpisode(nextEpisodeNumber);
+      updateTvShowState({ currentEpisode: nextEpisodeNumber });
       // Reset video position and play
       if (videoRef.current) {
         videoRef.current.currentTime = 0;
@@ -243,14 +207,16 @@ const Watch = () => {
       }
     } else {
       // Check for next season
-      const nextSeasonNumber = currentSeason + 1;
+      const nextSeasonNumber = tvShowState.currentSeason + 1;
       const nextSeason = tvData?.seasons?.find(
         (s) => s.season_number === nextSeasonNumber
       );
 
       if (nextSeason) {
-        setCurrentSeason(nextSeasonNumber);
-        setCurrentEpisode(1);
+        updateTvShowState({
+          currentSeason: nextSeasonNumber,
+          currentEpisode: 1,
+        });
         // Reset video position and play
         if (videoRef.current) {
           videoRef.current.currentTime = 0;
@@ -258,9 +224,192 @@ const Watch = () => {
         }
       } else {
         // End of series
-        setShowOverlay(true);
+        updatePlayerState({ showOverlay: true });
       }
     }
+  }, [
+    contentType,
+    getCurrentSeasonEpisodes,
+    tvData?.seasons,
+    tvShowState.currentEpisode,
+    tvShowState.currentSeason,
+    updatePlayerState,
+    updateTvShowState,
+  ]);
+
+  // Handle video error
+  const handleVideoError = useCallback(() => {
+    updatePlayerState({ videoError: true, isVideoLoading: true });
+
+    if (!playerState.usingFallbackVideo) {
+      // Try switching to fallback videos
+      updatePlayerState({ usingFallbackVideo: true });
+      if (videoRef.current) {
+        videoRef.current.src =
+          DEFAULT_VIDEOS[
+            playerState.currentFallbackVideoIndex % DEFAULT_VIDEOS.length
+          ];
+        videoRef.current.load();
+        videoRef.current
+          .play()
+          .catch((e) => console.error("Error playing fallback video:", e));
+      }
+    } else {
+      // Cycle to next fallback video
+      const nextIndex =
+        (playerState.currentFallbackVideoIndex + 1) % DEFAULT_VIDEOS.length;
+      updatePlayerState({ currentFallbackVideoIndex: nextIndex });
+      if (videoRef.current) {
+        videoRef.current.src = DEFAULT_VIDEOS[nextIndex];
+        videoRef.current.load();
+        videoRef.current
+          .play()
+          .catch((e) => console.error("Error playing next fallback video:", e));
+      }
+    }
+  }, [
+    updatePlayerState,
+    playerState.usingFallbackVideo,
+    playerState.currentFallbackVideoIndex,
+  ]);
+
+  // Handle loaded metadata
+  const handleLoadedMetadata = useCallback(() => {
+    if (videoRef.current) {
+      updatePlayerState({
+        duration: videoRef.current.duration,
+        isVideoLoading: false,
+        videoError: false,
+      });
+    }
+  }, [updatePlayerState]);
+
+  // Handle video element events
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const onTimeUpdate = () => {
+      if (videoRef.current) {
+        const currentTime = videoRef.current.currentTime;
+        const duration = videoRef.current.duration || 1;
+        const progress = (currentTime / duration) * 100;
+        updatePlayerState({ progress });
+      }
+    };
+
+    const onPause = () => {
+      updatePlayerState({ isPaused: true, showControls: true });
+
+      // Show overlay after 2 seconds of being paused
+      if (overlayTimerRef.current) {
+        clearTimeout(overlayTimerRef.current);
+      }
+
+      overlayTimerRef.current = setTimeout(() => {
+        updatePlayerState({ showOverlay: true });
+      }, 2000);
+    };
+
+    const onPlay = () => {
+      updatePlayerState({
+        isPaused: false,
+        showOverlay: false,
+        isVideoLoading: false,
+      });
+
+      if (overlayTimerRef.current) {
+        clearTimeout(overlayTimerRef.current);
+      }
+
+      // Hide controls after 3 seconds of playing
+      if (controlsTimerRef.current) {
+        clearTimeout(controlsTimerRef.current);
+      }
+
+      controlsTimerRef.current = setTimeout(() => {
+        updatePlayerState({ showControls: false });
+      }, 3000);
+    };
+
+    // Check if video has ended
+    const onEnded = () => {
+      if (playerState.usingFallbackVideo) {
+        const nextIndex =
+          (playerState.currentFallbackVideoIndex + 1) % DEFAULT_VIDEOS.length;
+        updatePlayerState({ currentFallbackVideoIndex: nextIndex });
+        if (videoRef.current) {
+          videoRef.current.src = DEFAULT_VIDEOS[nextIndex];
+          videoRef.current.play();
+        }
+      } else if (contentType === "tv") {
+        playNextEpisode();
+      } else {
+        updatePlayerState({
+          isPaused: true,
+          showControls: true,
+          showOverlay: true,
+        });
+      }
+    };
+
+    const onWaiting = () => {
+      updatePlayerState({ isVideoLoading: true });
+    };
+
+    const onPlaying = () => {
+      updatePlayerState({ isVideoLoading: false });
+    };
+
+    video.addEventListener("timeupdate", onTimeUpdate);
+    video.addEventListener("loadedmetadata", handleLoadedMetadata);
+    video.addEventListener("pause", onPause);
+    video.addEventListener("play", onPlay);
+    video.addEventListener("ended", onEnded);
+    video.addEventListener("error", handleVideoError);
+    video.addEventListener("waiting", onWaiting);
+    video.addEventListener("playing", onPlaying);
+
+    return () => {
+      video.removeEventListener("timeupdate", onTimeUpdate);
+      video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      video.removeEventListener("pause", onPause);
+      video.removeEventListener("play", onPlay);
+      video.removeEventListener("ended", onEnded);
+      video.removeEventListener("error", handleVideoError);
+      video.removeEventListener("waiting", onWaiting);
+      video.removeEventListener("playing", onPlaying);
+
+      if (overlayTimerRef.current) {
+        clearTimeout(overlayTimerRef.current);
+      }
+
+      if (controlsTimerRef.current) {
+        clearTimeout(controlsTimerRef.current);
+      }
+    };
+  }, [
+    contentType,
+    handleLoadedMetadata,
+    handleVideoError,
+    playNextEpisode,
+    playerState.usingFallbackVideo,
+    playerState.currentFallbackVideoIndex,
+    updatePlayerState,
+  ]);
+
+  // Determine active data based on content type
+  const activeData = useMemo(
+    () => (contentType === "tv" ? tvData : movieData),
+    [contentType, tvData, movieData]
+  );
+
+  // Get current episode information
+  const getCurrentEpisodeInfo = () => {
+    if (contentType !== "tv") return null;
+
+    const episodes = getCurrentSeasonEpisodes();
+    return episodes.find((e) => e.episodeNumber === tvShowState.currentEpisode);
   };
 
   // Player Controls
@@ -292,21 +441,21 @@ const Watch = () => {
     if (!video) return;
 
     const newVolume = parseFloat(e.target.value);
-    setVolume(newVolume);
+    updatePlayerState({ volume: newVolume });
     video.volume = newVolume;
-    setIsMuted(newVolume === 0);
+    updatePlayerState({ isMuted: newVolume === 0 });
   };
 
   const toggleMute = () => {
     const video = videoRef.current;
     if (!video) return;
 
-    if (isMuted) {
-      video.volume = volume || 1;
-      setIsMuted(false);
+    if (playerState.isMuted) {
+      video.volume = playerState.volume || 1;
+      updatePlayerState({ isMuted: false });
     } else {
       video.volume = 0;
-      setIsMuted(true);
+      updatePlayerState({ isMuted: true });
     }
   };
 
@@ -327,41 +476,70 @@ const Watch = () => {
 
     const newTime = (parseFloat(e.target.value) / 100) * video.duration;
     video.currentTime = newTime;
-    setProgress(parseFloat(e.target.value));
+    updatePlayerState({ progress: parseFloat(e.target.value) });
   };
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+  const formatTime = (time: number | string) => {
+    let totalSeconds: number;
+
+    // Handle string input
+    if (typeof time === "string") {
+      const minutes = parseInt(time.replace(/\D/g, "")) || 0;
+      totalSeconds = minutes * 60;
+    } else {
+      totalSeconds = time;
+    }
+
+    if (isNaN(totalSeconds)) return "00:00";
+
+    const hours = Math.floor(totalSeconds / 3600);
+    const remainingSeconds = totalSeconds % 3600;
+    const minutes = Math.floor(remainingSeconds / 60);
+    const seconds = Math.floor(remainingSeconds % 60);
+
+    // Format with hours if duration is 60 minutes or more
+    if (hours > 0) {
+      return `${hours}:${minutes.toString().padStart(2, "0")}:${seconds
+        .toString()
+        .padStart(2, "0")}`;
+    }
+
+    // Format without hours for durations less than 60 minutes
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
 
   const handleMouseMove = () => {
-    setShowControls(true);
+    updatePlayerState({ showControls: true });
 
     if (controlsTimerRef.current) {
       clearTimeout(controlsTimerRef.current);
     }
 
-    if (!isPaused) {
+    if (!playerState.isPaused) {
       controlsTimerRef.current = setTimeout(() => {
-        setShowControls(false);
+        updatePlayerState({ showControls: false });
       }, 3000);
     }
   };
 
   const toggleEpisodeList = () => {
-    setShowEpisodeList(!showEpisodeList);
+    updateTvShowState({ showEpisodeList: !tvShowState.showEpisodeList });
 
     // Pause video when showing episode list
-    if (!showEpisodeList && videoRef.current && !videoRef.current.paused) {
+    if (
+      !tvShowState.showEpisodeList &&
+      videoRef.current &&
+      !videoRef.current.paused
+    ) {
       videoRef.current.pause();
     }
   };
 
   const selectEpisode = (episodeNumber: number) => {
-    setCurrentEpisode(episodeNumber);
-    setShowEpisodeList(false);
+    updateTvShowState({
+      currentEpisode: episodeNumber,
+      showEpisodeList: false,
+    });
 
     // Reset video position and play
     if (videoRef.current) {
@@ -403,7 +581,7 @@ const Watch = () => {
             <span className="font-bold">{activeData.title}</span>
             <span className="mx-2">-</span>
             <span>
-              S{currentSeason}:E{currentEpisode}
+              S{tvShowState.currentSeason}:E{tvShowState.currentEpisode}
             </span>
             {getCurrentEpisodeInfo()?.name && (
               <span className="ml-2">- {getCurrentEpisodeInfo()?.name}</span>
@@ -412,22 +590,38 @@ const Watch = () => {
         )}
       </nav>
 
+      {/* Loading Overlay */}
+      {playerState.isVideoLoading && (
+        <div className="absolute inset-0 flex items-center justify-center z-30 bg-black/70">
+          <div className="text-white text-xl">Loading Video...</div>
+        </div>
+      )}
+
+      {/* Error message */}
+      {playerState.videoError && playerState.usingFallbackVideo && (
+        <div className="absolute bott0m-20 left-0 p-2 bg-black/50 text-white text-xs z-20">
+          Playing fallback content
+        </div>
+      )}
+
       {/* Video player */}
       <video
         ref={videoRef}
         autoPlay
-        src={getVideoUrl()}
+        src={getVideoUrl}
         className="h-full w-full"
         onClick={handlePlayPause}
-        aria-label={`Video player for ${activeData.title}`}
+        onLoadedMetadata={handleLoadedMetadata}
+        onError={handleVideoError}
+        aria-label={`Video player for ${activeData.title} || 'Media`}
       ></video>
 
       {/* Episode list modal for TV shows */}
-      {contentType === "tv" && showEpisodeList && (
+      {contentType === "tv" && tvShowState.showEpisodeList && (
         <div className="absolute top-0 left-0 right-0 bottom-0 bg-black/80 z-20 flex flex-col">
           <div className="flex justify-between items-center p-4 border-b border-gray-700">
             <h2 className="text-white text-xl font-bold">
-              {activeData.title} - Season {currentSeason}
+              {activeData.title} - Season {tvShowState.currentSeason}
             </h2>
             <button
               onClick={toggleEpisodeList}
@@ -442,8 +636,10 @@ const Watch = () => {
             <h3 className="text-white">Episodes</h3>
             <div className="relative">
               <select
-                value={currentSeason}
-                onChange={(e) => setCurrentSeason(Number(e.target.value))}
+                value={tvShowState.currentSeason}
+                onChange={(e) =>
+                  updateTvShowState({ currentSeason: Number(e.target.value) })
+                }
                 className="appearance-none bg-zinc-800 text-white pl-4 pr-10 py-2 rounded-md border border-zinc-700 cursor-pointer"
                 aria-label="Select season"
               >
@@ -477,7 +673,9 @@ const Watch = () => {
               <div
                 key={episode.id}
                 className={`flex gap-4 p-3 hover:bg-zinc-800 rounded-md mb-2 cursor-pointer ${
-                  episode.episodeNumber === currentEpisode ? "bg-zinc-700" : ""
+                  episode.episodeNumber === tvShowState.currentEpisode
+                    ? "bg-zinc-700"
+                    : ""
                 }`}
                 onClick={() => selectEpisode(episode.episodeNumber)}
               >
@@ -516,14 +714,14 @@ const Watch = () => {
       )}
 
       {/* Overlay with title and description when paused */}
-      {showOverlay && (
+      {playerState.showOverlay && (
         <div className="absolute top-0 left-0 right-0 bottom-0 bg-black/50 flex flex-col items-center justify-center p-8 z-10">
           <h1 className="text-white text-4xl md:text-6xl font-bold mb-4">
             {activeData.title}
           </h1>
           {contentType === "tv" && getCurrentEpisodeInfo() && (
             <h2 className="text-white text-2xl md:text-3xl mb-4">
-              S{currentSeason}:E{currentEpisode} -{" "}
+              S{tvShowState.currentSeason}:E{tvShowState.currentEpisode} -{" "}
               {getCurrentEpisodeInfo()?.name}
             </h2>
           )}
@@ -537,7 +735,7 @@ const Watch = () => {
       )}
 
       {/* Custom controls */}
-      {showControls && (
+      {playerState.showControls && (
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 z-10">
           {/* Progress bar */}
           <div className="flex items-center mb-2">
@@ -552,16 +750,16 @@ const Watch = () => {
               type="range"
               min="0"
               max="100"
-              value={progress}
+              value={playerState.progress}
               onChange={handleProgressChange}
               className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-gray-700"
-              title={`Progress: ${Math.round(progress)}%`}
+              title={`Progress: ${Math.round(playerState.progress)}%`}
               aria-valuemin={0}
               aria-valuemax={100}
-              aria-valuenow={Math.round(progress)}
+              aria-valuenow={Math.round(playerState.progress)}
               aria-label="Video progress"
               style={{
-                background: `linear-gradient(to right, #e50914 ${progress}%, rgba(255, 255, 255, 0.3) ${progress}%)`,
+                background: `linear-gradient(to right, #e50914 ${playerState.progress}%, rgba(255, 255, 255, 0.3) ${playerState.progress}%)`,
                 height: "6px",
                 borderRadius: "3px",
                 outline: "none",
@@ -594,7 +792,9 @@ const Watch = () => {
                 cursor: pointer;
               }
             `}</style>
-            <p className="text-white ml-2 text-sm">{formatTime(duration)}</p>
+            <p className="text-white ml-2 text-sm">
+              {formatTime(playerState.duration)}
+            </p>
           </div>
 
           {/* Control buttons */}
@@ -603,10 +803,14 @@ const Watch = () => {
               <button
                 onClick={handlePlayPause}
                 className="text-white"
-                aria-label={isPaused ? "Play" : "Pause"}
-                title={isPaused ? "Play" : "Pause"}
+                aria-label={playerState.isPaused ? "Play" : "Pause"}
+                title={playerState.isPaused ? "Play" : "Pause"}
               >
-                {isPaused ? <FiPlay size={28} /> : <AiOutlinePause size={28} />}
+                {playerState.isPaused ? (
+                  <FiPlay size={28} />
+                ) : (
+                  <AiOutlinePause size={28} />
+                )}
               </button>
               <button
                 onClick={handleSkipBackward}
@@ -626,22 +830,26 @@ const Watch = () => {
               </button>
               <div
                 className="relative flex items-center ml-2"
-                onMouseEnter={() => setShowVolumeSlider(true)}
-                onMouseLeave={() => setShowVolumeSlider(false)}
+                onMouseEnter={() =>
+                  updatePlayerState({ showVolumeSlider: true })
+                }
+                onMouseLeave={() =>
+                  updatePlayerState({ showVolumeSlider: false })
+                }
               >
                 <button
                   onClick={toggleMute}
                   className="text-white"
-                  aria-label={isMuted ? "Unmute" : "Mute"}
-                  title={isMuted ? "Unmute" : "Mute"}
+                  aria-label={playerState.isMuted ? "Unmute" : "Mute"}
+                  title={playerState.isMuted ? "Unmute" : "Mute"}
                 >
-                  {isMuted ? (
+                  {playerState.isMuted ? (
                     <BiVolumeMute size={24} />
                   ) : (
                     <BiVolumeFull size={24} />
                   )}
                 </button>
-                {showVolumeSlider && (
+                {playerState.showVolumeSlider && (
                   <div className="absolute bottom-8 left-0 bg-black/70 p-2 rounded">
                     <label htmlFor="volume-slider" className="sr-only">
                       Volume slider
@@ -652,21 +860,23 @@ const Watch = () => {
                       min="0"
                       max="1"
                       step="0.1"
-                      value={isMuted ? 0 : volume}
+                      value={playerState.isMuted ? 0 : playerState.volume}
                       onChange={handleVolumeChange}
                       className="w-20 rotate-270"
                       title={`Volume: ${Math.round(
-                        (isMuted ? 0 : volume) * 100
+                        (playerState.isMuted ? 0 : playerState.volume) * 100
                       )}%`}
                       aria-valuemin={0}
                       aria-valuemax={1}
-                      aria-valuenow={isMuted ? 0 : volume}
+                      aria-valuenow={
+                        playerState.isMuted ? 0 : playerState.volume
+                      }
                       aria-label="Volume control"
                       style={{
                         background: `linear-gradient(to right, #e50914 ${
-                          (isMuted ? 0 : volume) * 100
+                          (playerState.isMuted ? 0 : playerState.volume) * 100
                         }%, rgba(255, 255, 255, 0.3) ${
-                          (isMuted ? 0 : volume) * 100
+                          (playerState.isMuted ? 0 : playerState.volume) * 100
                         }%)`,
                         height: "4px",
                         borderRadius: "2px",
@@ -708,11 +918,9 @@ const Watch = () => {
             <div className="flex-1 text-center">
               <p className="text-white font-medium truncate mx-4">
                 {contentType === "tv" && getCurrentEpisodeInfo()
-                  ? `${
-                      activeData.title
-                    } - S${currentSeason}:E${currentEpisode} ${
-                      getCurrentEpisodeInfo()?.name
-                    }`
+                  ? `${activeData.title} - S${tvShowState.currentSeason}:E${
+                      tvShowState.currentEpisode
+                    } ${getCurrentEpisodeInfo()?.name}`
                   : activeData.title}
               </p>
             </div>
