@@ -333,7 +333,9 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
               </p>
               <div className="flex flex-row gap-4 items-center">
                 <button
-                  onClick={() => router.push(`/watch/${data.id}`)}
+                  onClick={() =>
+                    router.push(`/watch/${data.id}?type=${contentType}`)
+                  }
                   className="bg-white text-black rounded-md py-2 px-4 md:py-2 md:px-6 font-bold flex flex-row items-center gap-2"
                 >
                   <BsFillPlayFill className="w-6 h-6" />
