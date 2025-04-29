@@ -29,10 +29,10 @@ export type Profile = $Result.DefaultSelection<Prisma.$ProfilePayload>
  */
 export type Favourite = $Result.DefaultSelection<Prisma.$FavouritePayload>
 /**
- * Model Watched
+ * Model Reaction
  * 
  */
-export type Watched = $Result.DefaultSelection<Prisma.$WatchedPayload>
+export type Reaction = $Result.DefaultSelection<Prisma.$ReactionPayload>
 /**
  * Model Watching
  * 
@@ -197,14 +197,14 @@ export class PrismaClient<
   get favourite(): Prisma.FavouriteDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.watched`: Exposes CRUD operations for the **Watched** model.
+   * `prisma.reaction`: Exposes CRUD operations for the **Reaction** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Watcheds
-    * const watcheds = await prisma.watched.findMany()
+    * // Fetch zero or more Reactions
+    * const reactions = await prisma.reaction.findMany()
     * ```
     */
-  get watched(): Prisma.WatchedDelegate<ExtArgs, ClientOptions>;
+  get reaction(): Prisma.ReactionDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.watching`: Exposes CRUD operations for the **Watching** model.
@@ -728,7 +728,7 @@ export namespace Prisma {
     User: 'User',
     Profile: 'Profile',
     Favourite: 'Favourite',
-    Watched: 'Watched',
+    Reaction: 'Reaction',
     Watching: 'Watching',
     Account: 'Account',
     Session: 'Session',
@@ -755,7 +755,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "profile" | "favourite" | "watched" | "watching" | "account" | "session" | "verificationToken" | "movie" | "tvShow" | "season" | "episode"
+      modelProps: "user" | "profile" | "favourite" | "reaction" | "watching" | "account" | "session" | "verificationToken" | "movie" | "tvShow" | "season" | "episode"
       txIsolationLevel: never
     }
     model: {
@@ -981,77 +981,77 @@ export namespace Prisma {
           }
         }
       }
-      Watched: {
-        payload: Prisma.$WatchedPayload<ExtArgs>
-        fields: Prisma.WatchedFieldRefs
+      Reaction: {
+        payload: Prisma.$ReactionPayload<ExtArgs>
+        fields: Prisma.ReactionFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.WatchedFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WatchedPayload> | null
+            args: Prisma.ReactionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReactionPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.WatchedFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WatchedPayload>
+            args: Prisma.ReactionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReactionPayload>
           }
           findFirst: {
-            args: Prisma.WatchedFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WatchedPayload> | null
+            args: Prisma.ReactionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReactionPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.WatchedFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WatchedPayload>
+            args: Prisma.ReactionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReactionPayload>
           }
           findMany: {
-            args: Prisma.WatchedFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WatchedPayload>[]
+            args: Prisma.ReactionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReactionPayload>[]
           }
           create: {
-            args: Prisma.WatchedCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WatchedPayload>
+            args: Prisma.ReactionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReactionPayload>
           }
           createMany: {
-            args: Prisma.WatchedCreateManyArgs<ExtArgs>
+            args: Prisma.ReactionCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           delete: {
-            args: Prisma.WatchedDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WatchedPayload>
+            args: Prisma.ReactionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReactionPayload>
           }
           update: {
-            args: Prisma.WatchedUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WatchedPayload>
+            args: Prisma.ReactionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReactionPayload>
           }
           deleteMany: {
-            args: Prisma.WatchedDeleteManyArgs<ExtArgs>
+            args: Prisma.ReactionDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.WatchedUpdateManyArgs<ExtArgs>
+            args: Prisma.ReactionUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           upsert: {
-            args: Prisma.WatchedUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WatchedPayload>
+            args: Prisma.ReactionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReactionPayload>
           }
           aggregate: {
-            args: Prisma.WatchedAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateWatched>
+            args: Prisma.ReactionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateReaction>
           }
           groupBy: {
-            args: Prisma.WatchedGroupByArgs<ExtArgs>
-            result: $Utils.Optional<WatchedGroupByOutputType>[]
+            args: Prisma.ReactionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ReactionGroupByOutputType>[]
           }
           findRaw: {
-            args: Prisma.WatchedFindRawArgs<ExtArgs>
+            args: Prisma.ReactionFindRawArgs<ExtArgs>
             result: JsonObject
           }
           aggregateRaw: {
-            args: Prisma.WatchedAggregateRawArgs<ExtArgs>
+            args: Prisma.ReactionAggregateRawArgs<ExtArgs>
             result: JsonObject
           }
           count: {
-            args: Prisma.WatchedCountArgs<ExtArgs>
-            result: $Utils.Optional<WatchedCountAggregateOutputType> | number
+            args: Prisma.ReactionCountArgs<ExtArgs>
+            result: $Utils.Optional<ReactionCountAggregateOutputType> | number
           }
         }
       }
@@ -1721,7 +1721,7 @@ export namespace Prisma {
     user?: UserOmit
     profile?: ProfileOmit
     favourite?: FavouriteOmit
-    watched?: WatchedOmit
+    reaction?: ReactionOmit
     watching?: WatchingOmit
     account?: AccountOmit
     session?: SessionOmit
@@ -1874,13 +1874,13 @@ export namespace Prisma {
 
   export type ProfileCountOutputType = {
     favourites: number
-    watcheds: number
+    reactions: number
     watching: number
   }
 
   export type ProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     favourites?: boolean | ProfileCountOutputTypeCountFavouritesArgs
-    watcheds?: boolean | ProfileCountOutputTypeCountWatchedsArgs
+    reactions?: boolean | ProfileCountOutputTypeCountReactionsArgs
     watching?: boolean | ProfileCountOutputTypeCountWatchingArgs
   }
 
@@ -1905,8 +1905,8 @@ export namespace Prisma {
   /**
    * ProfileCountOutputType without action
    */
-  export type ProfileCountOutputTypeCountWatchedsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WatchedWhereInput
+  export type ProfileCountOutputTypeCountReactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReactionWhereInput
   }
 
   /**
@@ -3250,7 +3250,7 @@ export namespace Prisma {
     hasPin?: boolean
     pin?: boolean
     favourites?: boolean | Profile$favouritesArgs<ExtArgs>
-    watcheds?: boolean | Profile$watchedsArgs<ExtArgs>
+    reactions?: boolean | Profile$reactionsArgs<ExtArgs>
     watching?: boolean | Profile$watchingArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
@@ -3270,7 +3270,7 @@ export namespace Prisma {
   export type ProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "avatar" | "hasPin" | "pin", ExtArgs["result"]["profile"]>
   export type ProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     favourites?: boolean | Profile$favouritesArgs<ExtArgs>
-    watcheds?: boolean | Profile$watchedsArgs<ExtArgs>
+    reactions?: boolean | Profile$reactionsArgs<ExtArgs>
     watching?: boolean | Profile$watchingArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
@@ -3280,7 +3280,7 @@ export namespace Prisma {
     name: "Profile"
     objects: {
       favourites: Prisma.$FavouritePayload<ExtArgs>[]
-      watcheds: Prisma.$WatchedPayload<ExtArgs>[]
+      reactions: Prisma.$ReactionPayload<ExtArgs>[]
       watching: Prisma.$WatchingPayload<ExtArgs>[]
       user: Prisma.$UserPayload<ExtArgs>
     }
@@ -3655,7 +3655,7 @@ export namespace Prisma {
   export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     favourites<T extends Profile$favouritesArgs<ExtArgs> = {}>(args?: Subset<T, Profile$favouritesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavouritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    watcheds<T extends Profile$watchedsArgs<ExtArgs> = {}>(args?: Subset<T, Profile$watchedsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WatchedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reactions<T extends Profile$reactionsArgs<ExtArgs> = {}>(args?: Subset<T, Profile$reactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     watching<T extends Profile$watchingArgs<ExtArgs> = {}>(args?: Subset<T, Profile$watchingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WatchingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
@@ -4087,27 +4087,27 @@ export namespace Prisma {
   }
 
   /**
-   * Profile.watcheds
+   * Profile.reactions
    */
-  export type Profile$watchedsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Profile$reactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Watched
+     * Select specific fields to fetch from the Reaction
      */
-    select?: WatchedSelect<ExtArgs> | null
+    select?: ReactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Watched
+     * Omit specific fields from the Reaction
      */
-    omit?: WatchedOmit<ExtArgs> | null
+    omit?: ReactionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: WatchedInclude<ExtArgs> | null
-    where?: WatchedWhereInput
-    orderBy?: WatchedOrderByWithRelationInput | WatchedOrderByWithRelationInput[]
-    cursor?: WatchedWhereUniqueInput
+    include?: ReactionInclude<ExtArgs> | null
+    where?: ReactionWhereInput
+    orderBy?: ReactionOrderByWithRelationInput | ReactionOrderByWithRelationInput[]
+    cursor?: ReactionWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: WatchedScalarFieldEnum | WatchedScalarFieldEnum[]
+    distinct?: ReactionScalarFieldEnum | ReactionScalarFieldEnum[]
   }
 
   /**
@@ -5133,189 +5133,198 @@ export namespace Prisma {
 
 
   /**
-   * Model Watched
+   * Model Reaction
    */
 
-  export type AggregateWatched = {
-    _count: WatchedCountAggregateOutputType | null
-    _min: WatchedMinAggregateOutputType | null
-    _max: WatchedMaxAggregateOutputType | null
+  export type AggregateReaction = {
+    _count: ReactionCountAggregateOutputType | null
+    _min: ReactionMinAggregateOutputType | null
+    _max: ReactionMaxAggregateOutputType | null
   }
 
-  export type WatchedMinAggregateOutputType = {
+  export type ReactionMinAggregateOutputType = {
     id: string | null
     profileId: string | null
     contentId: string | null
     contentType: string | null
+    reactionType: string | null
     source: string | null
   }
 
-  export type WatchedMaxAggregateOutputType = {
+  export type ReactionMaxAggregateOutputType = {
     id: string | null
     profileId: string | null
     contentId: string | null
     contentType: string | null
+    reactionType: string | null
     source: string | null
   }
 
-  export type WatchedCountAggregateOutputType = {
+  export type ReactionCountAggregateOutputType = {
     id: number
     profileId: number
     contentId: number
     contentType: number
+    reactionType: number
     source: number
     _all: number
   }
 
 
-  export type WatchedMinAggregateInputType = {
+  export type ReactionMinAggregateInputType = {
     id?: true
     profileId?: true
     contentId?: true
     contentType?: true
+    reactionType?: true
     source?: true
   }
 
-  export type WatchedMaxAggregateInputType = {
+  export type ReactionMaxAggregateInputType = {
     id?: true
     profileId?: true
     contentId?: true
     contentType?: true
+    reactionType?: true
     source?: true
   }
 
-  export type WatchedCountAggregateInputType = {
+  export type ReactionCountAggregateInputType = {
     id?: true
     profileId?: true
     contentId?: true
     contentType?: true
+    reactionType?: true
     source?: true
     _all?: true
   }
 
-  export type WatchedAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ReactionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Watched to aggregate.
+     * Filter which Reaction to aggregate.
      */
-    where?: WatchedWhereInput
+    where?: ReactionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Watcheds to fetch.
+     * Determine the order of Reactions to fetch.
      */
-    orderBy?: WatchedOrderByWithRelationInput | WatchedOrderByWithRelationInput[]
+    orderBy?: ReactionOrderByWithRelationInput | ReactionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: WatchedWhereUniqueInput
+    cursor?: ReactionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Watcheds from the position of the cursor.
+     * Take `±n` Reactions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Watcheds.
+     * Skip the first `n` Reactions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Watcheds
+     * Count returned Reactions
     **/
-    _count?: true | WatchedCountAggregateInputType
+    _count?: true | ReactionCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: WatchedMinAggregateInputType
+    _min?: ReactionMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: WatchedMaxAggregateInputType
+    _max?: ReactionMaxAggregateInputType
   }
 
-  export type GetWatchedAggregateType<T extends WatchedAggregateArgs> = {
-        [P in keyof T & keyof AggregateWatched]: P extends '_count' | 'count'
+  export type GetReactionAggregateType<T extends ReactionAggregateArgs> = {
+        [P in keyof T & keyof AggregateReaction]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateWatched[P]>
-      : GetScalarType<T[P], AggregateWatched[P]>
+        : GetScalarType<T[P], AggregateReaction[P]>
+      : GetScalarType<T[P], AggregateReaction[P]>
   }
 
 
 
 
-  export type WatchedGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WatchedWhereInput
-    orderBy?: WatchedOrderByWithAggregationInput | WatchedOrderByWithAggregationInput[]
-    by: WatchedScalarFieldEnum[] | WatchedScalarFieldEnum
-    having?: WatchedScalarWhereWithAggregatesInput
+  export type ReactionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReactionWhereInput
+    orderBy?: ReactionOrderByWithAggregationInput | ReactionOrderByWithAggregationInput[]
+    by: ReactionScalarFieldEnum[] | ReactionScalarFieldEnum
+    having?: ReactionScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: WatchedCountAggregateInputType | true
-    _min?: WatchedMinAggregateInputType
-    _max?: WatchedMaxAggregateInputType
+    _count?: ReactionCountAggregateInputType | true
+    _min?: ReactionMinAggregateInputType
+    _max?: ReactionMaxAggregateInputType
   }
 
-  export type WatchedGroupByOutputType = {
+  export type ReactionGroupByOutputType = {
     id: string
     profileId: string
     contentId: string
     contentType: string
+    reactionType: string
     source: string
-    _count: WatchedCountAggregateOutputType | null
-    _min: WatchedMinAggregateOutputType | null
-    _max: WatchedMaxAggregateOutputType | null
+    _count: ReactionCountAggregateOutputType | null
+    _min: ReactionMinAggregateOutputType | null
+    _max: ReactionMaxAggregateOutputType | null
   }
 
-  type GetWatchedGroupByPayload<T extends WatchedGroupByArgs> = Prisma.PrismaPromise<
+  type GetReactionGroupByPayload<T extends ReactionGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<WatchedGroupByOutputType, T['by']> &
+      PickEnumerable<ReactionGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof WatchedGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof ReactionGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], WatchedGroupByOutputType[P]>
-            : GetScalarType<T[P], WatchedGroupByOutputType[P]>
+              : GetScalarType<T[P], ReactionGroupByOutputType[P]>
+            : GetScalarType<T[P], ReactionGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type WatchedSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type ReactionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     profileId?: boolean
     contentId?: boolean
     contentType?: boolean
+    reactionType?: boolean
     source?: boolean
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["watched"]>
+  }, ExtArgs["result"]["reaction"]>
 
 
 
-  export type WatchedSelectScalar = {
+  export type ReactionSelectScalar = {
     id?: boolean
     profileId?: boolean
     contentId?: boolean
     contentType?: boolean
+    reactionType?: boolean
     source?: boolean
   }
 
-  export type WatchedOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId" | "contentId" | "contentType" | "source", ExtArgs["result"]["watched"]>
-  export type WatchedInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ReactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId" | "contentId" | "contentType" | "reactionType" | "source", ExtArgs["result"]["reaction"]>
+  export type ReactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
   }
 
-  export type $WatchedPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Watched"
+  export type $ReactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Reaction"
     objects: {
       profile: Prisma.$ProfilePayload<ExtArgs>
     }
@@ -5324,144 +5333,145 @@ export namespace Prisma {
       profileId: string
       contentId: string
       contentType: string
+      reactionType: string
       source: string
-    }, ExtArgs["result"]["watched"]>
+    }, ExtArgs["result"]["reaction"]>
     composites: {}
   }
 
-  type WatchedGetPayload<S extends boolean | null | undefined | WatchedDefaultArgs> = $Result.GetResult<Prisma.$WatchedPayload, S>
+  type ReactionGetPayload<S extends boolean | null | undefined | ReactionDefaultArgs> = $Result.GetResult<Prisma.$ReactionPayload, S>
 
-  type WatchedCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<WatchedFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: WatchedCountAggregateInputType | true
+  type ReactionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ReactionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ReactionCountAggregateInputType | true
     }
 
-  export interface WatchedDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Watched'], meta: { name: 'Watched' } }
+  export interface ReactionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Reaction'], meta: { name: 'Reaction' } }
     /**
-     * Find zero or one Watched that matches the filter.
-     * @param {WatchedFindUniqueArgs} args - Arguments to find a Watched
+     * Find zero or one Reaction that matches the filter.
+     * @param {ReactionFindUniqueArgs} args - Arguments to find a Reaction
      * @example
-     * // Get one Watched
-     * const watched = await prisma.watched.findUnique({
+     * // Get one Reaction
+     * const reaction = await prisma.reaction.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends WatchedFindUniqueArgs>(args: SelectSubset<T, WatchedFindUniqueArgs<ExtArgs>>): Prisma__WatchedClient<$Result.GetResult<Prisma.$WatchedPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends ReactionFindUniqueArgs>(args: SelectSubset<T, ReactionFindUniqueArgs<ExtArgs>>): Prisma__ReactionClient<$Result.GetResult<Prisma.$ReactionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one Watched that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Reaction that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {WatchedFindUniqueOrThrowArgs} args - Arguments to find a Watched
+     * @param {ReactionFindUniqueOrThrowArgs} args - Arguments to find a Reaction
      * @example
-     * // Get one Watched
-     * const watched = await prisma.watched.findUniqueOrThrow({
+     * // Get one Reaction
+     * const reaction = await prisma.reaction.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends WatchedFindUniqueOrThrowArgs>(args: SelectSubset<T, WatchedFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WatchedClient<$Result.GetResult<Prisma.$WatchedPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends ReactionFindUniqueOrThrowArgs>(args: SelectSubset<T, ReactionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ReactionClient<$Result.GetResult<Prisma.$ReactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Watched that matches the filter.
+     * Find the first Reaction that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {WatchedFindFirstArgs} args - Arguments to find a Watched
+     * @param {ReactionFindFirstArgs} args - Arguments to find a Reaction
      * @example
-     * // Get one Watched
-     * const watched = await prisma.watched.findFirst({
+     * // Get one Reaction
+     * const reaction = await prisma.reaction.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends WatchedFindFirstArgs>(args?: SelectSubset<T, WatchedFindFirstArgs<ExtArgs>>): Prisma__WatchedClient<$Result.GetResult<Prisma.$WatchedPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends ReactionFindFirstArgs>(args?: SelectSubset<T, ReactionFindFirstArgs<ExtArgs>>): Prisma__ReactionClient<$Result.GetResult<Prisma.$ReactionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Watched that matches the filter or
+     * Find the first Reaction that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {WatchedFindFirstOrThrowArgs} args - Arguments to find a Watched
+     * @param {ReactionFindFirstOrThrowArgs} args - Arguments to find a Reaction
      * @example
-     * // Get one Watched
-     * const watched = await prisma.watched.findFirstOrThrow({
+     * // Get one Reaction
+     * const reaction = await prisma.reaction.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends WatchedFindFirstOrThrowArgs>(args?: SelectSubset<T, WatchedFindFirstOrThrowArgs<ExtArgs>>): Prisma__WatchedClient<$Result.GetResult<Prisma.$WatchedPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends ReactionFindFirstOrThrowArgs>(args?: SelectSubset<T, ReactionFindFirstOrThrowArgs<ExtArgs>>): Prisma__ReactionClient<$Result.GetResult<Prisma.$ReactionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Watcheds that matches the filter.
+     * Find zero or more Reactions that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {WatchedFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {ReactionFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Watcheds
-     * const watcheds = await prisma.watched.findMany()
+     * // Get all Reactions
+     * const reactions = await prisma.reaction.findMany()
      * 
-     * // Get first 10 Watcheds
-     * const watcheds = await prisma.watched.findMany({ take: 10 })
+     * // Get first 10 Reactions
+     * const reactions = await prisma.reaction.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const watchedWithIdOnly = await prisma.watched.findMany({ select: { id: true } })
+     * const reactionWithIdOnly = await prisma.reaction.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends WatchedFindManyArgs>(args?: SelectSubset<T, WatchedFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WatchedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends ReactionFindManyArgs>(args?: SelectSubset<T, ReactionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a Watched.
-     * @param {WatchedCreateArgs} args - Arguments to create a Watched.
+     * Create a Reaction.
+     * @param {ReactionCreateArgs} args - Arguments to create a Reaction.
      * @example
-     * // Create one Watched
-     * const Watched = await prisma.watched.create({
+     * // Create one Reaction
+     * const Reaction = await prisma.reaction.create({
      *   data: {
-     *     // ... data to create a Watched
+     *     // ... data to create a Reaction
      *   }
      * })
      * 
      */
-    create<T extends WatchedCreateArgs>(args: SelectSubset<T, WatchedCreateArgs<ExtArgs>>): Prisma__WatchedClient<$Result.GetResult<Prisma.$WatchedPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends ReactionCreateArgs>(args: SelectSubset<T, ReactionCreateArgs<ExtArgs>>): Prisma__ReactionClient<$Result.GetResult<Prisma.$ReactionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many Watcheds.
-     * @param {WatchedCreateManyArgs} args - Arguments to create many Watcheds.
+     * Create many Reactions.
+     * @param {ReactionCreateManyArgs} args - Arguments to create many Reactions.
      * @example
-     * // Create many Watcheds
-     * const watched = await prisma.watched.createMany({
+     * // Create many Reactions
+     * const reaction = await prisma.reaction.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends WatchedCreateManyArgs>(args?: SelectSubset<T, WatchedCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends ReactionCreateManyArgs>(args?: SelectSubset<T, ReactionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Delete a Watched.
-     * @param {WatchedDeleteArgs} args - Arguments to delete one Watched.
+     * Delete a Reaction.
+     * @param {ReactionDeleteArgs} args - Arguments to delete one Reaction.
      * @example
-     * // Delete one Watched
-     * const Watched = await prisma.watched.delete({
+     * // Delete one Reaction
+     * const Reaction = await prisma.reaction.delete({
      *   where: {
-     *     // ... filter to delete one Watched
+     *     // ... filter to delete one Reaction
      *   }
      * })
      * 
      */
-    delete<T extends WatchedDeleteArgs>(args: SelectSubset<T, WatchedDeleteArgs<ExtArgs>>): Prisma__WatchedClient<$Result.GetResult<Prisma.$WatchedPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends ReactionDeleteArgs>(args: SelectSubset<T, ReactionDeleteArgs<ExtArgs>>): Prisma__ReactionClient<$Result.GetResult<Prisma.$ReactionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one Watched.
-     * @param {WatchedUpdateArgs} args - Arguments to update one Watched.
+     * Update one Reaction.
+     * @param {ReactionUpdateArgs} args - Arguments to update one Reaction.
      * @example
-     * // Update one Watched
-     * const watched = await prisma.watched.update({
+     * // Update one Reaction
+     * const reaction = await prisma.reaction.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5471,30 +5481,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends WatchedUpdateArgs>(args: SelectSubset<T, WatchedUpdateArgs<ExtArgs>>): Prisma__WatchedClient<$Result.GetResult<Prisma.$WatchedPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends ReactionUpdateArgs>(args: SelectSubset<T, ReactionUpdateArgs<ExtArgs>>): Prisma__ReactionClient<$Result.GetResult<Prisma.$ReactionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more Watcheds.
-     * @param {WatchedDeleteManyArgs} args - Arguments to filter Watcheds to delete.
+     * Delete zero or more Reactions.
+     * @param {ReactionDeleteManyArgs} args - Arguments to filter Reactions to delete.
      * @example
-     * // Delete a few Watcheds
-     * const { count } = await prisma.watched.deleteMany({
+     * // Delete a few Reactions
+     * const { count } = await prisma.reaction.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends WatchedDeleteManyArgs>(args?: SelectSubset<T, WatchedDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends ReactionDeleteManyArgs>(args?: SelectSubset<T, ReactionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Watcheds.
+     * Update zero or more Reactions.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {WatchedUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {ReactionUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Watcheds
-     * const watched = await prisma.watched.updateMany({
+     * // Update many Reactions
+     * const reaction = await prisma.reaction.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5504,79 +5514,79 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends WatchedUpdateManyArgs>(args: SelectSubset<T, WatchedUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends ReactionUpdateManyArgs>(args: SelectSubset<T, ReactionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one Watched.
-     * @param {WatchedUpsertArgs} args - Arguments to update or create a Watched.
+     * Create or update one Reaction.
+     * @param {ReactionUpsertArgs} args - Arguments to update or create a Reaction.
      * @example
-     * // Update or create a Watched
-     * const watched = await prisma.watched.upsert({
+     * // Update or create a Reaction
+     * const reaction = await prisma.reaction.upsert({
      *   create: {
-     *     // ... data to create a Watched
+     *     // ... data to create a Reaction
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Watched we want to update
+     *     // ... the filter for the Reaction we want to update
      *   }
      * })
      */
-    upsert<T extends WatchedUpsertArgs>(args: SelectSubset<T, WatchedUpsertArgs<ExtArgs>>): Prisma__WatchedClient<$Result.GetResult<Prisma.$WatchedPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends ReactionUpsertArgs>(args: SelectSubset<T, ReactionUpsertArgs<ExtArgs>>): Prisma__ReactionClient<$Result.GetResult<Prisma.$ReactionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Watcheds that matches the filter.
-     * @param {WatchedFindRawArgs} args - Select which filters you would like to apply.
+     * Find zero or more Reactions that matches the filter.
+     * @param {ReactionFindRawArgs} args - Select which filters you would like to apply.
      * @example
-     * const watched = await prisma.watched.findRaw({
+     * const reaction = await prisma.reaction.findRaw({
      *   filter: { age: { $gt: 25 } }
      * })
      */
-    findRaw(args?: WatchedFindRawArgs): Prisma.PrismaPromise<JsonObject>
+    findRaw(args?: ReactionFindRawArgs): Prisma.PrismaPromise<JsonObject>
 
     /**
-     * Perform aggregation operations on a Watched.
-     * @param {WatchedAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * Perform aggregation operations on a Reaction.
+     * @param {ReactionAggregateRawArgs} args - Select which aggregations you would like to apply.
      * @example
-     * const watched = await prisma.watched.aggregateRaw({
+     * const reaction = await prisma.reaction.aggregateRaw({
      *   pipeline: [
      *     { $match: { status: "registered" } },
      *     { $group: { _id: "$country", total: { $sum: 1 } } }
      *   ]
      * })
      */
-    aggregateRaw(args?: WatchedAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+    aggregateRaw(args?: ReactionAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
 
 
     /**
-     * Count the number of Watcheds.
+     * Count the number of Reactions.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {WatchedCountArgs} args - Arguments to filter Watcheds to count.
+     * @param {ReactionCountArgs} args - Arguments to filter Reactions to count.
      * @example
-     * // Count the number of Watcheds
-     * const count = await prisma.watched.count({
+     * // Count the number of Reactions
+     * const count = await prisma.reaction.count({
      *   where: {
-     *     // ... the filter for the Watcheds we want to count
+     *     // ... the filter for the Reactions we want to count
      *   }
      * })
     **/
-    count<T extends WatchedCountArgs>(
-      args?: Subset<T, WatchedCountArgs>,
+    count<T extends ReactionCountArgs>(
+      args?: Subset<T, ReactionCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], WatchedCountAggregateOutputType>
+          : GetScalarType<T['select'], ReactionCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Watched.
+     * Allows you to perform aggregations operations on a Reaction.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {WatchedAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {ReactionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -5596,13 +5606,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends WatchedAggregateArgs>(args: Subset<T, WatchedAggregateArgs>): Prisma.PrismaPromise<GetWatchedAggregateType<T>>
+    aggregate<T extends ReactionAggregateArgs>(args: Subset<T, ReactionAggregateArgs>): Prisma.PrismaPromise<GetReactionAggregateType<T>>
 
     /**
-     * Group by Watched.
+     * Group by Reaction.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {WatchedGroupByArgs} args - Group by arguments.
+     * @param {ReactionGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -5617,14 +5627,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends WatchedGroupByArgs,
+      T extends ReactionGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: WatchedGroupByArgs['orderBy'] }
-        : { orderBy?: WatchedGroupByArgs['orderBy'] },
+        ? { orderBy: ReactionGroupByArgs['orderBy'] }
+        : { orderBy?: ReactionGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -5673,20 +5683,20 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, WatchedGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWatchedGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, ReactionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetReactionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Watched model
+   * Fields of the Reaction model
    */
-  readonly fields: WatchedFieldRefs;
+  readonly fields: ReactionFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Watched.
+   * The delegate class that acts as a "Promise-like" for Reaction.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__WatchedClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__ReactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     profile<T extends ProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfileDefaultArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
@@ -5715,359 +5725,360 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Watched model
+   * Fields of the Reaction model
    */
-  interface WatchedFieldRefs {
-    readonly id: FieldRef<"Watched", 'String'>
-    readonly profileId: FieldRef<"Watched", 'String'>
-    readonly contentId: FieldRef<"Watched", 'String'>
-    readonly contentType: FieldRef<"Watched", 'String'>
-    readonly source: FieldRef<"Watched", 'String'>
+  interface ReactionFieldRefs {
+    readonly id: FieldRef<"Reaction", 'String'>
+    readonly profileId: FieldRef<"Reaction", 'String'>
+    readonly contentId: FieldRef<"Reaction", 'String'>
+    readonly contentType: FieldRef<"Reaction", 'String'>
+    readonly reactionType: FieldRef<"Reaction", 'String'>
+    readonly source: FieldRef<"Reaction", 'String'>
   }
     
 
   // Custom InputTypes
   /**
-   * Watched findUnique
+   * Reaction findUnique
    */
-  export type WatchedFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ReactionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Watched
+     * Select specific fields to fetch from the Reaction
      */
-    select?: WatchedSelect<ExtArgs> | null
+    select?: ReactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Watched
+     * Omit specific fields from the Reaction
      */
-    omit?: WatchedOmit<ExtArgs> | null
+    omit?: ReactionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: WatchedInclude<ExtArgs> | null
+    include?: ReactionInclude<ExtArgs> | null
     /**
-     * Filter, which Watched to fetch.
+     * Filter, which Reaction to fetch.
      */
-    where: WatchedWhereUniqueInput
+    where: ReactionWhereUniqueInput
   }
 
   /**
-   * Watched findUniqueOrThrow
+   * Reaction findUniqueOrThrow
    */
-  export type WatchedFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ReactionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Watched
+     * Select specific fields to fetch from the Reaction
      */
-    select?: WatchedSelect<ExtArgs> | null
+    select?: ReactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Watched
+     * Omit specific fields from the Reaction
      */
-    omit?: WatchedOmit<ExtArgs> | null
+    omit?: ReactionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: WatchedInclude<ExtArgs> | null
+    include?: ReactionInclude<ExtArgs> | null
     /**
-     * Filter, which Watched to fetch.
+     * Filter, which Reaction to fetch.
      */
-    where: WatchedWhereUniqueInput
+    where: ReactionWhereUniqueInput
   }
 
   /**
-   * Watched findFirst
+   * Reaction findFirst
    */
-  export type WatchedFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ReactionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Watched
+     * Select specific fields to fetch from the Reaction
      */
-    select?: WatchedSelect<ExtArgs> | null
+    select?: ReactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Watched
+     * Omit specific fields from the Reaction
      */
-    omit?: WatchedOmit<ExtArgs> | null
+    omit?: ReactionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: WatchedInclude<ExtArgs> | null
+    include?: ReactionInclude<ExtArgs> | null
     /**
-     * Filter, which Watched to fetch.
+     * Filter, which Reaction to fetch.
      */
-    where?: WatchedWhereInput
+    where?: ReactionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Watcheds to fetch.
+     * Determine the order of Reactions to fetch.
      */
-    orderBy?: WatchedOrderByWithRelationInput | WatchedOrderByWithRelationInput[]
+    orderBy?: ReactionOrderByWithRelationInput | ReactionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Watcheds.
+     * Sets the position for searching for Reactions.
      */
-    cursor?: WatchedWhereUniqueInput
+    cursor?: ReactionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Watcheds from the position of the cursor.
+     * Take `±n` Reactions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Watcheds.
+     * Skip the first `n` Reactions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Watcheds.
+     * Filter by unique combinations of Reactions.
      */
-    distinct?: WatchedScalarFieldEnum | WatchedScalarFieldEnum[]
+    distinct?: ReactionScalarFieldEnum | ReactionScalarFieldEnum[]
   }
 
   /**
-   * Watched findFirstOrThrow
+   * Reaction findFirstOrThrow
    */
-  export type WatchedFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ReactionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Watched
+     * Select specific fields to fetch from the Reaction
      */
-    select?: WatchedSelect<ExtArgs> | null
+    select?: ReactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Watched
+     * Omit specific fields from the Reaction
      */
-    omit?: WatchedOmit<ExtArgs> | null
+    omit?: ReactionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: WatchedInclude<ExtArgs> | null
+    include?: ReactionInclude<ExtArgs> | null
     /**
-     * Filter, which Watched to fetch.
+     * Filter, which Reaction to fetch.
      */
-    where?: WatchedWhereInput
+    where?: ReactionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Watcheds to fetch.
+     * Determine the order of Reactions to fetch.
      */
-    orderBy?: WatchedOrderByWithRelationInput | WatchedOrderByWithRelationInput[]
+    orderBy?: ReactionOrderByWithRelationInput | ReactionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Watcheds.
+     * Sets the position for searching for Reactions.
      */
-    cursor?: WatchedWhereUniqueInput
+    cursor?: ReactionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Watcheds from the position of the cursor.
+     * Take `±n` Reactions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Watcheds.
+     * Skip the first `n` Reactions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Watcheds.
+     * Filter by unique combinations of Reactions.
      */
-    distinct?: WatchedScalarFieldEnum | WatchedScalarFieldEnum[]
+    distinct?: ReactionScalarFieldEnum | ReactionScalarFieldEnum[]
   }
 
   /**
-   * Watched findMany
+   * Reaction findMany
    */
-  export type WatchedFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ReactionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Watched
+     * Select specific fields to fetch from the Reaction
      */
-    select?: WatchedSelect<ExtArgs> | null
+    select?: ReactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Watched
+     * Omit specific fields from the Reaction
      */
-    omit?: WatchedOmit<ExtArgs> | null
+    omit?: ReactionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: WatchedInclude<ExtArgs> | null
+    include?: ReactionInclude<ExtArgs> | null
     /**
-     * Filter, which Watcheds to fetch.
+     * Filter, which Reactions to fetch.
      */
-    where?: WatchedWhereInput
+    where?: ReactionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Watcheds to fetch.
+     * Determine the order of Reactions to fetch.
      */
-    orderBy?: WatchedOrderByWithRelationInput | WatchedOrderByWithRelationInput[]
+    orderBy?: ReactionOrderByWithRelationInput | ReactionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Watcheds.
+     * Sets the position for listing Reactions.
      */
-    cursor?: WatchedWhereUniqueInput
+    cursor?: ReactionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Watcheds from the position of the cursor.
+     * Take `±n` Reactions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Watcheds.
+     * Skip the first `n` Reactions.
      */
     skip?: number
-    distinct?: WatchedScalarFieldEnum | WatchedScalarFieldEnum[]
+    distinct?: ReactionScalarFieldEnum | ReactionScalarFieldEnum[]
   }
 
   /**
-   * Watched create
+   * Reaction create
    */
-  export type WatchedCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ReactionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Watched
+     * Select specific fields to fetch from the Reaction
      */
-    select?: WatchedSelect<ExtArgs> | null
+    select?: ReactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Watched
+     * Omit specific fields from the Reaction
      */
-    omit?: WatchedOmit<ExtArgs> | null
+    omit?: ReactionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: WatchedInclude<ExtArgs> | null
+    include?: ReactionInclude<ExtArgs> | null
     /**
-     * The data needed to create a Watched.
+     * The data needed to create a Reaction.
      */
-    data: XOR<WatchedCreateInput, WatchedUncheckedCreateInput>
+    data: XOR<ReactionCreateInput, ReactionUncheckedCreateInput>
   }
 
   /**
-   * Watched createMany
+   * Reaction createMany
    */
-  export type WatchedCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ReactionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many Watcheds.
+     * The data used to create many Reactions.
      */
-    data: WatchedCreateManyInput | WatchedCreateManyInput[]
+    data: ReactionCreateManyInput | ReactionCreateManyInput[]
   }
 
   /**
-   * Watched update
+   * Reaction update
    */
-  export type WatchedUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ReactionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Watched
+     * Select specific fields to fetch from the Reaction
      */
-    select?: WatchedSelect<ExtArgs> | null
+    select?: ReactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Watched
+     * Omit specific fields from the Reaction
      */
-    omit?: WatchedOmit<ExtArgs> | null
+    omit?: ReactionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: WatchedInclude<ExtArgs> | null
+    include?: ReactionInclude<ExtArgs> | null
     /**
-     * The data needed to update a Watched.
+     * The data needed to update a Reaction.
      */
-    data: XOR<WatchedUpdateInput, WatchedUncheckedUpdateInput>
+    data: XOR<ReactionUpdateInput, ReactionUncheckedUpdateInput>
     /**
-     * Choose, which Watched to update.
+     * Choose, which Reaction to update.
      */
-    where: WatchedWhereUniqueInput
+    where: ReactionWhereUniqueInput
   }
 
   /**
-   * Watched updateMany
+   * Reaction updateMany
    */
-  export type WatchedUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ReactionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update Watcheds.
+     * The data used to update Reactions.
      */
-    data: XOR<WatchedUpdateManyMutationInput, WatchedUncheckedUpdateManyInput>
+    data: XOR<ReactionUpdateManyMutationInput, ReactionUncheckedUpdateManyInput>
     /**
-     * Filter which Watcheds to update
+     * Filter which Reactions to update
      */
-    where?: WatchedWhereInput
+    where?: ReactionWhereInput
     /**
-     * Limit how many Watcheds to update.
+     * Limit how many Reactions to update.
      */
     limit?: number
   }
 
   /**
-   * Watched upsert
+   * Reaction upsert
    */
-  export type WatchedUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ReactionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Watched
+     * Select specific fields to fetch from the Reaction
      */
-    select?: WatchedSelect<ExtArgs> | null
+    select?: ReactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Watched
+     * Omit specific fields from the Reaction
      */
-    omit?: WatchedOmit<ExtArgs> | null
+    omit?: ReactionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: WatchedInclude<ExtArgs> | null
+    include?: ReactionInclude<ExtArgs> | null
     /**
-     * The filter to search for the Watched to update in case it exists.
+     * The filter to search for the Reaction to update in case it exists.
      */
-    where: WatchedWhereUniqueInput
+    where: ReactionWhereUniqueInput
     /**
-     * In case the Watched found by the `where` argument doesn't exist, create a new Watched with this data.
+     * In case the Reaction found by the `where` argument doesn't exist, create a new Reaction with this data.
      */
-    create: XOR<WatchedCreateInput, WatchedUncheckedCreateInput>
+    create: XOR<ReactionCreateInput, ReactionUncheckedCreateInput>
     /**
-     * In case the Watched was found with the provided `where` argument, update it with this data.
+     * In case the Reaction was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<WatchedUpdateInput, WatchedUncheckedUpdateInput>
+    update: XOR<ReactionUpdateInput, ReactionUncheckedUpdateInput>
   }
 
   /**
-   * Watched delete
+   * Reaction delete
    */
-  export type WatchedDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ReactionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Watched
+     * Select specific fields to fetch from the Reaction
      */
-    select?: WatchedSelect<ExtArgs> | null
+    select?: ReactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Watched
+     * Omit specific fields from the Reaction
      */
-    omit?: WatchedOmit<ExtArgs> | null
+    omit?: ReactionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: WatchedInclude<ExtArgs> | null
+    include?: ReactionInclude<ExtArgs> | null
     /**
-     * Filter which Watched to delete.
+     * Filter which Reaction to delete.
      */
-    where: WatchedWhereUniqueInput
+    where: ReactionWhereUniqueInput
   }
 
   /**
-   * Watched deleteMany
+   * Reaction deleteMany
    */
-  export type WatchedDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ReactionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Watcheds to delete
+     * Filter which Reactions to delete
      */
-    where?: WatchedWhereInput
+    where?: ReactionWhereInput
     /**
-     * Limit how many Watcheds to delete.
+     * Limit how many Reactions to delete.
      */
     limit?: number
   }
 
   /**
-   * Watched findRaw
+   * Reaction findRaw
    */
-  export type WatchedFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ReactionFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
      */
@@ -6079,9 +6090,9 @@ export namespace Prisma {
   }
 
   /**
-   * Watched aggregateRaw
+   * Reaction aggregateRaw
    */
-  export type WatchedAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ReactionAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
      */
@@ -6093,21 +6104,21 @@ export namespace Prisma {
   }
 
   /**
-   * Watched without action
+   * Reaction without action
    */
-  export type WatchedDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ReactionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Watched
+     * Select specific fields to fetch from the Reaction
      */
-    select?: WatchedSelect<ExtArgs> | null
+    select?: ReactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Watched
+     * Omit specific fields from the Reaction
      */
-    omit?: WatchedOmit<ExtArgs> | null
+    omit?: ReactionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: WatchedInclude<ExtArgs> | null
+    include?: ReactionInclude<ExtArgs> | null
   }
 
 
@@ -6145,6 +6156,7 @@ export namespace Prisma {
     completed: boolean | null
     season: number | null
     episode: number | null
+    source: string | null
   }
 
   export type WatchingMaxAggregateOutputType = {
@@ -6157,6 +6169,7 @@ export namespace Prisma {
     completed: boolean | null
     season: number | null
     episode: number | null
+    source: string | null
   }
 
   export type WatchingCountAggregateOutputType = {
@@ -6169,6 +6182,7 @@ export namespace Prisma {
     completed: number
     season: number
     episode: number
+    source: number
     _all: number
   }
 
@@ -6195,6 +6209,7 @@ export namespace Prisma {
     completed?: true
     season?: true
     episode?: true
+    source?: true
   }
 
   export type WatchingMaxAggregateInputType = {
@@ -6207,6 +6222,7 @@ export namespace Prisma {
     completed?: true
     season?: true
     episode?: true
+    source?: true
   }
 
   export type WatchingCountAggregateInputType = {
@@ -6219,6 +6235,7 @@ export namespace Prisma {
     completed?: true
     season?: true
     episode?: true
+    source?: true
     _all?: true
   }
 
@@ -6318,6 +6335,7 @@ export namespace Prisma {
     completed: boolean
     season: number | null
     episode: number | null
+    source: string
     _count: WatchingCountAggregateOutputType | null
     _avg: WatchingAvgAggregateOutputType | null
     _sum: WatchingSumAggregateOutputType | null
@@ -6349,6 +6367,7 @@ export namespace Prisma {
     completed?: boolean
     season?: boolean
     episode?: boolean
+    source?: boolean
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["watching"]>
 
@@ -6364,9 +6383,10 @@ export namespace Prisma {
     completed?: boolean
     season?: boolean
     episode?: boolean
+    source?: boolean
   }
 
-  export type WatchingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId" | "contentId" | "contentType" | "progress" | "lastWatched" | "completed" | "season" | "episode", ExtArgs["result"]["watching"]>
+  export type WatchingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId" | "contentId" | "contentType" | "progress" | "lastWatched" | "completed" | "season" | "episode" | "source", ExtArgs["result"]["watching"]>
   export type WatchingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
   }
@@ -6386,6 +6406,7 @@ export namespace Prisma {
       completed: boolean
       season: number | null
       episode: number | null
+      source: string
     }, ExtArgs["result"]["watching"]>
     composites: {}
   }
@@ -6788,6 +6809,7 @@ export namespace Prisma {
     readonly completed: FieldRef<"Watching", 'Boolean'>
     readonly season: FieldRef<"Watching", 'Int'>
     readonly episode: FieldRef<"Watching", 'Int'>
+    readonly source: FieldRef<"Watching", 'String'>
   }
     
 
@@ -14374,15 +14396,16 @@ export namespace Prisma {
   export type FavouriteScalarFieldEnum = (typeof FavouriteScalarFieldEnum)[keyof typeof FavouriteScalarFieldEnum]
 
 
-  export const WatchedScalarFieldEnum: {
+  export const ReactionScalarFieldEnum: {
     id: 'id',
     profileId: 'profileId',
     contentId: 'contentId',
     contentType: 'contentType',
+    reactionType: 'reactionType',
     source: 'source'
   };
 
-  export type WatchedScalarFieldEnum = (typeof WatchedScalarFieldEnum)[keyof typeof WatchedScalarFieldEnum]
+  export type ReactionScalarFieldEnum = (typeof ReactionScalarFieldEnum)[keyof typeof ReactionScalarFieldEnum]
 
 
   export const WatchingScalarFieldEnum: {
@@ -14394,7 +14417,8 @@ export namespace Prisma {
     lastWatched: 'lastWatched',
     completed: 'completed',
     season: 'season',
-    episode: 'episode'
+    episode: 'episode',
+    source: 'source'
   };
 
   export type WatchingScalarFieldEnum = (typeof WatchingScalarFieldEnum)[keyof typeof WatchingScalarFieldEnum]
@@ -14667,7 +14691,7 @@ export namespace Prisma {
     hasPin?: BoolFilter<"Profile"> | boolean
     pin?: StringNullableFilter<"Profile"> | string | null
     favourites?: FavouriteListRelationFilter
-    watcheds?: WatchedListRelationFilter
+    reactions?: ReactionListRelationFilter
     watching?: WatchingListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -14680,7 +14704,7 @@ export namespace Prisma {
     hasPin?: SortOrder
     pin?: SortOrder
     favourites?: FavouriteOrderByRelationAggregateInput
-    watcheds?: WatchedOrderByRelationAggregateInput
+    reactions?: ReactionOrderByRelationAggregateInput
     watching?: WatchingOrderByRelationAggregateInput
     user?: UserOrderByWithRelationInput
   }
@@ -14696,7 +14720,7 @@ export namespace Prisma {
     hasPin?: BoolFilter<"Profile"> | boolean
     pin?: StringNullableFilter<"Profile"> | string | null
     favourites?: FavouriteListRelationFilter
-    watcheds?: WatchedListRelationFilter
+    reactions?: ReactionListRelationFilter
     watching?: WatchingListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
@@ -14781,60 +14805,65 @@ export namespace Prisma {
     source?: StringWithAggregatesFilter<"Favourite"> | string
   }
 
-  export type WatchedWhereInput = {
-    AND?: WatchedWhereInput | WatchedWhereInput[]
-    OR?: WatchedWhereInput[]
-    NOT?: WatchedWhereInput | WatchedWhereInput[]
-    id?: StringFilter<"Watched"> | string
-    profileId?: StringFilter<"Watched"> | string
-    contentId?: StringFilter<"Watched"> | string
-    contentType?: StringFilter<"Watched"> | string
-    source?: StringFilter<"Watched"> | string
+  export type ReactionWhereInput = {
+    AND?: ReactionWhereInput | ReactionWhereInput[]
+    OR?: ReactionWhereInput[]
+    NOT?: ReactionWhereInput | ReactionWhereInput[]
+    id?: StringFilter<"Reaction"> | string
+    profileId?: StringFilter<"Reaction"> | string
+    contentId?: StringFilter<"Reaction"> | string
+    contentType?: StringFilter<"Reaction"> | string
+    reactionType?: StringFilter<"Reaction"> | string
+    source?: StringFilter<"Reaction"> | string
     profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
   }
 
-  export type WatchedOrderByWithRelationInput = {
+  export type ReactionOrderByWithRelationInput = {
     id?: SortOrder
     profileId?: SortOrder
     contentId?: SortOrder
     contentType?: SortOrder
+    reactionType?: SortOrder
     source?: SortOrder
     profile?: ProfileOrderByWithRelationInput
   }
 
-  export type WatchedWhereUniqueInput = Prisma.AtLeast<{
+  export type ReactionWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    profileId_contentId?: WatchedProfileIdContentIdCompoundUniqueInput
-    AND?: WatchedWhereInput | WatchedWhereInput[]
-    OR?: WatchedWhereInput[]
-    NOT?: WatchedWhereInput | WatchedWhereInput[]
-    profileId?: StringFilter<"Watched"> | string
-    contentId?: StringFilter<"Watched"> | string
-    contentType?: StringFilter<"Watched"> | string
-    source?: StringFilter<"Watched"> | string
+    profileId_contentId?: ReactionProfileIdContentIdCompoundUniqueInput
+    AND?: ReactionWhereInput | ReactionWhereInput[]
+    OR?: ReactionWhereInput[]
+    NOT?: ReactionWhereInput | ReactionWhereInput[]
+    profileId?: StringFilter<"Reaction"> | string
+    contentId?: StringFilter<"Reaction"> | string
+    contentType?: StringFilter<"Reaction"> | string
+    reactionType?: StringFilter<"Reaction"> | string
+    source?: StringFilter<"Reaction"> | string
     profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
   }, "id" | "profileId_contentId">
 
-  export type WatchedOrderByWithAggregationInput = {
+  export type ReactionOrderByWithAggregationInput = {
     id?: SortOrder
     profileId?: SortOrder
     contentId?: SortOrder
     contentType?: SortOrder
+    reactionType?: SortOrder
     source?: SortOrder
-    _count?: WatchedCountOrderByAggregateInput
-    _max?: WatchedMaxOrderByAggregateInput
-    _min?: WatchedMinOrderByAggregateInput
+    _count?: ReactionCountOrderByAggregateInput
+    _max?: ReactionMaxOrderByAggregateInput
+    _min?: ReactionMinOrderByAggregateInput
   }
 
-  export type WatchedScalarWhereWithAggregatesInput = {
-    AND?: WatchedScalarWhereWithAggregatesInput | WatchedScalarWhereWithAggregatesInput[]
-    OR?: WatchedScalarWhereWithAggregatesInput[]
-    NOT?: WatchedScalarWhereWithAggregatesInput | WatchedScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Watched"> | string
-    profileId?: StringWithAggregatesFilter<"Watched"> | string
-    contentId?: StringWithAggregatesFilter<"Watched"> | string
-    contentType?: StringWithAggregatesFilter<"Watched"> | string
-    source?: StringWithAggregatesFilter<"Watched"> | string
+  export type ReactionScalarWhereWithAggregatesInput = {
+    AND?: ReactionScalarWhereWithAggregatesInput | ReactionScalarWhereWithAggregatesInput[]
+    OR?: ReactionScalarWhereWithAggregatesInput[]
+    NOT?: ReactionScalarWhereWithAggregatesInput | ReactionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Reaction"> | string
+    profileId?: StringWithAggregatesFilter<"Reaction"> | string
+    contentId?: StringWithAggregatesFilter<"Reaction"> | string
+    contentType?: StringWithAggregatesFilter<"Reaction"> | string
+    reactionType?: StringWithAggregatesFilter<"Reaction"> | string
+    source?: StringWithAggregatesFilter<"Reaction"> | string
   }
 
   export type WatchingWhereInput = {
@@ -14850,6 +14879,7 @@ export namespace Prisma {
     completed?: BoolFilter<"Watching"> | boolean
     season?: IntNullableFilter<"Watching"> | number | null
     episode?: IntNullableFilter<"Watching"> | number | null
+    source?: StringFilter<"Watching"> | string
     profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
   }
 
@@ -14863,6 +14893,7 @@ export namespace Prisma {
     completed?: SortOrder
     season?: SortOrder
     episode?: SortOrder
+    source?: SortOrder
     profile?: ProfileOrderByWithRelationInput
   }
 
@@ -14880,6 +14911,7 @@ export namespace Prisma {
     completed?: BoolFilter<"Watching"> | boolean
     season?: IntNullableFilter<"Watching"> | number | null
     episode?: IntNullableFilter<"Watching"> | number | null
+    source?: StringFilter<"Watching"> | string
     profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
   }, "id" | "profileId_contentId">
 
@@ -14893,6 +14925,7 @@ export namespace Prisma {
     completed?: SortOrder
     season?: SortOrder
     episode?: SortOrder
+    source?: SortOrder
     _count?: WatchingCountOrderByAggregateInput
     _avg?: WatchingAvgOrderByAggregateInput
     _max?: WatchingMaxOrderByAggregateInput
@@ -14913,6 +14946,7 @@ export namespace Prisma {
     completed?: BoolWithAggregatesFilter<"Watching"> | boolean
     season?: IntNullableWithAggregatesFilter<"Watching"> | number | null
     episode?: IntNullableWithAggregatesFilter<"Watching"> | number | null
+    source?: StringWithAggregatesFilter<"Watching"> | string
   }
 
   export type AccountWhereInput = {
@@ -15481,7 +15515,7 @@ export namespace Prisma {
     hasPin?: boolean
     pin?: string | null
     favourites?: FavouriteCreateNestedManyWithoutProfileInput
-    watcheds?: WatchedCreateNestedManyWithoutProfileInput
+    reactions?: ReactionCreateNestedManyWithoutProfileInput
     watching?: WatchingCreateNestedManyWithoutProfileInput
     user: UserCreateNestedOneWithoutProfilesInput
   }
@@ -15494,7 +15528,7 @@ export namespace Prisma {
     hasPin?: boolean
     pin?: string | null
     favourites?: FavouriteUncheckedCreateNestedManyWithoutProfileInput
-    watcheds?: WatchedUncheckedCreateNestedManyWithoutProfileInput
+    reactions?: ReactionUncheckedCreateNestedManyWithoutProfileInput
     watching?: WatchingUncheckedCreateNestedManyWithoutProfileInput
   }
 
@@ -15504,7 +15538,7 @@ export namespace Prisma {
     hasPin?: BoolFieldUpdateOperationsInput | boolean
     pin?: NullableStringFieldUpdateOperationsInput | string | null
     favourites?: FavouriteUpdateManyWithoutProfileNestedInput
-    watcheds?: WatchedUpdateManyWithoutProfileNestedInput
+    reactions?: ReactionUpdateManyWithoutProfileNestedInput
     watching?: WatchingUpdateManyWithoutProfileNestedInput
     user?: UserUpdateOneRequiredWithoutProfilesNestedInput
   }
@@ -15516,7 +15550,7 @@ export namespace Prisma {
     hasPin?: BoolFieldUpdateOperationsInput | boolean
     pin?: NullableStringFieldUpdateOperationsInput | string | null
     favourites?: FavouriteUncheckedUpdateManyWithoutProfileNestedInput
-    watcheds?: WatchedUncheckedUpdateManyWithoutProfileNestedInput
+    reactions?: ReactionUncheckedUpdateManyWithoutProfileNestedInput
     watching?: WatchingUncheckedUpdateManyWithoutProfileNestedInput
   }
 
@@ -15595,54 +15629,61 @@ export namespace Prisma {
     source?: StringFieldUpdateOperationsInput | string
   }
 
-  export type WatchedCreateInput = {
+  export type ReactionCreateInput = {
     id?: string
     contentId: string
     contentType: string
+    reactionType: string
     source?: string
-    profile: ProfileCreateNestedOneWithoutWatchedsInput
+    profile: ProfileCreateNestedOneWithoutReactionsInput
   }
 
-  export type WatchedUncheckedCreateInput = {
-    id?: string
-    profileId: string
-    contentId: string
-    contentType: string
-    source?: string
-  }
-
-  export type WatchedUpdateInput = {
-    contentId?: StringFieldUpdateOperationsInput | string
-    contentType?: StringFieldUpdateOperationsInput | string
-    source?: StringFieldUpdateOperationsInput | string
-    profile?: ProfileUpdateOneRequiredWithoutWatchedsNestedInput
-  }
-
-  export type WatchedUncheckedUpdateInput = {
-    profileId?: StringFieldUpdateOperationsInput | string
-    contentId?: StringFieldUpdateOperationsInput | string
-    contentType?: StringFieldUpdateOperationsInput | string
-    source?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type WatchedCreateManyInput = {
+  export type ReactionUncheckedCreateInput = {
     id?: string
     profileId: string
     contentId: string
     contentType: string
+    reactionType: string
     source?: string
   }
 
-  export type WatchedUpdateManyMutationInput = {
+  export type ReactionUpdateInput = {
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    reactionType?: StringFieldUpdateOperationsInput | string
     source?: StringFieldUpdateOperationsInput | string
+    profile?: ProfileUpdateOneRequiredWithoutReactionsNestedInput
   }
 
-  export type WatchedUncheckedUpdateManyInput = {
+  export type ReactionUncheckedUpdateInput = {
     profileId?: StringFieldUpdateOperationsInput | string
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    reactionType?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ReactionCreateManyInput = {
+    id?: string
+    profileId: string
+    contentId: string
+    contentType: string
+    reactionType: string
+    source?: string
+  }
+
+  export type ReactionUpdateManyMutationInput = {
+    contentId?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    reactionType?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ReactionUncheckedUpdateManyInput = {
+    profileId?: StringFieldUpdateOperationsInput | string
+    contentId?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    reactionType?: StringFieldUpdateOperationsInput | string
     source?: StringFieldUpdateOperationsInput | string
   }
 
@@ -15655,6 +15696,7 @@ export namespace Prisma {
     completed?: boolean
     season?: number | null
     episode?: number | null
+    source?: string
     profile: ProfileCreateNestedOneWithoutWatchingInput
   }
 
@@ -15668,6 +15710,7 @@ export namespace Prisma {
     completed?: boolean
     season?: number | null
     episode?: number | null
+    source?: string
   }
 
   export type WatchingUpdateInput = {
@@ -15678,6 +15721,7 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     season?: NullableIntFieldUpdateOperationsInput | number | null
     episode?: NullableIntFieldUpdateOperationsInput | number | null
+    source?: StringFieldUpdateOperationsInput | string
     profile?: ProfileUpdateOneRequiredWithoutWatchingNestedInput
   }
 
@@ -15690,6 +15734,7 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     season?: NullableIntFieldUpdateOperationsInput | number | null
     episode?: NullableIntFieldUpdateOperationsInput | number | null
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type WatchingCreateManyInput = {
@@ -15702,6 +15747,7 @@ export namespace Prisma {
     completed?: boolean
     season?: number | null
     episode?: number | null
+    source?: string
   }
 
   export type WatchingUpdateManyMutationInput = {
@@ -15712,6 +15758,7 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     season?: NullableIntFieldUpdateOperationsInput | number | null
     episode?: NullableIntFieldUpdateOperationsInput | number | null
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type WatchingUncheckedUpdateManyInput = {
@@ -15723,6 +15770,7 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     season?: NullableIntFieldUpdateOperationsInput | number | null
     episode?: NullableIntFieldUpdateOperationsInput | number | null
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type AccountCreateInput = {
@@ -16399,10 +16447,10 @@ export namespace Prisma {
     none?: FavouriteWhereInput
   }
 
-  export type WatchedListRelationFilter = {
-    every?: WatchedWhereInput
-    some?: WatchedWhereInput
-    none?: WatchedWhereInput
+  export type ReactionListRelationFilter = {
+    every?: ReactionWhereInput
+    some?: ReactionWhereInput
+    none?: ReactionWhereInput
   }
 
   export type WatchingListRelationFilter = {
@@ -16420,7 +16468,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type WatchedOrderByRelationAggregateInput = {
+  export type ReactionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -16497,32 +16545,35 @@ export namespace Prisma {
     source?: SortOrder
   }
 
-  export type WatchedProfileIdContentIdCompoundUniqueInput = {
+  export type ReactionProfileIdContentIdCompoundUniqueInput = {
     profileId: string
     contentId: string
   }
 
-  export type WatchedCountOrderByAggregateInput = {
+  export type ReactionCountOrderByAggregateInput = {
     id?: SortOrder
     profileId?: SortOrder
     contentId?: SortOrder
     contentType?: SortOrder
+    reactionType?: SortOrder
     source?: SortOrder
   }
 
-  export type WatchedMaxOrderByAggregateInput = {
+  export type ReactionMaxOrderByAggregateInput = {
     id?: SortOrder
     profileId?: SortOrder
     contentId?: SortOrder
     contentType?: SortOrder
+    reactionType?: SortOrder
     source?: SortOrder
   }
 
-  export type WatchedMinOrderByAggregateInput = {
+  export type ReactionMinOrderByAggregateInput = {
     id?: SortOrder
     profileId?: SortOrder
     contentId?: SortOrder
     contentType?: SortOrder
+    reactionType?: SortOrder
     source?: SortOrder
   }
 
@@ -16564,6 +16615,7 @@ export namespace Prisma {
     completed?: SortOrder
     season?: SortOrder
     episode?: SortOrder
+    source?: SortOrder
   }
 
   export type WatchingAvgOrderByAggregateInput = {
@@ -16582,6 +16634,7 @@ export namespace Prisma {
     completed?: SortOrder
     season?: SortOrder
     episode?: SortOrder
+    source?: SortOrder
   }
 
   export type WatchingMinOrderByAggregateInput = {
@@ -16594,6 +16647,7 @@ export namespace Prisma {
     completed?: SortOrder
     season?: SortOrder
     episode?: SortOrder
+    source?: SortOrder
   }
 
   export type WatchingSumOrderByAggregateInput = {
@@ -17144,11 +17198,11 @@ export namespace Prisma {
     connect?: FavouriteWhereUniqueInput | FavouriteWhereUniqueInput[]
   }
 
-  export type WatchedCreateNestedManyWithoutProfileInput = {
-    create?: XOR<WatchedCreateWithoutProfileInput, WatchedUncheckedCreateWithoutProfileInput> | WatchedCreateWithoutProfileInput[] | WatchedUncheckedCreateWithoutProfileInput[]
-    connectOrCreate?: WatchedCreateOrConnectWithoutProfileInput | WatchedCreateOrConnectWithoutProfileInput[]
-    createMany?: WatchedCreateManyProfileInputEnvelope
-    connect?: WatchedWhereUniqueInput | WatchedWhereUniqueInput[]
+  export type ReactionCreateNestedManyWithoutProfileInput = {
+    create?: XOR<ReactionCreateWithoutProfileInput, ReactionUncheckedCreateWithoutProfileInput> | ReactionCreateWithoutProfileInput[] | ReactionUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: ReactionCreateOrConnectWithoutProfileInput | ReactionCreateOrConnectWithoutProfileInput[]
+    createMany?: ReactionCreateManyProfileInputEnvelope
+    connect?: ReactionWhereUniqueInput | ReactionWhereUniqueInput[]
   }
 
   export type WatchingCreateNestedManyWithoutProfileInput = {
@@ -17171,11 +17225,11 @@ export namespace Prisma {
     connect?: FavouriteWhereUniqueInput | FavouriteWhereUniqueInput[]
   }
 
-  export type WatchedUncheckedCreateNestedManyWithoutProfileInput = {
-    create?: XOR<WatchedCreateWithoutProfileInput, WatchedUncheckedCreateWithoutProfileInput> | WatchedCreateWithoutProfileInput[] | WatchedUncheckedCreateWithoutProfileInput[]
-    connectOrCreate?: WatchedCreateOrConnectWithoutProfileInput | WatchedCreateOrConnectWithoutProfileInput[]
-    createMany?: WatchedCreateManyProfileInputEnvelope
-    connect?: WatchedWhereUniqueInput | WatchedWhereUniqueInput[]
+  export type ReactionUncheckedCreateNestedManyWithoutProfileInput = {
+    create?: XOR<ReactionCreateWithoutProfileInput, ReactionUncheckedCreateWithoutProfileInput> | ReactionCreateWithoutProfileInput[] | ReactionUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: ReactionCreateOrConnectWithoutProfileInput | ReactionCreateOrConnectWithoutProfileInput[]
+    createMany?: ReactionCreateManyProfileInputEnvelope
+    connect?: ReactionWhereUniqueInput | ReactionWhereUniqueInput[]
   }
 
   export type WatchingUncheckedCreateNestedManyWithoutProfileInput = {
@@ -17203,18 +17257,18 @@ export namespace Prisma {
     deleteMany?: FavouriteScalarWhereInput | FavouriteScalarWhereInput[]
   }
 
-  export type WatchedUpdateManyWithoutProfileNestedInput = {
-    create?: XOR<WatchedCreateWithoutProfileInput, WatchedUncheckedCreateWithoutProfileInput> | WatchedCreateWithoutProfileInput[] | WatchedUncheckedCreateWithoutProfileInput[]
-    connectOrCreate?: WatchedCreateOrConnectWithoutProfileInput | WatchedCreateOrConnectWithoutProfileInput[]
-    upsert?: WatchedUpsertWithWhereUniqueWithoutProfileInput | WatchedUpsertWithWhereUniqueWithoutProfileInput[]
-    createMany?: WatchedCreateManyProfileInputEnvelope
-    set?: WatchedWhereUniqueInput | WatchedWhereUniqueInput[]
-    disconnect?: WatchedWhereUniqueInput | WatchedWhereUniqueInput[]
-    delete?: WatchedWhereUniqueInput | WatchedWhereUniqueInput[]
-    connect?: WatchedWhereUniqueInput | WatchedWhereUniqueInput[]
-    update?: WatchedUpdateWithWhereUniqueWithoutProfileInput | WatchedUpdateWithWhereUniqueWithoutProfileInput[]
-    updateMany?: WatchedUpdateManyWithWhereWithoutProfileInput | WatchedUpdateManyWithWhereWithoutProfileInput[]
-    deleteMany?: WatchedScalarWhereInput | WatchedScalarWhereInput[]
+  export type ReactionUpdateManyWithoutProfileNestedInput = {
+    create?: XOR<ReactionCreateWithoutProfileInput, ReactionUncheckedCreateWithoutProfileInput> | ReactionCreateWithoutProfileInput[] | ReactionUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: ReactionCreateOrConnectWithoutProfileInput | ReactionCreateOrConnectWithoutProfileInput[]
+    upsert?: ReactionUpsertWithWhereUniqueWithoutProfileInput | ReactionUpsertWithWhereUniqueWithoutProfileInput[]
+    createMany?: ReactionCreateManyProfileInputEnvelope
+    set?: ReactionWhereUniqueInput | ReactionWhereUniqueInput[]
+    disconnect?: ReactionWhereUniqueInput | ReactionWhereUniqueInput[]
+    delete?: ReactionWhereUniqueInput | ReactionWhereUniqueInput[]
+    connect?: ReactionWhereUniqueInput | ReactionWhereUniqueInput[]
+    update?: ReactionUpdateWithWhereUniqueWithoutProfileInput | ReactionUpdateWithWhereUniqueWithoutProfileInput[]
+    updateMany?: ReactionUpdateManyWithWhereWithoutProfileInput | ReactionUpdateManyWithWhereWithoutProfileInput[]
+    deleteMany?: ReactionScalarWhereInput | ReactionScalarWhereInput[]
   }
 
   export type WatchingUpdateManyWithoutProfileNestedInput = {
@@ -17253,18 +17307,18 @@ export namespace Prisma {
     deleteMany?: FavouriteScalarWhereInput | FavouriteScalarWhereInput[]
   }
 
-  export type WatchedUncheckedUpdateManyWithoutProfileNestedInput = {
-    create?: XOR<WatchedCreateWithoutProfileInput, WatchedUncheckedCreateWithoutProfileInput> | WatchedCreateWithoutProfileInput[] | WatchedUncheckedCreateWithoutProfileInput[]
-    connectOrCreate?: WatchedCreateOrConnectWithoutProfileInput | WatchedCreateOrConnectWithoutProfileInput[]
-    upsert?: WatchedUpsertWithWhereUniqueWithoutProfileInput | WatchedUpsertWithWhereUniqueWithoutProfileInput[]
-    createMany?: WatchedCreateManyProfileInputEnvelope
-    set?: WatchedWhereUniqueInput | WatchedWhereUniqueInput[]
-    disconnect?: WatchedWhereUniqueInput | WatchedWhereUniqueInput[]
-    delete?: WatchedWhereUniqueInput | WatchedWhereUniqueInput[]
-    connect?: WatchedWhereUniqueInput | WatchedWhereUniqueInput[]
-    update?: WatchedUpdateWithWhereUniqueWithoutProfileInput | WatchedUpdateWithWhereUniqueWithoutProfileInput[]
-    updateMany?: WatchedUpdateManyWithWhereWithoutProfileInput | WatchedUpdateManyWithWhereWithoutProfileInput[]
-    deleteMany?: WatchedScalarWhereInput | WatchedScalarWhereInput[]
+  export type ReactionUncheckedUpdateManyWithoutProfileNestedInput = {
+    create?: XOR<ReactionCreateWithoutProfileInput, ReactionUncheckedCreateWithoutProfileInput> | ReactionCreateWithoutProfileInput[] | ReactionUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: ReactionCreateOrConnectWithoutProfileInput | ReactionCreateOrConnectWithoutProfileInput[]
+    upsert?: ReactionUpsertWithWhereUniqueWithoutProfileInput | ReactionUpsertWithWhereUniqueWithoutProfileInput[]
+    createMany?: ReactionCreateManyProfileInputEnvelope
+    set?: ReactionWhereUniqueInput | ReactionWhereUniqueInput[]
+    disconnect?: ReactionWhereUniqueInput | ReactionWhereUniqueInput[]
+    delete?: ReactionWhereUniqueInput | ReactionWhereUniqueInput[]
+    connect?: ReactionWhereUniqueInput | ReactionWhereUniqueInput[]
+    update?: ReactionUpdateWithWhereUniqueWithoutProfileInput | ReactionUpdateWithWhereUniqueWithoutProfileInput[]
+    updateMany?: ReactionUpdateManyWithWhereWithoutProfileInput | ReactionUpdateManyWithWhereWithoutProfileInput[]
+    deleteMany?: ReactionScalarWhereInput | ReactionScalarWhereInput[]
   }
 
   export type WatchingUncheckedUpdateManyWithoutProfileNestedInput = {
@@ -17295,18 +17349,18 @@ export namespace Prisma {
     update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutFavouritesInput, ProfileUpdateWithoutFavouritesInput>, ProfileUncheckedUpdateWithoutFavouritesInput>
   }
 
-  export type ProfileCreateNestedOneWithoutWatchedsInput = {
-    create?: XOR<ProfileCreateWithoutWatchedsInput, ProfileUncheckedCreateWithoutWatchedsInput>
-    connectOrCreate?: ProfileCreateOrConnectWithoutWatchedsInput
+  export type ProfileCreateNestedOneWithoutReactionsInput = {
+    create?: XOR<ProfileCreateWithoutReactionsInput, ProfileUncheckedCreateWithoutReactionsInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutReactionsInput
     connect?: ProfileWhereUniqueInput
   }
 
-  export type ProfileUpdateOneRequiredWithoutWatchedsNestedInput = {
-    create?: XOR<ProfileCreateWithoutWatchedsInput, ProfileUncheckedCreateWithoutWatchedsInput>
-    connectOrCreate?: ProfileCreateOrConnectWithoutWatchedsInput
-    upsert?: ProfileUpsertWithoutWatchedsInput
+  export type ProfileUpdateOneRequiredWithoutReactionsNestedInput = {
+    create?: XOR<ProfileCreateWithoutReactionsInput, ProfileUncheckedCreateWithoutReactionsInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutReactionsInput
+    upsert?: ProfileUpsertWithoutReactionsInput
     connect?: ProfileWhereUniqueInput
-    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutWatchedsInput, ProfileUpdateWithoutWatchedsInput>, ProfileUncheckedUpdateWithoutWatchedsInput>
+    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutReactionsInput, ProfileUpdateWithoutReactionsInput>, ProfileUncheckedUpdateWithoutReactionsInput>
   }
 
   export type ProfileCreateNestedOneWithoutWatchingInput = {
@@ -17763,7 +17817,7 @@ export namespace Prisma {
     hasPin?: boolean
     pin?: string | null
     favourites?: FavouriteCreateNestedManyWithoutProfileInput
-    watcheds?: WatchedCreateNestedManyWithoutProfileInput
+    reactions?: ReactionCreateNestedManyWithoutProfileInput
     watching?: WatchingCreateNestedManyWithoutProfileInput
   }
 
@@ -17774,7 +17828,7 @@ export namespace Prisma {
     hasPin?: boolean
     pin?: string | null
     favourites?: FavouriteUncheckedCreateNestedManyWithoutProfileInput
-    watcheds?: WatchedUncheckedCreateNestedManyWithoutProfileInput
+    reactions?: ReactionUncheckedCreateNestedManyWithoutProfileInput
     watching?: WatchingUncheckedCreateNestedManyWithoutProfileInput
   }
 
@@ -17956,27 +18010,29 @@ export namespace Prisma {
     data: FavouriteCreateManyProfileInput | FavouriteCreateManyProfileInput[]
   }
 
-  export type WatchedCreateWithoutProfileInput = {
+  export type ReactionCreateWithoutProfileInput = {
     id?: string
     contentId: string
     contentType: string
+    reactionType: string
     source?: string
   }
 
-  export type WatchedUncheckedCreateWithoutProfileInput = {
+  export type ReactionUncheckedCreateWithoutProfileInput = {
     id?: string
     contentId: string
     contentType: string
+    reactionType: string
     source?: string
   }
 
-  export type WatchedCreateOrConnectWithoutProfileInput = {
-    where: WatchedWhereUniqueInput
-    create: XOR<WatchedCreateWithoutProfileInput, WatchedUncheckedCreateWithoutProfileInput>
+  export type ReactionCreateOrConnectWithoutProfileInput = {
+    where: ReactionWhereUniqueInput
+    create: XOR<ReactionCreateWithoutProfileInput, ReactionUncheckedCreateWithoutProfileInput>
   }
 
-  export type WatchedCreateManyProfileInputEnvelope = {
-    data: WatchedCreateManyProfileInput | WatchedCreateManyProfileInput[]
+  export type ReactionCreateManyProfileInputEnvelope = {
+    data: ReactionCreateManyProfileInput | ReactionCreateManyProfileInput[]
   }
 
   export type WatchingCreateWithoutProfileInput = {
@@ -17988,6 +18044,7 @@ export namespace Prisma {
     completed?: boolean
     season?: number | null
     episode?: number | null
+    source?: string
   }
 
   export type WatchingUncheckedCreateWithoutProfileInput = {
@@ -17999,6 +18056,7 @@ export namespace Prisma {
     completed?: boolean
     season?: number | null
     episode?: number | null
+    source?: string
   }
 
   export type WatchingCreateOrConnectWithoutProfileInput = {
@@ -18068,31 +18126,32 @@ export namespace Prisma {
     source?: StringFilter<"Favourite"> | string
   }
 
-  export type WatchedUpsertWithWhereUniqueWithoutProfileInput = {
-    where: WatchedWhereUniqueInput
-    update: XOR<WatchedUpdateWithoutProfileInput, WatchedUncheckedUpdateWithoutProfileInput>
-    create: XOR<WatchedCreateWithoutProfileInput, WatchedUncheckedCreateWithoutProfileInput>
+  export type ReactionUpsertWithWhereUniqueWithoutProfileInput = {
+    where: ReactionWhereUniqueInput
+    update: XOR<ReactionUpdateWithoutProfileInput, ReactionUncheckedUpdateWithoutProfileInput>
+    create: XOR<ReactionCreateWithoutProfileInput, ReactionUncheckedCreateWithoutProfileInput>
   }
 
-  export type WatchedUpdateWithWhereUniqueWithoutProfileInput = {
-    where: WatchedWhereUniqueInput
-    data: XOR<WatchedUpdateWithoutProfileInput, WatchedUncheckedUpdateWithoutProfileInput>
+  export type ReactionUpdateWithWhereUniqueWithoutProfileInput = {
+    where: ReactionWhereUniqueInput
+    data: XOR<ReactionUpdateWithoutProfileInput, ReactionUncheckedUpdateWithoutProfileInput>
   }
 
-  export type WatchedUpdateManyWithWhereWithoutProfileInput = {
-    where: WatchedScalarWhereInput
-    data: XOR<WatchedUpdateManyMutationInput, WatchedUncheckedUpdateManyWithoutProfileInput>
+  export type ReactionUpdateManyWithWhereWithoutProfileInput = {
+    where: ReactionScalarWhereInput
+    data: XOR<ReactionUpdateManyMutationInput, ReactionUncheckedUpdateManyWithoutProfileInput>
   }
 
-  export type WatchedScalarWhereInput = {
-    AND?: WatchedScalarWhereInput | WatchedScalarWhereInput[]
-    OR?: WatchedScalarWhereInput[]
-    NOT?: WatchedScalarWhereInput | WatchedScalarWhereInput[]
-    id?: StringFilter<"Watched"> | string
-    profileId?: StringFilter<"Watched"> | string
-    contentId?: StringFilter<"Watched"> | string
-    contentType?: StringFilter<"Watched"> | string
-    source?: StringFilter<"Watched"> | string
+  export type ReactionScalarWhereInput = {
+    AND?: ReactionScalarWhereInput | ReactionScalarWhereInput[]
+    OR?: ReactionScalarWhereInput[]
+    NOT?: ReactionScalarWhereInput | ReactionScalarWhereInput[]
+    id?: StringFilter<"Reaction"> | string
+    profileId?: StringFilter<"Reaction"> | string
+    contentId?: StringFilter<"Reaction"> | string
+    contentType?: StringFilter<"Reaction"> | string
+    reactionType?: StringFilter<"Reaction"> | string
+    source?: StringFilter<"Reaction"> | string
   }
 
   export type WatchingUpsertWithWhereUniqueWithoutProfileInput = {
@@ -18124,6 +18183,7 @@ export namespace Prisma {
     completed?: BoolFilter<"Watching"> | boolean
     season?: IntNullableFilter<"Watching"> | number | null
     episode?: IntNullableFilter<"Watching"> | number | null
+    source?: StringFilter<"Watching"> | string
   }
 
   export type UserUpsertWithoutProfilesInput = {
@@ -18167,7 +18227,7 @@ export namespace Prisma {
     avatar?: string | null
     hasPin?: boolean
     pin?: string | null
-    watcheds?: WatchedCreateNestedManyWithoutProfileInput
+    reactions?: ReactionCreateNestedManyWithoutProfileInput
     watching?: WatchingCreateNestedManyWithoutProfileInput
     user: UserCreateNestedOneWithoutProfilesInput
   }
@@ -18179,7 +18239,7 @@ export namespace Prisma {
     avatar?: string | null
     hasPin?: boolean
     pin?: string | null
-    watcheds?: WatchedUncheckedCreateNestedManyWithoutProfileInput
+    reactions?: ReactionUncheckedCreateNestedManyWithoutProfileInput
     watching?: WatchingUncheckedCreateNestedManyWithoutProfileInput
   }
 
@@ -18204,7 +18264,7 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     hasPin?: BoolFieldUpdateOperationsInput | boolean
     pin?: NullableStringFieldUpdateOperationsInput | string | null
-    watcheds?: WatchedUpdateManyWithoutProfileNestedInput
+    reactions?: ReactionUpdateManyWithoutProfileNestedInput
     watching?: WatchingUpdateManyWithoutProfileNestedInput
     user?: UserUpdateOneRequiredWithoutProfilesNestedInput
   }
@@ -18215,11 +18275,11 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     hasPin?: BoolFieldUpdateOperationsInput | boolean
     pin?: NullableStringFieldUpdateOperationsInput | string | null
-    watcheds?: WatchedUncheckedUpdateManyWithoutProfileNestedInput
+    reactions?: ReactionUncheckedUpdateManyWithoutProfileNestedInput
     watching?: WatchingUncheckedUpdateManyWithoutProfileNestedInput
   }
 
-  export type ProfileCreateWithoutWatchedsInput = {
+  export type ProfileCreateWithoutReactionsInput = {
     id?: string
     name: string
     avatar?: string | null
@@ -18230,7 +18290,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutProfilesInput
   }
 
-  export type ProfileUncheckedCreateWithoutWatchedsInput = {
+  export type ProfileUncheckedCreateWithoutReactionsInput = {
     id?: string
     userId: string
     name: string
@@ -18241,23 +18301,23 @@ export namespace Prisma {
     watching?: WatchingUncheckedCreateNestedManyWithoutProfileInput
   }
 
-  export type ProfileCreateOrConnectWithoutWatchedsInput = {
+  export type ProfileCreateOrConnectWithoutReactionsInput = {
     where: ProfileWhereUniqueInput
-    create: XOR<ProfileCreateWithoutWatchedsInput, ProfileUncheckedCreateWithoutWatchedsInput>
+    create: XOR<ProfileCreateWithoutReactionsInput, ProfileUncheckedCreateWithoutReactionsInput>
   }
 
-  export type ProfileUpsertWithoutWatchedsInput = {
-    update: XOR<ProfileUpdateWithoutWatchedsInput, ProfileUncheckedUpdateWithoutWatchedsInput>
-    create: XOR<ProfileCreateWithoutWatchedsInput, ProfileUncheckedCreateWithoutWatchedsInput>
+  export type ProfileUpsertWithoutReactionsInput = {
+    update: XOR<ProfileUpdateWithoutReactionsInput, ProfileUncheckedUpdateWithoutReactionsInput>
+    create: XOR<ProfileCreateWithoutReactionsInput, ProfileUncheckedCreateWithoutReactionsInput>
     where?: ProfileWhereInput
   }
 
-  export type ProfileUpdateToOneWithWhereWithoutWatchedsInput = {
+  export type ProfileUpdateToOneWithWhereWithoutReactionsInput = {
     where?: ProfileWhereInput
-    data: XOR<ProfileUpdateWithoutWatchedsInput, ProfileUncheckedUpdateWithoutWatchedsInput>
+    data: XOR<ProfileUpdateWithoutReactionsInput, ProfileUncheckedUpdateWithoutReactionsInput>
   }
 
-  export type ProfileUpdateWithoutWatchedsInput = {
+  export type ProfileUpdateWithoutReactionsInput = {
     name?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     hasPin?: BoolFieldUpdateOperationsInput | boolean
@@ -18267,7 +18327,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutProfilesNestedInput
   }
 
-  export type ProfileUncheckedUpdateWithoutWatchedsInput = {
+  export type ProfileUncheckedUpdateWithoutReactionsInput = {
     userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18284,7 +18344,7 @@ export namespace Prisma {
     hasPin?: boolean
     pin?: string | null
     favourites?: FavouriteCreateNestedManyWithoutProfileInput
-    watcheds?: WatchedCreateNestedManyWithoutProfileInput
+    reactions?: ReactionCreateNestedManyWithoutProfileInput
     user: UserCreateNestedOneWithoutProfilesInput
   }
 
@@ -18296,7 +18356,7 @@ export namespace Prisma {
     hasPin?: boolean
     pin?: string | null
     favourites?: FavouriteUncheckedCreateNestedManyWithoutProfileInput
-    watcheds?: WatchedUncheckedCreateNestedManyWithoutProfileInput
+    reactions?: ReactionUncheckedCreateNestedManyWithoutProfileInput
   }
 
   export type ProfileCreateOrConnectWithoutWatchingInput = {
@@ -18321,7 +18381,7 @@ export namespace Prisma {
     hasPin?: BoolFieldUpdateOperationsInput | boolean
     pin?: NullableStringFieldUpdateOperationsInput | string | null
     favourites?: FavouriteUpdateManyWithoutProfileNestedInput
-    watcheds?: WatchedUpdateManyWithoutProfileNestedInput
+    reactions?: ReactionUpdateManyWithoutProfileNestedInput
     user?: UserUpdateOneRequiredWithoutProfilesNestedInput
   }
 
@@ -18332,7 +18392,7 @@ export namespace Prisma {
     hasPin?: BoolFieldUpdateOperationsInput | boolean
     pin?: NullableStringFieldUpdateOperationsInput | string | null
     favourites?: FavouriteUncheckedUpdateManyWithoutProfileNestedInput
-    watcheds?: WatchedUncheckedUpdateManyWithoutProfileNestedInput
+    reactions?: ReactionUncheckedUpdateManyWithoutProfileNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -18710,7 +18770,7 @@ export namespace Prisma {
     hasPin?: BoolFieldUpdateOperationsInput | boolean
     pin?: NullableStringFieldUpdateOperationsInput | string | null
     favourites?: FavouriteUpdateManyWithoutProfileNestedInput
-    watcheds?: WatchedUpdateManyWithoutProfileNestedInput
+    reactions?: ReactionUpdateManyWithoutProfileNestedInput
     watching?: WatchingUpdateManyWithoutProfileNestedInput
   }
 
@@ -18720,7 +18780,7 @@ export namespace Prisma {
     hasPin?: BoolFieldUpdateOperationsInput | boolean
     pin?: NullableStringFieldUpdateOperationsInput | string | null
     favourites?: FavouriteUncheckedUpdateManyWithoutProfileNestedInput
-    watcheds?: WatchedUncheckedUpdateManyWithoutProfileNestedInput
+    reactions?: ReactionUncheckedUpdateManyWithoutProfileNestedInput
     watching?: WatchingUncheckedUpdateManyWithoutProfileNestedInput
   }
 
@@ -18792,10 +18852,11 @@ export namespace Prisma {
     source?: string
   }
 
-  export type WatchedCreateManyProfileInput = {
+  export type ReactionCreateManyProfileInput = {
     id?: string
     contentId: string
     contentType: string
+    reactionType: string
     source?: string
   }
 
@@ -18808,6 +18869,7 @@ export namespace Prisma {
     completed?: boolean
     season?: number | null
     episode?: number | null
+    source?: string
   }
 
   export type FavouriteUpdateWithoutProfileInput = {
@@ -18828,21 +18890,24 @@ export namespace Prisma {
     source?: StringFieldUpdateOperationsInput | string
   }
 
-  export type WatchedUpdateWithoutProfileInput = {
+  export type ReactionUpdateWithoutProfileInput = {
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    reactionType?: StringFieldUpdateOperationsInput | string
     source?: StringFieldUpdateOperationsInput | string
   }
 
-  export type WatchedUncheckedUpdateWithoutProfileInput = {
+  export type ReactionUncheckedUpdateWithoutProfileInput = {
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    reactionType?: StringFieldUpdateOperationsInput | string
     source?: StringFieldUpdateOperationsInput | string
   }
 
-  export type WatchedUncheckedUpdateManyWithoutProfileInput = {
+  export type ReactionUncheckedUpdateManyWithoutProfileInput = {
     contentId?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
+    reactionType?: StringFieldUpdateOperationsInput | string
     source?: StringFieldUpdateOperationsInput | string
   }
 
@@ -18854,6 +18919,7 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     season?: NullableIntFieldUpdateOperationsInput | number | null
     episode?: NullableIntFieldUpdateOperationsInput | number | null
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type WatchingUncheckedUpdateWithoutProfileInput = {
@@ -18864,6 +18930,7 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     season?: NullableIntFieldUpdateOperationsInput | number | null
     episode?: NullableIntFieldUpdateOperationsInput | number | null
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type WatchingUncheckedUpdateManyWithoutProfileInput = {
@@ -18874,6 +18941,7 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     season?: NullableIntFieldUpdateOperationsInput | number | null
     episode?: NullableIntFieldUpdateOperationsInput | number | null
+    source?: StringFieldUpdateOperationsInput | string
   }
 
   export type SeasonCreateManyTvShowInput = {

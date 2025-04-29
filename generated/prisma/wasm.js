@@ -138,11 +138,12 @@ exports.Prisma.FavouriteScalarFieldEnum = {
   source: 'source'
 };
 
-exports.Prisma.WatchedScalarFieldEnum = {
+exports.Prisma.ReactionScalarFieldEnum = {
   id: 'id',
   profileId: 'profileId',
   contentId: 'contentId',
   contentType: 'contentType',
+  reactionType: 'reactionType',
   source: 'source'
 };
 
@@ -155,7 +156,8 @@ exports.Prisma.WatchingScalarFieldEnum = {
   lastWatched: 'lastWatched',
   completed: 'completed',
   season: 'season',
-  episode: 'episode'
+  episode: 'episode',
+  source: 'source'
 };
 
 exports.Prisma.AccountScalarFieldEnum = {
@@ -245,7 +247,7 @@ exports.Prisma.ModelName = {
   User: 'User',
   Profile: 'Profile',
   Favourite: 'Favourite',
-  Watched: 'Watched',
+  Reaction: 'Reaction',
   Watching: 'Watching',
   Account: 'Account',
   Session: 'Session',
