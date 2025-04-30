@@ -17,6 +17,7 @@ import useMovieDetails from "@/hooks/useMovieDetails";
 import useTvShowDetails from "@/hooks/useTvShowDetails";
 
 import { MovieDetailsResponse, TvShowDetailsResponse } from "@/lib/types/api";
+import useProfile from "@/hooks/useProfile";
 
 interface InfoModalProps {
   visible?: boolean;
@@ -45,6 +46,8 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
   const [isAlreadyWatched, setIsAlreadyWatched] = useState(false);
 
   const [isMuted, setIsMuted] = useState(true);
+
+  const { currentProfileId } = useProfile();
 
   // Important: We maintain the content type from the store consistently
   const [contentType, setContentType] = useState<"movie" | "tv">(
@@ -271,11 +274,6 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
   const durationText = isTvShow
     ? `${numberOfSeasons} ${numberOfSeasons === 1 ? "Season" : "Seasons"}`
     : (data as MovieDetailsResponse["details"]).duration || "N/A";
-
-  const currentProfileId =
-    typeof window !== "undefined"
-      ? localStorage.getItem("currentProfile")
-      : null;
 
   return (
     <div className="z-50 transition duration-300 bg-black/80 flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0">

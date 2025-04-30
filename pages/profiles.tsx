@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import axios from "axios";
+import useProfile from "@/hooks/useProfile";
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -34,11 +35,10 @@ const Profiles = () => {
   const { data: user, mutate } = useCurrentUser();
   const [isAddingProfile, setIsAddingProfile] = useState(false);
   const [newProfileName, setNewProfileName] = useState("");
-  const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
+  const { setCurrentProfileId, currentProfileId } = useProfile();
 
   const handleProfileClick = (profileId: string) => {
-    setSelectedProfile(profileId);
-    localStorage.setItem("currentProfile", profileId);
+    setCurrentProfileId(profileId);
     router.push("/browse");
   };
 
@@ -94,7 +94,7 @@ const Profiles = () => {
                 key={profile.id}
                 onClick={() => handleProfileClick(profile.id)}
                 className={`group ${
-                  selectedProfile === profile.id ? "ring-2 ring-white" : ""
+                  currentProfileId === profile.id ? "ring-2 ring-white" : ""
                 }`}
               >
                 <div className="flex-row w-44 mx-auto">

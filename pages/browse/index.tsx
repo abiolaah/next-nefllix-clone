@@ -11,6 +11,7 @@ import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import { MediaItem } from "@/lib/types/api";
 import TopMovieList from "@/components/TopMovieList";
+import useProfile from "@/hooks/useProfile";
 
 // Using GetServerSideProps type and no mixing with getStaticProps/getStaticPaths
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -31,10 +32,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Browse = () => {
-  const currentProfileId =
-    typeof window !== "undefined"
-      ? localStorage.getItem("currentProfile")
-      : null;
+  const { currentProfileId } = useProfile();
 
   const { data: movies, isLoading: moviesLoading } = useMovies({
     type: "trending",

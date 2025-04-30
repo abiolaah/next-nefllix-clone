@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { useRouter } from "next/router";
+import useProfile from "@/hooks/useProfile";
 
 interface AccountMenuProp {
   visible?: boolean;
@@ -17,22 +18,41 @@ interface ProfileProps {
 const AccountMenu: React.FC<AccountMenuProp> = ({ visible }) => {
   const router = useRouter();
   const { data: currentUser } = useCurrentUser();
-  if (!visible) return null;
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Get the current profile from localStorage or use the first profile
-  const currentProfileId =
-    typeof window !== "undefined"
-      ? localStorage.getItem("currentProfile")
-      : null;
-  const currentProfile =
-    currentUser?.profiles?.find(
-      (profile: ProfileProps) => profile.id === currentProfileId
-    ) || currentUser?.profiles?.[0];
+  const { currentProfileId, setCurrentProfileId, currentProfile } =
+    useProfile();
 
   const remainingProfiles =
     currentUser?.profiles?.filter(
       (profile: ProfileProps) => profile.id !== currentProfileId
     ) || [];
+
+  const handleProfileClick = (profileId: string) => {
+    setIsLoading(true);
+    setCurrentProfileId(profileId);
+    router.push("/browse");
+    setIsLoading(false);
+  };
+
+  if (!visible) return null;
+
+  if (isLoading) {
+    return (
+      <div className="bg-black w-56 absolute top-14 right-0 py-5 flex-col border-2 border-gray-800 flex">
+        <div className="flex flex-col gap-3">
+          <Image
+            src={currentProfile?.avatar || ""}
+            className="w-8 rounded-md"
+            width={30}
+            height={30}
+            alt={currentProfile?.name || ""}
+          />
+          <p className="text-white text-sm">Loading...</p>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="bg-black w-56 absolute top-14 right-0 py-5 flex-col border-2 border-gray-800 flex">
       <div className="flex flex-col gap-3">
@@ -59,10 +79,7 @@ const AccountMenu: React.FC<AccountMenuProp> = ({ visible }) => {
           {remainingProfiles.map((profile: ProfileProps) => (
             <div
               key={profile.id}
-              onClick={() => {
-                localStorage.setItem("currentProfile", profile.id);
-                router.push("/profiles");
-              }}
+              onClick={() => handleProfileClick(profile.id)}
               className="px-3 group/item flex flex-row gap-3 items-center w-full"
             >
               <Image

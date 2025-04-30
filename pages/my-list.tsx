@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Navbar from "@/components/Navbar";
 import MovieList from "@/components/MovieList";
 import useFavourites from "@/hooks/useFavourites";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
+import useProfile from "@/hooks/useProfile";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
@@ -23,16 +24,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const MyList = () => {
-  const [currentProfileId, setCurrentProfileId] = useState<string | null>(null);
+  const { currentProfileId } = useProfile();
   const { data: favourites = [], isLoading } = useFavourites(
     currentProfileId || undefined
   );
-
-  useEffect(() => {
-    // This code runs only on the client side
-    const profileId = localStorage.getItem("currentProfile");
-    setCurrentProfileId(profileId);
-  }, []);
 
   if (isLoading || currentProfileId === null) {
     return (

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { BsBell, BsChevronDown, BsSearch } from "react-icons/bs";
 import { IoMdArrowDropdown } from "react-icons/io";
 import NavbarItem from "./NavbarItem";
@@ -7,18 +7,11 @@ import MobileMenu from "./MobileMenu";
 import AccountMenu from "./AccountMenu";
 import { navItem } from "@/constants/navItem";
 import Input from "./Input";
-import useCurrentUser from "@/hooks/useCurrentUser";
-
-interface ProfileProps {
-  id: string;
-  name: string;
-  avatar: string;
-}
+import useProfile from "@/hooks/useProfile";
 
 const TOP_OFFSET = 66;
 
 const Navbar = () => {
-  const { data: currentUser } = useCurrentUser();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showBackground, setShowBackground] = useState(false);
@@ -27,27 +20,8 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const searchRef = useRef<HTMLDivElement>(null);
 
-  // Get the current profile from localStorage or use the first profile
-  const currentProfileId =
-    typeof window !== "undefined"
-      ? localStorage.getItem("currentProfile")
-      : null;
-
-  // Get the current profile from the currentUser data
-  const currentProfile = useMemo(() => {
-    const profile =
-      currentUser?.profiles?.find(
-        (profile: ProfileProps) => profile.id === currentProfileId
-      ) || currentUser?.profiles?.[0];
-
-    return {
-      ...profile,
-      avatar:
-        profile?.avatar ||
-        "https://res.cloudinary.com/dixwarqdb/image/upload/v1744696100/default-blue_oqkthi.png",
-      name: profile?.name || "Profile",
-    };
-  }, [currentUser, currentProfileId]);
+  // Get the current profile with useProfile hooks
+  const { currentProfile } = useProfile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -168,10 +142,10 @@ const Navbar = () => {
           >
             <div className="w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden">
               <Image
-                src={currentProfile.avatar}
+                src={currentProfile?.avatar || ""}
                 width={30}
                 height={30}
-                alt={`Avatar for ${currentProfile.name}`}
+                alt={`Avatar for ${currentProfile?.name}`}
                 onError={(e) => {
                   // Fallback to default avatar if the image fails to load
                   (e.target as HTMLImageElement).src =

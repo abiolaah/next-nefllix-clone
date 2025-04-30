@@ -15,6 +15,7 @@ import useInfoModal from "@/hooks/useInfoModal";
 import FavouriteButton from "./FavouriteButton";
 import ReactionsButton from "./ReactionsButton";
 import { useExpandedPosition } from "@/lib/useExpandedPosition";
+import useProfile from "@/hooks/useProfile";
 
 interface MovieCardProps {
   data: MediaItem;
@@ -26,6 +27,8 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
   const { getPosition } = useExpandedPosition(expandedRef);
   const { openModal } = useInfoModal();
   const [isHovered, setIsHovered] = useState(false);
+
+  const { currentProfileId } = useProfile();
 
   const refPosition = getPosition();
 
@@ -77,11 +80,6 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
     openModal(data?.id, contentType);
     setIsHovered(false);
   };
-
-  const currentProfileId =
-    typeof window !== "undefined"
-      ? localStorage.getItem("currentProfile")
-      : null;
 
   return (
     <div
