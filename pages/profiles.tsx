@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import axios from "axios";
 import useProfile from "@/hooks/useProfile";
+import { MdOutlineEdit } from "react-icons/md";
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -36,8 +37,10 @@ const Profiles = () => {
   const [isAddingProfile, setIsAddingProfile] = useState(false);
   const [newProfileName, setNewProfileName] = useState("");
   const { setCurrentProfileId, currentProfileId } = useProfile();
+  const [isManagingProfiles, setIsManagingProfiles] = useState(false);
 
   const handleProfileClick = (profileId: string) => {
+    if (isManagingProfiles) return; // Don't navigate when in manage mode
     setCurrentProfileId(profileId);
     router.push("/browse");
   };
@@ -81,31 +84,62 @@ const Profiles = () => {
     setIsAddingProfile(true);
   };
 
+  const handleEditProfile = (profileId: string) => {
+    // Navigate to the edit profile page
+    router.push(`/settings/${profileId}`);
+  };
+
   return (
     <div className="flex items-center h-full justify-center">
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-3">
         <h1 className="text-3xl md:text-6xl text-white text-center">
-          Who is watching?
+          {isManagingProfiles ? "Manage Profiles:" : "Who is watching?"}
         </h1>
         <div className="flex items-center justify-center gap-8 mt-10 flex-wrap">
           {user?.profiles?.map(
             (profile: { id: string; name: string; avatar: string }) => (
               <div
                 key={profile.id}
-                onClick={() => handleProfileClick(profile.id)}
-                className={`group ${
-                  currentProfileId === profile.id ? "ring-2 ring-white" : ""
-                }`}
+                onClick={() =>
+                  !isManagingProfiles && handleProfileClick(profile.id)
+                }
+                className="group relative"
               >
-                <div className="flex-row w-44 mx-auto">
-                  <div className="w-44 h-44 rounded-md flex items-center justify-center border-2 border-transparent group-hover:cursor-pointer group-hover:border-white overflow-hidden">
+                <div className="w-[140px] mx-auto">
+                  <div
+                    className={`w-[140px] h-[140px] rounded-md flex items-center justify-center 
+                    border-2 overflow-hidden relative
+                    ${
+                      isManagingProfiles
+                        ? "border-transparent"
+                        : currentProfileId === profile.id
+                        ? "border-white"
+                        : "border-transparent group-hover:border-white"
+                    }`}
+                  >
                     <Image
                       src={profile.avatar}
-                      width={150}
-                      height={150}
+                      width={140}
+                      height={140}
                       alt={profile.name}
-                      className="object-cover"
+                      className={`object-cover w-full h-full ${
+                        isManagingProfiles ? "opacity-50" : ""
+                      }`}
                     />
+                    {/* Edit icon overlay when managing profiles */}
+                    {isManagingProfiles && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditProfile(profile.id);
+                          }}
+                          className="bg-transparent rounded-full p-2"
+                        >
+                          <MdOutlineEdit size={40} className="text-white" />
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="mt-4 text-gray-400 text-2xl text-center group-hover:text-white">
                     {profile.name}
@@ -115,7 +149,7 @@ const Profiles = () => {
             )
           )}
 
-          {user?.profiles?.length < 4 && (
+          {isManagingProfiles && user?.profiles?.length < 4 && (
             <div className="">
               {isAddingProfile ? (
                 <div className="group flex-row w-44 mx-auto">
@@ -170,6 +204,15 @@ const Profiles = () => {
             </div>
           )}
         </div>
+        <button
+          type="button"
+          onClick={() => setIsManagingProfiles(!isManagingProfiles)}
+          className={`bg-transparent text-white px-3 py-1 text-sm border-gray-400 border-2 flex items-center justify-center transition w-44 mt-4 mx-auto tracking-wider font-light ${
+            isManagingProfiles ? "hover:bg-red-500" : ""
+          }`}
+        >
+          {isManagingProfiles ? "Done" : "Manage Profiles"}
+        </button>
       </div>
     </div>
   );
