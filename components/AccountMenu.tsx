@@ -4,6 +4,8 @@ import Image from "next/image";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { useRouter } from "next/router";
 import useProfile from "@/hooks/useProfile";
+import { FaEdit, FaSignOutAlt } from "react-icons/fa";
+import { CgProfile } from "react-icons/cg";
 
 interface AccountMenuProp {
   visible?: boolean;
@@ -27,6 +29,8 @@ const AccountMenu: React.FC<AccountMenuProp> = ({ visible }) => {
     currentUser?.profiles?.filter(
       (profile: ProfileProps) => profile.id !== currentProfileId
     ) || [];
+
+  console.log(remainingProfiles);
 
   const handleProfileClick = (profileId: string) => {
     setIsLoading(true);
@@ -80,7 +84,7 @@ const AccountMenu: React.FC<AccountMenuProp> = ({ visible }) => {
             <div
               key={profile.id}
               onClick={() => handleProfileClick(profile.id)}
-              className="px-3 group/item flex flex-row gap-3 items-center w-full"
+              className="px-3 group/item flex flex-row gap-4 items-center w-full"
             >
               <Image
                 className="w-8 rounded-md"
@@ -96,17 +100,28 @@ const AccountMenu: React.FC<AccountMenuProp> = ({ visible }) => {
           ))}
         </div>
         <hr className="bg-gray-600 border-0 h-px my-4" />
-        <div
-          onClick={() => router.push("/profiles")}
-          className="px-3 text-center text-white text-sm hover:underline"
-        >
-          Manage Profiles
+        <div className="flex flex-col gap-2">
+          <div
+            onClick={() => router.push("/account")}
+            className="px-3 text-center text-white text-sm hover:underline flex flex-row gap-4 items-center"
+          >
+            <CgProfile className="text-white" size={30} />
+            Accounts
+          </div>
+          <div
+            onClick={() => router.push("/profiles")}
+            className="px-3 text-center text-white text-sm hover:underline flex flex-row gap-4 items-center"
+          >
+            <FaEdit className="text-white" size={30} />
+            Manage Profiles
+          </div>
         </div>
         <hr className="bg-gray-600 border-0 h-px my-4" />
         <div
           onClick={() => signOut()}
-          className="px-3 text-center text-white text-sm hover:underline"
+          className="px-3 text-center text-white text-sm hover:underline flex flex-row gap-4 items-center"
         >
+          <FaSignOutAlt className="text-white" size={30} />
           Sign out of Netflix
         </div>
       </div>
