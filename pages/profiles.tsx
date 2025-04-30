@@ -38,11 +38,21 @@ const Profiles = () => {
   const [newProfileName, setNewProfileName] = useState("");
   const { setCurrentProfileId, currentProfileId } = useProfile();
   const [isManagingProfiles, setIsManagingProfiles] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleProfileClick = (profileId: string) => {
+  const handleProfileClick = async (profileId: string) => {
     if (isManagingProfiles) return; // Don't navigate when in manage mode
+    setIsLoading(true);
     setCurrentProfileId(profileId);
-    router.push("/browse");
+
+    // Use router.replace instead of push to ensure a full page reload
+    // This will trigger the loading state in index.tsx
+
+    await router.replace({
+      pathname: "/browse",
+      query: { profileSwitch: true },
+    });
   };
 
   const handleAddProfile = async () => {
