@@ -158,3 +158,6 @@ export const sideMenuItems: SideMenuItemProps[] = [
     icon: FaTheaterMasks,
   },
 ];
+
+export const DEFAULT_PROFILE_AVATAR =
+  "https://res.cloudinary.com/dixwarqdb/image/upload/v1744696100/default-blue_oqkthi.png";
