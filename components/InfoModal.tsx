@@ -347,7 +347,14 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                     (dataSource as "tmdb" | "local" | undefined) || "tmdb"
                   }
                 />
-                <ReactionsButton />
+                <ReactionsButton
+                  mediaId={data.id}
+                  mediaType={contentType}
+                  profileId={currentProfileId || ""}
+                  source={
+                    (dataSource as "tmdb" | "local" | undefined) || "tmdb"
+                  }
+                />
               </div>
             </div>
           </div>
