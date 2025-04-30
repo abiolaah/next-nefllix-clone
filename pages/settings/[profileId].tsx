@@ -4,12 +4,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Image from "next/image";
 import SettingsNavBar from "@/components/SettingsNavBar";
-import {
-  FaChevronRight,
-  FaLock,
-  FaLanguage,
-  FaShieldAlt,
-} from "react-icons/fa";
+import { FaChevronRight, FaLanguage, FaShieldAlt } from "react-icons/fa";
 import {
   MdArrowBack,
   MdSubtitles,
@@ -28,6 +23,14 @@ import axios from "axios";
 import { getSession } from "next-auth/react";
 import { NextPageContext } from "next";
 import useCurrentUser from "@/hooks/useCurrentUser";
+
+interface ProfileProps {
+  id: string;
+  name: string;
+  avatar: string;
+  hasPin: boolean;
+  pin?: string;
+}
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -49,7 +52,7 @@ export async function getServerSideProps(context: NextPageContext) {
 const ProfileSettings = () => {
   const router = useRouter();
   const { profileId } = router.query;
-  const { data: user, mutate } = useCurrentUser();
+  const { mutate } = useCurrentUser();
   const { currentProfile } = useProfile();
   const [animationEffects, setAnimationEffects] = useState(false);
 
@@ -64,48 +67,51 @@ const ProfileSettings = () => {
   };
 
   const handleDeleteProfile = async (profileId: string) => {
-    // Find the profile to determine if it has a pin
-    const profileToDelete = user?.profiles?.find(
-      (profile: { id: string }) => profile.id === profileId
-    );
+    try {
+      // Get all profiles
+      const response = await axios.get("/api/profile");
 
-    if (!profileToDelete) return;
+      const profiles = response.data;
 
-    // Check if profile has a pin
-    if (profileToDelete.hasPin) {
-      // Prompt user for pin
-      const enteredPin = prompt("Enter the PIN to delete this profile:");
+      // Find the profile to determine if it has a pin
+      const profileToDelete: ProfileProps = profiles.find(
+        (profile: { id: string }) => profile.id === profileId
+      );
 
-      if (!enteredPin) return;
+      // Check if profile exist
+      if (!profileToDelete) {
+        console.error("Profile not found");
+        return;
+      }
 
-      try {
-        // Verify the pin
-        const response = await axios.post("/api/pin-verify", {
-          profileId,
-          pin: enteredPin,
-        });
+      // Check if profile has a pin
+      if (profileToDelete.hasPin && profileToDelete.pin) {
+        // Prompt user for pin
+        const enteredPin = prompt("Please enter the profile PIN to delete:");
 
-        if (!response.data.success) {
+        if (!enteredPin) return; // User cancelled
+
+        // Verify pin locally
+        if (enteredPin != profileToDelete.pin) {
           alert("Incorrect PIN. Profile deletion cancelled.");
           return;
         }
-
-        // Pin verified, proceed with deletion
-        await axios.delete(`/api/profile?profileId=${profileId}`);
-        mutate();
-      } catch (error) {
-        console.error("Error deleting profile:", error);
+      } else {
+        // No pin required, use existing confirmation flow
+        if (!confirm("Are you sure you want to delete this profile?")) return;
       }
-    } else {
-      if (!confirm("Are you sure you want to delete this profile?")) return;
 
-      try {
-        await axios.delete(`/api/profile?profileId=${profileId}`);
-        mutate();
-      } catch (error) {
-        console.error("Error deleting profile:", error);
-      }
+      // Pin verified or not required, proceed with deletion
+      await axios.delete(`/api/profile/${profileId}`);
+      mutate(); // Refresh user data
+    } catch (error) {
+      console.error("Error deleting profile:", error);
     }
+  };
+
+  const handleEditProfile = () => {
+    // Navigate to the edit profile page
+    router.push(`/settings/profile/edit/${profileId}`);
   };
 
   if (currentProfile?.id !== profileId) {
@@ -133,7 +139,10 @@ const ProfileSettings = () => {
         {/* Profile section */}
         <div className="bg-zinc-800 rounded-md mb-6 overflow-hidden">
           {/* Profile info */}
-          <div className="p-4 flex items-center border-b border-zinc-700">
+          <div
+            onClick={() => handleEditProfile()}
+            className="p-4 flex items-center border-b border-zinc-700"
+          >
             <div className="flex items-center gap-4 flex-1">
               <Image
                 src={currentProfile?.avatar || "/placeholder.svg"}
@@ -155,7 +164,7 @@ const ProfileSettings = () => {
           </div>
 
           {/* Profile lock */}
-          <div className="p-4 flex items-center">
+          {/* <div className="p-4 flex items-center">
             <div className="flex items-center gap-4 flex-1">
               <div className="bg-zinc-700 p-2 rounded-full">
                 <FaLock className="text-white" size={20} />
@@ -168,7 +177,7 @@ const ProfileSettings = () => {
               </div>
             </div>
             <FaChevronRight className="text-white" size={16} />
-          </div>
+          </div> */}
         </div>
 
         {/* Preferences section */}
