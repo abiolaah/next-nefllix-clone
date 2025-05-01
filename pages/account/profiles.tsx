@@ -38,15 +38,7 @@ const AccountProfiles = () => {
   const { data: currentUser } = useCurrentUser();
   const { currentProfileId } = useProfile();
 
-  const remainingProfiles =
-    currentUser?.profiles?.filter(
-      (profile: ProfileProps) => profile.id !== currentProfileId
-    ) || [];
-
   const profiles = currentUser?.profiles || [];
-  console.log({ currentUser });
-  console.log({ remainingProfiles });
-  console.log({ profiles });
   return (
     <>
       <SettingsNavBar />
