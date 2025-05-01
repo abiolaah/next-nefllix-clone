@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { TMDB_BASE_URL, TMDB_ENDPOINTS } from "../../../lib/tmdb";
 import prismadb from "@/lib/prismadb";
 import { faker } from "@faker-js/faker";
+import { mediaExtraData } from "@/constants/data";
 import { TMDBVideo, TvShowDetailsResponse } from "@/lib/types/api";
 
 const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
@@ -36,13 +37,6 @@ const findBestTrailerUrl = (videos: { results: TMDBVideo[] }): string => {
   return "";
 };
 
-// Helper function to generate name without titles
-const generateNameWithoutTitle = (): string => {
-  const firstName = faker.person.firstName();
-  const lastName = faker.person.lastName();
-  return `${firstName} ${lastName}`;
-};
-
 // Helper function to format season display
 const formattedSeasonText = (season: number): string => {
   const formattedSeasons = season > 1 ? `${season} seasons` : "1 season";
@@ -75,15 +69,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         where: {
           id: tvId as string,
         },
+        include: {
+          seasons: {
+            include: {
+              episodes: true,
+            },
+          },
+        },
       });
     }
 
     if (localTvShow) {
       // If found in MongoDB, return the local data
-      // Generate fake data for fields not available in local source
-      const isAdult = Math.random() >= 0.5;
-      const releaseDate = faker.date.past().toISOString().split("T")[0];
-      const tagline = faker.lorem.sentence();
+      // Find matching media from mediaExtraData
+      const mediaExtra = mediaExtraData.find(
+        (media) => media.title === localTvShow?.title && media.isTvShow
+      );
 
       // Similar TV Shows
       const similarTvShows = Array.from({ length: 5 }, () => ({
@@ -101,82 +102,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         isTvShow: true,
       }));
 
-      // Create fake cast and crew
-      const cast = Array.from({ length: 8 }, () => ({
-        id: faker.number.int({ min: 1000, max: 9999999 }),
-        name: generateNameWithoutTitle(),
-      }));
-
-      const createdBy = [
-        {
-          id: faker.number.int({ min: 1000, max: 9999999 }),
-          name: generateNameWithoutTitle(),
-        },
-        {
-          id: faker.number.int({ min: 1000, max: 9999999 }),
-          name: generateNameWithoutTitle(),
-        },
-      ];
-
-      // Create fake videos
-      const videos = {
-        results: [
-          {
-            key: faker.string.alphanumeric(11),
-            name: "Official Trailer",
-            site: "YouTube",
-            type: "Trailer",
-            official: true,
-          },
-          {
-            key: faker.string.alphanumeric(11),
-            name: "Official Trailer",
-            site: "YouTube",
-            type: "Clip",
-            official: true,
-          },
-        ],
-      };
-
-      // Create fake keywords
-      const keywords = {
-        keywords: Array.from({ length: 5 }, () => ({
-          id: faker.number.int({ min: 1000, max: 9999 }),
-          name: faker.word.sample(),
-        })),
-      };
-
       // Format the genre as an array of objects with id and name
       const genreArray = Array.isArray(localTvShow.genre)
         ? localTvShow.genre.map((name: string, index: number) => ({
-            id: faker.number.int({ min: 1, max: 1000 }) + index,
+            id: index + 1,
             name,
           }))
         : [];
 
-      const seasonsArray = Array.from(
-        { length: localTvShow.numberOfSeasons || 1 },
-        (_, i) => ({
-          id: faker.number.int({ min: 1000, max: 9999 }),
-          season_number: i + 1,
-          episodes: Array.from(
-            { length: faker.number.int({ min: 6, max: 24 }) },
-            (_, i) => ({
-              id: faker.number.int({ min: 1000, max: 9999 }),
-              episodeType: faker.helpers.arrayElement([
-                "standard",
-                "special",
-                "finale",
-              ]),
-              name: faker.lorem.words({ min: 2, max: 5 }),
-              description: faker.lorem.paragraph(),
-              duration: `${faker.number.int({ min: 20, max: 60 })} minutes`,
-              episodeNumber: i + 1,
-              thumbnailUrl: faker.image.url(),
-            })
-          ),
-        })
-      );
+      const seasonsArray = localTvShow.seasons.map((season) => ({
+        id: season.id,
+        season_number: season.seasonNumber,
+        episodes: season.episodes.map((episode, episodeIndex) => ({
+          id: episode.id,
+          episodeNumber: episode.episodeNumber,
+          episodeType:
+            episodeIndex === season.episodes.length - 1 ? "finale" : "standard",
+          name: episode.title || `Episode ${episodeIndex + 1}`,
+          description: episode.description || "",
+          duration: episode.duration || "45 minutes",
+          thumbnailUrl: episode.thumbnailUrl || localTvShow.thumbnailUrl,
+        })),
+      }));
 
       const response: TvShowDetailsResponse = {
         details: {
@@ -188,17 +135,40 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           genre: genreArray,
           rating: localTvShow.rating || 0,
           numberOfSeasons: formattedSeasonText(localTvShow.numberOfSeasons),
-          releaseDate,
-          tagline,
-          isAdult,
+          releaseDate: mediaExtra?.releaseDate || "2020-01-01",
+          tagline: mediaExtra?.tagline || "",
+          isAdult: mediaExtra?.isAdult || false,
           isTvShow: true,
           credits: {
-            cast,
+            cast:
+              mediaExtra?.cast?.map((name, index) => ({
+                id: index + 1,
+                name,
+              })) || [],
           },
-          keywords,
-          videos,
+          keywords: {
+            keywords:
+              mediaExtra?.keywords?.map((keyword, index) => ({
+                id: index + 1,
+                name: keyword,
+              })) || [],
+          },
+          videos: {
+            results: [
+              {
+                key: localTvShow.trailerUrl?.split("v=")[1] || "",
+                site: "YouTube",
+                type: "Trailer",
+                official: true,
+              },
+            ],
+          },
           seasons: seasonsArray,
-          createdBy,
+          createdBy:
+            mediaExtra?.createdBy?.map((name, index) => ({
+              id: index + 1,
+              name,
+            })) || [],
         },
         similar: similarTvShows,
         source: "local",
