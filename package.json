@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "import-movies": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/import-movies.ts"
+    "import-movies": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/import-movies.ts",
+    "import-seasons": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/import-seasons.ts"
   },
   "dependencies": {
     "@faker-js/faker": "^9.7.0",
