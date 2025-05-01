@@ -46,3 +46,6 @@ next-env.d.ts
 # Data
 public/icons/
 public/images/symbol.png
+
+#prisma
+generated/prisma
