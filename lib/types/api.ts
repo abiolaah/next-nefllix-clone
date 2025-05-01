@@ -128,10 +128,10 @@ export interface TvShowDetailsResponse {
       keywords: Array<{ id: number; name: string }>;
     };
     seasons: Array<{
-      id: number;
+      id: string | number;
       season_number: number;
       episodes: Array<{
-        id: number;
+        id: string | number;
         episodeType: string;
         name: string;
         episodeNumber: number;

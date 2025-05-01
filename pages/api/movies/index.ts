@@ -4,6 +4,7 @@ import { authOptions } from "../auth/[...nextauth]";
 import prisma from "@/lib/prismadb";
 import { TMDB_BASE_URL, TMDB_ENDPOINTS } from "@/lib/tmdb";
 import { TMDBMovie, TMDBResponse } from "@/lib/types/tmdb";
+import { mediaExtraData } from "@/constants/data";
 
 // Define a type for video objects
 interface TMDBVideo {
@@ -68,8 +69,10 @@ export default async function handler(
     try {
       const dbMovies = await prisma.movie.findMany();
       localMovies = dbMovies.map((movie) => {
-        // Generate random boolean for isAdult
-        const isAdult: boolean = Math.random() >= 0.5;
+        // Find matching meida from mediaExtraData
+        const mediaExtra = mediaExtraData.find(
+          (media) => media.title === movie?.title
+        );
 
         return {
           id: movie.id,
@@ -82,7 +85,7 @@ export default async function handler(
           rating: movie.rating || 0,
           duration: movie.duration || "10 minutes",
           isTvShow: false,
-          isAdult,
+          isAdult: mediaExtra?.isAdult || false,
           source: "local",
         };
       });
