@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { TMDB_BASE_URL, TMDB_ENDPOINTS } from "../../../lib/tmdb";
 import prismadb from "@/lib/prismadb";
 import { faker } from "@faker-js/faker";
+import { mediaExtraData } from "@/constants/data";
 import { TMDBVideo, MovieDetailsResponse } from "@/lib/types/api";
 
 const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
@@ -36,13 +37,6 @@ const findBestTrailerUrl = (videos: { results: TMDBVideo[] }): string => {
   return "";
 };
 
-// Helper function to generate name without titles
-const generateNameWithoutTitle = (): string => {
-  const firstName = faker.person.firstName();
-  const lastName = faker.person.lastName();
-  return `${firstName} ${lastName}`;
-};
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { movieId } = req.query;
   const TMDB_API_KEY = process.env.TMDB_API_KEY;
@@ -74,10 +68,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (localMovie) {
       // If found in MongoDB, return the local data
-      // Generate fake data for fields not available in local source
-      const isAdult = Math.random() >= 0.5;
-      const releaseDate = faker.date.past().toISOString().split("T")[0];
-      const tagline = faker.lorem.sentence();
+
+      // Find matching meida from mediaExtraData
+      const mediaExtra = mediaExtraData.find(
+        (media) => media.title === localMovie?.title
+      );
 
       // Create fake similar movies
       const similarMovies = Array.from({ length: 5 }, () => ({
@@ -95,57 +90,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         isTvShow: false,
       }));
 
-      // Create fake cast and crew
-      const cast = Array.from({ length: 8 }, () => ({
-        id: faker.number.int({ min: 1000, max: 9999999 }),
-        name: generateNameWithoutTitle(),
-      }));
-
-      const crew = [
-        {
-          id: faker.number.int({ min: 1000, max: 9999999 }),
-          name: generateNameWithoutTitle(),
-          department: "Directing",
-        },
-        {
-          id: faker.number.int({ min: 1000, max: 9999999 }),
-          name: generateNameWithoutTitle(),
-          department: "Writing",
-        },
-      ];
-
-      // Create fake videos
-      const videos = {
-        results: [
-          {
-            key: faker.string.alphanumeric(11),
-            name: "Official Trailer",
-            site: "YouTube",
-            type: "Trailer",
-            official: true,
-          },
-          {
-            key: faker.string.alphanumeric(11),
-            name: "Official Trailer",
-            site: "YouTube",
-            type: "Clip",
-            official: true,
-          },
-        ],
-      };
-
-      // Create fake keywords
-      const keywords = {
-        keywords: Array.from({ length: 5 }, () => ({
-          id: faker.number.int({ min: 1000, max: 9999 }),
-          name: faker.word.sample(),
-        })),
-      };
-
       // Format the genre as an array of objects with id and name
       const genreArray = Array.isArray(localMovie.genre)
         ? localMovie.genre.map((name: string, index: number) => ({
-            id: faker.number.int({ min: 1, max: 1000 }) + index,
+            id: index + 1,
             name,
           }))
         : [];
@@ -161,16 +109,48 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           genre: genreArray,
           rating: localMovie.rating || 0,
           duration: localMovie.duration || "10 minutes",
-          releaseDate,
-          tagline,
-          isAdult,
+          releaseDate: mediaExtra?.releaseDate || "",
+          tagline: mediaExtra?.tagline || "",
+          isAdult: mediaExtra?.isAdult || false,
           isTvShow: false,
           credits: {
-            cast,
-            crew,
+            cast:
+              mediaExtra?.cast?.map((name, index) => ({
+                id: index + 1,
+                name,
+              })) || [],
+            crew:
+              mediaExtra?.director
+                ?.map((name, index) => ({
+                  id: index + 1000,
+                  name,
+                  department: "Directing",
+                }))
+                .concat(
+                  mediaExtra?.writer?.map((name, index) => ({
+                    id: index + 2000,
+                    name,
+                    department: "Writing",
+                  })) || []
+                ) || [],
           },
-          videos,
-          keywords,
+          videos: {
+            results: [
+              {
+                key: localMovie.trailerUrl?.split("v=")[1] || "",
+                site: "Youtube",
+                type: "Trailer",
+                official: true,
+              },
+            ],
+          },
+          keywords: {
+            keywords:
+              mediaExtra?.keywords?.map((keyword, index) => ({
+                id: index + 1,
+                name: keyword,
+              })) || [],
+          },
         },
         similar: similarMovies,
         source: "local",
