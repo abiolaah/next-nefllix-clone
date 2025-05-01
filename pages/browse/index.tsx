@@ -1,16 +1,23 @@
+import { useEffect, useState } from "react";
+
+import { getSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
+
 import Billboard from "@/components/Billboard";
 import InfoModal from "@/components/InfoModal";
+import LoadingScreen from "@/components/LoadingScreen";
 import MovieList from "@/components/MovieList";
 import Navbar from "@/components/Navbar";
+import TopMovieList from "@/components/TopMovieList";
+
+import useFavourites from "@/hooks/useFavourites";
 import useInfoModal from "@/hooks/useInfoModal";
 import useMovies from "@/hooks/useMovies";
+import useProfile from "@/hooks/useProfile";
 import useTvShows from "@/hooks/useTvShows";
-import useFavourites from "@/hooks/useFavourites";
 
-import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/react";
 import { MediaItem } from "@/lib/types/api";
-import TopMovieList from "@/components/TopMovieList";
 
 // Using GetServerSideProps type and no mixing with getStaticProps/getStaticPaths
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -31,10 +38,38 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Browse = () => {
-  const currentProfileId =
-    typeof window !== "undefined"
-      ? localStorage.getItem("currentProfile")
-      : null;
+  const router = useRouter();
+
+  const { currentProfileId, currentProfile } = useProfile();
+
+  const [isProfileSwitching, setIsProfileSwitching] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  useEffect(() => {
+    const handleProfileSwitch = () => {
+      if (router.query.profileSwitch === "true") {
+        setIsProfileSwitching(true);
+
+        // Remove the query parameter without triggering a navigation
+        const { pathname } = router;
+        router
+          .replace(pathname, undefined, { shallow: true })
+          .then(() => {
+            // Simulate loading time for the profile switch
+            setTimeout(() => {
+              setIsProfileSwitching(false);
+            }, 2000);
+          })
+          .catch((err) => {
+            console.error("Error during navigation:", err);
+            setIsProfileSwitching(false);
+          });
+      }
+    };
+
+    handleProfileSwitch();
+  }, [router, router.query.profileSwitch]);
 
   const { data: movies, isLoading: moviesLoading } = useMovies({
     type: "trending",
@@ -75,7 +110,7 @@ const Browse = () => {
 
   const { isOpen, closeModal } = useInfoModal();
 
-  if (
+  const isDataLoading =
     moviesLoading ||
     popularMoviesLoading ||
     topRatedMoviesLoading ||
@@ -87,14 +122,30 @@ const Browse = () => {
     topRatedTvShowsLoading ||
     tredningTvShowsLoading ||
     popularTvShowsLoading ||
-    favouritesLoading
-  ) {
+    favouritesLoading;
+
+  useEffect(() => {
+    if (!isDataLoading) {
+      setDataLoaded(true);
+    }
+  }, [isDataLoading]);
+
+  // Show the Netflix-style loading screen when switching profiles
+  if (isProfileSwitching && currentProfile) {
+    return (
+      <LoadingScreen
+        profileAvatar={currentProfile.avatar}
+        profileName={currentProfile.name}
+      />
+    );
+  }
+
+  if (isDataLoading) {
     return (
       <>
         <Navbar />
-        <Billboard />
-        <div className="pb-40">
-          <div className="text-white">Loading...</div>
+        <div className="fixed inset-0 bg-black z-40 flex items-center justify-center">
+          <div className="w-12 h-12 border-4 border-t-transparent border-red-600 rounded-full animate-spin"></div>
         </div>
       </>
     );

@@ -33,7 +33,7 @@ model Profile {
   hasPin        Boolean   @default(false)
   pin           String?
   favourites    Favourite[]  
-  watcheds      Watched[]  
+  reactions      Reaction[]  
   watching      Watching[]
   user          User      @relation("UserProfiles", fields: [userId], references: [id], onDelete: Cascade)
   
@@ -52,11 +52,12 @@ model Favourite {
   @@index([profileId])
   @@unique([profileId, contentId])
 }
-model Watched {
+model Reaction {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   profileId   String   @db.ObjectId
   contentId   String 
   contentType String   // "movie" or "tvshow"
+  reactionType String   // "liked" or "loved" or "disliked"
   source      String   @default("local")// "local" or "external"
   
   profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
@@ -75,6 +76,7 @@ model Watching {
   completed   Boolean  @default(false)
   season      Int?     // for TV shows
   episode     Int?     // for TV shows
+  source      String   @default("local")// "local" or "external"
   
   profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
   

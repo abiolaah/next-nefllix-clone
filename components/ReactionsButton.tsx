@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BsHandThumbsUp,
   BsHandThumbsDown,
@@ -6,37 +6,115 @@ import {
   BsHandThumbsUpFill,
 } from "react-icons/bs";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import axios from "axios";
+import useReactions from "@/hooks/useReactions";
 
-const ReactionsButton = () => {
+interface ReactionsButtonProps {
+  mediaId: string | number;
+  mediaType: "movie" | "tv";
+  profileId: string;
+  source?: "local" | "tmdb";
+}
+
+const ReactionsButton: React.FC<ReactionsButtonProps> = ({
+  mediaId,
+  mediaType,
+  profileId,
+  source = "tmdb",
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isLiked, setLiked] = useState(false);
   const [isDisliked, setDisliked] = useState(false);
   const [isLoved, setLoved] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Get all user reactions
+  const { data: reactions, mutate } = useReactions(profileId);
+
+  useEffect(() => {
+    if (reactions && reactions.length > 0) {
+      // FInd the reaction of this specific media item
+      const existiongReaction = reactions.find((item) => item.id === mediaId);
+
+      if (existiongReaction) {
+        setLiked(existiongReaction.reactionType === "liked");
+        setDisliked(existiongReaction.reactionType === "disliked");
+        setLoved(existiongReaction.reactionType === "loved");
+      } else {
+        setLiked(false);
+        setDisliked(false);
+        setLoved(false);
+      }
+    }
+  }, [reactions, mediaId]);
 
   const handleReactionHover = (hoverState: boolean) => {
     setIsHovered(hoverState);
   };
 
+  const submitReaction = async (
+    reactionType: "liked" | "disliked" | "loved"
+  ) => {
+    if (isLoading) return;
+
+    try {
+      setIsLoading(true);
+
+      // If the reaction is already set and the user clicks the same reaction again, delete it
+      if (
+        (reactionType === "liked" && isLiked) ||
+        (reactionType === "disliked" && isDisliked) ||
+        (reactionType === "loved" && isLoved)
+      ) {
+        await axios.delete(`/api/reaction`, {
+          data: {
+            mediaId,
+            profileId,
+          },
+        });
+
+        // Reset all state
+        setLiked(false);
+        setDisliked(false);
+        setLoved(false);
+      } else {
+        // Otherwise create/update the reaction
+        await axios.post(`/api/reaction`, {
+          mediaId,
+          profileId,
+          mediaType,
+          reactionType,
+          source,
+        });
+
+        // Set the appropriate reaction state
+        setLiked(reactionType === "liked");
+        setDisliked(reactionType === "disliked");
+        setLoved(reactionType === "loved");
+      }
+
+      // Update the cached data
+      await mutate();
+    } catch (error) {
+      console.error("Error submitting reaction:", error);
+    } finally {
+      setIsLoading(false);
+      setIsHovered(false); // Close the reaction menu after selection
+    }
+  };
+
   const handleLikeButton = () => {
-    setLiked(!isLiked);
-    setDisliked(false);
-    setLoved(false);
-    setIsHovered(false); // Close the reaction menu after selection
+    submitReaction("liked");
   };
 
   const handleDislikeButton = () => {
-    setDisliked(!isDisliked);
-    setLiked(false);
-    setLoved(false);
-    setIsHovered(false); // Close the reaction menu after selection
+    submitReaction("disliked");
   };
 
   const handleLoveButton = () => {
-    setLoved(!isLoved);
-    setDisliked(false);
-    setLiked(false);
-    setIsHovered(false); // Close the reaction menu after selection
+    submitReaction("loved");
   };
+
   return (
     <div className="relative">
       <div

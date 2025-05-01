@@ -1,40 +1,135 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Netflix Clone
+
+A modern Netflix clone built with Next.js, TypeScript, and Tailwind CSS. This project implements core Netflix features including movie browsing, user authentication, and a responsive UI.
+
+## Features
+
+- **Authentication**
+
+  - Email/password authentication
+  - Google authentication integration
+  - Protected routes and API endpoints
+
+- **Movie & TV Show Management**
+
+  - Browse multiple categories:
+    - Popular Movies/TV Shows
+    - Now Playing/On Air
+    - Upcoming Movies
+    - Top Rated content
+    - Trending content
+  - Local content management through MongoDB
+  - Integration with TMDB API for extensive content library
+  - Horizontal scrolling lists with smooth navigation
+  - Detailed movie/show information display
+
+- **User Experience**
+  - Responsive design for all screen sizes
+  - Hover effects for movie/show cards
+  - Dynamic image loading with fallbacks
+  - Smooth transitions and animations
+  - Favorite/bookmark functionality
+
+## Tech Stack
+
+- **Frontend**
+
+  - Next.js (Pages Router)
+  - TypeScript
+  - Tailwind CSS
+  - React Icons
+  - SWR for data fetching
+
+- **Backend**
+
+  - Next.js API Routes
+  - MongoDB with Prisma ORM
+  - TMDB API integration
+
+- **Authentication**
+  - NextAuth.js
+  - Google OAuth
 
 ## Getting Started
 
-First, run the development server:
+1. **Clone the repository**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   ```bash
+   git clone [repository-url]
+   cd netflix-clone
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Install dependencies**
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+   ```bash
+   npm install
+   ```
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+3. **Set up environment variables**
+   Create a `.env` file in the root directory with the following variables:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+   ```env
+   DATABASE_URL="your-mongodb-url"
+   NEXTAUTH_JWT_SECRET="your-jwt-secret"
+   NEXTAUTH_SECRET="your-nextauth-secret"
+   GOOGLE_CLIENT_ID="your-google-client-id"
+   GOOGLE_CLIENT_SECRET="your-google-client-secret"
+   TMDB_API_KEY="your-tmdb-api-key"
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **Set up the database**
 
-## Learn More
+   ```bash
+   npx prisma db push
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+5. **Run the development server**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+   ```bash
+   npm run dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `/components` - Reusable UI components
+- `/pages` - Next.js pages and API routes
+- `/hooks` - Custom React hooks
+- `/lib` - Utility functions and configurations
+- `/prisma` - Database schema and configurations
+- `/public` - Static assets
+- `/styles` - Global styles and Tailwind configurations
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+## Key Components
+
+- **MovieCard** - Displays individual movie/show information with hover effects
+- **MovieList** - Horizontal scrolling list of MovieCards
+- **Navbar** - Navigation and user controls
+- **Auth Forms** - Login and registration forms
+
+## API Routes
+
+- `/api/movies` - Fetch movie categories and manage local movies
+- `/api/tv` - Fetch TV show categories and manage local shows
+- `/api/auth/*` - Authentication endpoints
+- `/api/favorites` - User favorites management
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## Acknowledgments
+
+- [TMDB](https://www.themoviedb.org/) for providing the movie and TV show data
+- [Next.js](https://nextjs.org/) for the amazing framework
+- [Tailwind CSS](https://tailwindcss.com/) for the utility-first CSS framework
+- [Prisma](https://www.prisma.io/) for the database ORM
