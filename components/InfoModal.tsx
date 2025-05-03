@@ -18,6 +18,7 @@ import useTvShowDetails from "@/hooks/useTvShowDetails";
 
 import { MovieDetailsResponse, TvShowDetailsResponse } from "@/lib/types/api";
 import useProfile from "@/hooks/useProfile";
+import useWatching from "@/hooks/useWatching";
 
 interface InfoModalProps {
   visible?: boolean;
@@ -48,6 +49,15 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
   const [isMuted, setIsMuted] = useState(true);
 
   const { currentProfileId } = useProfile();
+
+  // Watching data for the media
+  const { data: watchingData } = useWatching({
+    profileId: currentProfileId || undefined,
+    mediaId: movieId as string,
+    completed: false,
+  });
+
+  const watchingRecord = watchingData?.[0];
 
   // Important: We maintain the content type from the store consistently
   const [contentType, setContentType] = useState<"movie" | "tv">(
@@ -120,8 +130,16 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
   useEffect(() => {
     setIsVisible(!!visible);
     // For demo purposes, randomly set if the content is already being watched
-    setIsAlreadyWatched(Math.random() > 0.5);
-  }, [visible]);
+    if (
+      watchingRecord &&
+      (watchingRecord.progress || 0) >= 25 &&
+      (watchingRecord?.progress || 0) < 98
+    ) {
+      setIsAlreadyWatched(true);
+    } else {
+      setIsAlreadyWatched(false);
+    }
+  }, [visible, watchingRecord]);
 
   const handleClose = useCallback(() => {
     setIsVisible(false);
@@ -275,6 +293,37 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
     ? `${numberOfSeasons} ${numberOfSeasons === 1 ? "Season" : "Seasons"}`
     : (data as MovieDetailsResponse["details"]).duration || "N/A";
 
+  // Format time for display (e.g., "45 of 120 minutes")
+  const formatTime = () => {
+    // Get progress from watching record if available
+    const progress = watchingRecord?.progress || 0;
+
+    // Handle TV show case
+    if (isTvShow) {
+      // Type-safe access to episode details from watching record
+      const episodeDuration = watchingRecord?.episodeDetails?.duration;
+      if (!episodeDuration) return "";
+
+      const totalMinutes =
+        parseInt(episodeDuration.replace(/\D/g, ""), 10) || 0;
+      if (totalMinutes <= 0) return "";
+
+      const watchedMinutes = Math.floor(totalMinutes * (progress / 100));
+      return `${watchedMinutes} of ${totalMinutes} minutes`;
+    }
+
+    // Handle movie case - safely cast to movie type
+    const movieData = data as MovieDetailsResponse["details"];
+    const movieDuration = movieData.duration;
+    if (!movieDuration) return "";
+
+    const totalMinutes = parseInt(movieDuration.replace(/\D/g, ""), 10) || 0;
+    if (totalMinutes <= 0) return "";
+
+    const watchedMinutes = Math.floor(totalMinutes * (progress / 100));
+    return `${watchedMinutes} of ${totalMinutes} minutes`;
+  };
+
   return (
     <div className="z-50 transition duration-300 bg-black/80 flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0">
       <div className="relative w-auto mx-auto max-w-4xl rounded-md overflow-hidden">
@@ -329,6 +378,24 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
               <p className="text-white text-3xl md:text-4xl h-full lg:text-5xl font-bold mb-8">
                 {data.title}
               </p>
+              {/* Progress Info */}
+              {watchingRecord && (
+                <div className="flex flex-row items-center w-full gap-4">
+                  {/* Progress bar on expanded card */}
+                  <div className="left-0 right-0 h-1 bg-gray-800 w-1/2">
+                    <div
+                      className="h-full bg-red-600"
+                      style={{ width: `${watchingRecord.progress}%` }}
+                    />
+                  </div>
+                  {/* Watch progress information */}
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-white/70 text-xs">
+                      {formatTime()}
+                    </span>
+                  </div>
+                </div>
+              )}
               <div className="flex flex-row gap-4 items-center">
                 <button
                   onClick={() =>
