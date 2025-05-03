@@ -8,6 +8,8 @@ import useProfile from "@/hooks/useProfile";
 import useWatching from "@/hooks/useWatching";
 import WatchingMovieList from "@/components/WatchingMovieList";
 import useReactions from "@/hooks/useReactions";
+import useInfoModal from "@/hooks/useInfoModal";
+import InfoModal from "@/components/InfoModal";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
@@ -83,6 +85,8 @@ const MyList = () => {
   const lovedMovies =
     lovedData.filter((loved) => loved.isTvShow === false) || [];
 
+  const { isOpen, closeModal } = useInfoModal();
+
   const isDataLoading =
     favouriteLoading ||
     watchedLoading ||
@@ -114,6 +118,8 @@ const MyList = () => {
           </div>
         ) : (
           <>
+            <InfoModal visible={isOpen} onClose={closeModal} />
+
             {/* All Favourites List */}
             <MovieList title="WishList" data={favourites || []} />
 
