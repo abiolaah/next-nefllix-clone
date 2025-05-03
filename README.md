@@ -2,12 +2,44 @@
 
 A modern Netflix clone built with Next.js, TypeScript, and Tailwind CSS. This project implements core Netflix features including movie browsing, user authentication, and a responsive UI.
 
+## Table of Contents
+
+- [Netflix Clone](#netflix-clone)
+- [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Features](#features)
+  - [Tech Stack](#tech-stack)
+  - [Getting Started](#getting-started)
+  - [Project Structure](#project-structure)
+  - [Key Components](#key-components)
+  - [API Routes](#api-routes)
+  - [Contributing](#contributing)
+  - [Dependencies](#dependencies)
+  - [License](#license)
+  - [Acknowledgments](#acknowledgments)
+
+## Introduction
+
+The Netflix Clone is a full-stack web application that replicates the core functionality and user experience of the popular streaming platform Netflix. Built with modern web technologies, this project showcases advanced frontend development techniques, seamless API integrations, and robust authentication systems.
+
+This clone goes beyond a simple UI imitation by implementing key features like:
+
+- Comprehensive content browsing with multiple categories
+- User authentication with multiple providers
+- Personalized watchlists and viewing history
+- Responsive design that works across all device sizes
+
+The application leverages The Movie Database (TMDB) API to provide an extensive library of movies and TV shows, while also supporting locally managed content through MongoDB. The clean, intuitive interface features smooth animations and hover effects that mimic the Netflix viewing experience.
+
+Whether you're looking to explore Next.js capabilities, learn about API integrations, or understand modern authentication patterns, this project serves as an excellent educational resource and development showcase. The modular architecture and well-documented codebase make it easy to extend with additional features or customize for specific needs.
+
 ## Features
 
 - **Authentication**
 
   - Email/password authentication
   - Google authentication integration
+  - GitHub authentication integration
   - Protected routes and API endpoints
 
 - **Movie & TV Show Management**
@@ -29,6 +61,7 @@ A modern Netflix clone built with Next.js, TypeScript, and Tailwind CSS. This pr
   - Dynamic image loading with fallbacks
   - Smooth transitions and animations
   - Favorite/bookmark functionality
+  - Watching/Watched functionality
 
 ## Tech Stack
 
@@ -49,6 +82,7 @@ A modern Netflix clone built with Next.js, TypeScript, and Tailwind CSS. This pr
 - **Authentication**
   - NextAuth.js
   - Google OAuth
+  - GitHub OAuth
 
 ## Getting Started
 
@@ -113,7 +147,10 @@ A modern Netflix clone built with Next.js, TypeScript, and Tailwind CSS. This pr
 - `/api/movies` - Fetch movie categories and manage local movies
 - `/api/tv` - Fetch TV show categories and manage local shows
 - `/api/auth/*` - Authentication endpoints
-- `/api/favorites` - User favorites management
+- `/api/favorites` - User favourite list endpoint
+- `/api/favorite` - User favorite management endpoint: Create, Update or Delete
+- `/api/watching` - User watching management endpoint: Create, Update or Delete
+- `/api/watchings` - User watching list endpoint
 
 ## Contributing
 
@@ -122,6 +159,16 @@ A modern Netflix clone built with Next.js, TypeScript, and Tailwind CSS. This pr
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+## Dependencies
+
+- [Next.js](https://nextjs.org/) for the amazing framework
+- [Tailwind CSS](https://tailwindcss.com/) for the utility-first CSS framework
+- [Prisma](https://www.prisma.io/) for the database ORM
+- [NextAuth.js](https://next-auth.js.org/getting-started/example) for Authentication
+- [MongoDB](https://www.mongodb.com/docs/atlas/) for Database
+- [GitHub OAuth](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app) for third party authentication
+- [Google OAuth](https://developers.google.com/identity/protocols/oauth2) for third party authentication
 
 ## License
 
@@ -133,3 +180,4 @@ This project is open source and available under the [MIT License](LICENSE).
 - [Next.js](https://nextjs.org/) for the amazing framework
 - [Tailwind CSS](https://tailwindcss.com/) for the utility-first CSS framework
 - [Prisma](https://www.prisma.io/) for the database ORM
+- [Blender Foundation](https://studio.blender.org/films/?utm_medium=www-footer) for sample video
