@@ -5,8 +5,6 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { useRouter } from "next/router";
-import useMovieDetails from "@/hooks/useMovieDetails";
 import { AiOutlineArrowLeft, AiOutlinePause } from "react-icons/ai";
 import {
   BiFullscreen,
@@ -21,7 +19,13 @@ import { MdSubtitles } from "react-icons/md";
 import { TfiLayersAlt } from "react-icons/tfi";
 
 import Image from "next/image";
+import { useRouter } from "next/router";
+
+import useMovieDetails from "@/hooks/useMovieDetails";
 import useTvShowDetails from "@/hooks/useTvShowDetails";
+import useProfile from "@/hooks/useProfile";
+import useWatching from "@/hooks/useWatching";
+import axios from "axios";
 
 const DEFAULT_VIDEOS = [
   "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
@@ -29,6 +33,18 @@ const DEFAULT_VIDEOS = [
   "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
   "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
 ];
+
+// Define interface for the watching data to fix TypeScript error
+interface WatchingData {
+  mediaId: string | string[];
+  profileId: string;
+  mediaType: string;
+  progress: number;
+  completed: boolean;
+  source: string;
+  currentSeason?: number;
+  currentEpisode?: number;
+}
 
 const Watch = () => {
   const router = useRouter();
@@ -44,13 +60,41 @@ const Watch = () => {
     contentType === "tv" ? (mediaId as string) : ""
   );
 
+  // Get user data to determine which profile is active
+  const { currentProfileId: profileId } = useProfile();
+
+  // Fetch existing watching data for this media if available
+  const { data: watchingData, mutate: mutateWatching } = useWatching({
+    profileId: profileId || "",
+    completed: undefined,
+    mediaId: mediaId as string,
+  });
+
+  // get watching progress
+  const watchingRecord = watchingData?.[0];
+
   // Cast to proper types
   const movieData = movieDetailsResponse?.details;
   const tvData = tvDetailsResponse?.details;
 
+  const movieSource = movieDetailsResponse?.source || "tmdb";
+  const tvSource = tvDetailsResponse?.source || "tmdb";
+
+  const dataSource = contentType === "movie" ? movieSource : tvSource;
+
   // Use refs for timers to preserve values between renders
   const overlayTimerRef = useRef<NodeJS.Timeout | null>(null);
   const controlsTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Use refs for timers to preserve values between renders for saved progress
+  const saveProgressTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const progressSaveDebounceRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Flag to track if at least 25% of the video has been watched
+  const hasWatchedQuarterRef = useRef<boolean>(false);
+
+  // Flag to prevent duplicate API calls when closing/navigating
+  const isSavingProgressRef = useRef<boolean>(false);
 
   // Video player ref
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -102,6 +146,94 @@ const Watch = () => {
       return false;
     }
   }, []);
+
+  // Function to save watching progress to database
+  const saveProgress = useCallback(
+    async (forceSave = false) => {
+      // If already in the process of saving or missing required data, skip
+      if (isSavingProgressRef.current || !profileId || !mediaId) return;
+
+      // Clear any existing debounce timer if this is a forced save
+      if (forceSave && progressSaveDebounceRef.current) {
+        clearTimeout(progressSaveDebounceRef.current);
+        progressSaveDebounceRef.current = null;
+      }
+
+      // Set up debounce unless it's a force save
+      if (!forceSave) {
+        if (progressSaveDebounceRef.current) {
+          clearTimeout(progressSaveDebounceRef.current);
+        }
+
+        progressSaveDebounceRef.current = setTimeout(async () => {
+          await performSave();
+          progressSaveDebounceRef.current = null;
+        }, 2000); // 2 second debounce
+
+        return;
+      }
+
+      await performSave();
+
+      async function performSave() {
+        try {
+          isSavingProgressRef.current = true;
+
+          const video = videoRef.current;
+          if (!video) return;
+
+          const currentProgress = (video.currentTime / video.duration) * 100;
+
+          // Check if completed
+          const completed = currentProgress >= 98;
+
+          // Only save if watched at least 25% or completed or force save
+          const shouldSave =
+            hasWatchedQuarterRef.current || completed || forceSave;
+
+          if (shouldSave) {
+            // Ensure mediaId and profileId are strings before using them
+            if (typeof mediaId !== "string" || !profileId) {
+              console.error("Invalid mediaId or profileId");
+              return;
+            }
+            const watchingData: WatchingData = {
+              mediaId,
+              profileId,
+              mediaType: contentType,
+              progress: Math.min(Math.round(currentProgress), 100),
+              completed,
+              source: dataSource,
+            };
+
+            // Add season and episode for TV Shows
+            if (contentType === "tv") {
+              watchingData["currentSeason"] = tvShowState.currentSeason;
+              watchingData["currentEpisode"] = tvShowState.currentEpisode;
+            }
+
+            await axios.post("/api/watching", watchingData);
+
+            // Refresh watching data
+            mutateWatching();
+          }
+        } catch (error) {
+          console.error("Error saving watching progress:", error);
+        } finally {
+          isSavingProgressRef.current = false;
+        }
+      }
+    },
+    [
+      contentType,
+      mediaId,
+      profileId,
+      tvShowState.currentSeason,
+      tvShowState.currentEpisode,
+      dataSource,
+      mutateWatching,
+    ]
+  );
 
   // Get episodes for the current season
   const getCurrentSeasonEpisodes = useCallback(() => {
@@ -187,6 +319,79 @@ const Watch = () => {
     updatePlayerState,
   ]);
 
+  // Effect to restore playback position if returning to a previously watched media
+  useEffect(() => {
+    if (videoRef.current && watchingRecord && !hasWatchedQuarterRef.current) {
+      // Only set if the video is loaded and has duration
+      if (videoRef.current.duration > 0 && (watchingRecord.progress || 0) > 0) {
+        const targetTime =
+          ((watchingRecord.progress || 0) / 100) * videoRef.current.duration;
+
+        //Set the video to the saved position
+        videoRef.current.currentTime = targetTime;
+
+        // If they watched more that 25%, set the flag
+        if ((watchingRecord.progress || 0) >= 25) {
+          hasWatchedQuarterRef.current = true;
+        }
+
+        // Update progress state
+        updatePlayerState({ progress: watchingRecord.progress });
+      }
+    }
+
+    // Set the TV show state from watching record if available
+    if (
+      contentType === "tv" &&
+      watchingRecord &&
+      watchingRecord.currentSeason &&
+      watchingRecord.currentEpisode
+    ) {
+      updateTvShowState({
+        currentSeason: watchingRecord.currentSeason,
+        currentEpisode: watchingRecord.currentEpisode,
+      });
+    }
+  }, [watchingRecord, contentType, updatePlayerState, updateTvShowState]);
+
+  // Set up periodic progress saving (every 30 seconds)
+  useEffect(() => {
+    if (profileId && mediaId) {
+      saveProgressTimerRef.current = setInterval(() => {
+        saveProgress();
+      }, 30000);
+    }
+
+    return () => {
+      if (saveProgressTimerRef.current) {
+        clearInterval(saveProgressTimerRef.current);
+      }
+      if (progressSaveDebounceRef.current) {
+        clearTimeout(progressSaveDebounceRef.current);
+      }
+    };
+  }, [profileId, mediaId, saveProgress]);
+
+  // Save Progress when leaving the page
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      saveProgress(true);
+    };
+
+    // Save progress when navigating away
+    const handleRouteChange = () => {
+      saveProgress(true);
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    router.events.on("routeChangeStart", handleRouteChange);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
+  }, [saveProgress, router]);
+
   // Play next episode function
   const playNextEpisode = useCallback(() => {
     if (contentType !== "tv") return;
@@ -198,6 +403,9 @@ const Watch = () => {
     );
 
     if (nextEpisode) {
+      // Save progress with completed=true for current episode before moving to next
+      saveProgress(true);
+
       // Next episode in current season
       updateTvShowState({ currentEpisode: nextEpisodeNumber });
       // Reset video position and play
@@ -205,6 +413,9 @@ const Watch = () => {
         videoRef.current.currentTime = 0;
         videoRef.current.play();
       }
+
+      // Reset tracking for new episode
+      hasWatchedQuarterRef.current = false;
     } else {
       // Check for next season
       const nextSeasonNumber = tvShowState.currentSeason + 1;
@@ -213,18 +424,26 @@ const Watch = () => {
       );
 
       if (nextSeason) {
+        // Save progress with completd=true for current episode before moving to next
+        saveProgress(true);
+
         updateTvShowState({
           currentSeason: nextSeasonNumber,
           currentEpisode: 1,
         });
+
         // Reset video position and play
         if (videoRef.current) {
           videoRef.current.currentTime = 0;
           videoRef.current.play();
         }
+
+        // Reset tracking for new episode
+        hasWatchedQuarterRef.current = false;
       } else {
         // End of series
         updatePlayerState({ showOverlay: true });
+        saveProgress(true);
       }
     }
   }, [
@@ -235,6 +454,7 @@ const Watch = () => {
     tvShowState.currentSeason,
     updatePlayerState,
     updateTvShowState,
+    saveProgress,
   ]);
 
   // Handle video error
@@ -295,6 +515,11 @@ const Watch = () => {
         const duration = videoRef.current.duration || 1;
         const progress = (currentTime / duration) * 100;
         updatePlayerState({ progress });
+
+        // Check if we've reached 25% of the video
+        if (progress >= 25 && !hasWatchedQuarterRef.current) {
+          hasWatchedQuarterRef.current = true;
+        }
       }
     };
 
@@ -334,6 +559,13 @@ const Watch = () => {
 
     // Check if video has ended
     const onEnded = () => {
+      // Save progress as 100% and completed when vidoe ends
+      if (videoRef.current) {
+        videoRef.current.currentTime = videoRef.current.duration;
+      }
+
+      saveProgress(true);
+
       if (playerState.usingFallbackVideo) {
         const nextIndex =
           (playerState.currentFallbackVideoIndex + 1) % DEFAULT_VIDEOS.length;
@@ -396,6 +628,7 @@ const Watch = () => {
     playerState.usingFallbackVideo,
     playerState.currentFallbackVideoIndex,
     updatePlayerState,
+    saveProgress,
   ]);
 
   // Determine active data based on content type
@@ -536,6 +769,9 @@ const Watch = () => {
   };
 
   const selectEpisode = (episodeNumber: number) => {
+    // Save progress for current episode before switching
+    saveProgress(true);
+
     updateTvShowState({
       currentEpisode: episodeNumber,
       showEpisodeList: false,
@@ -546,6 +782,9 @@ const Watch = () => {
       videoRef.current.currentTime = 0;
       videoRef.current.play();
     }
+
+    // Reset tracking for new episode
+    hasWatchedQuarterRef.current = false;
   };
 
   // Handle loading states
