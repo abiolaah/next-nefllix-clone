@@ -17,7 +17,8 @@ import useMovies from "@/hooks/useMovies";
 import useProfile from "@/hooks/useProfile";
 import useTvShows from "@/hooks/useTvShows";
 
-import { MediaItem } from "@/lib/types/api";
+import useWatching from "@/hooks/useWatching";
+import WatchingMovieList from "@/components/WatchingMovieList";
 
 // Using GetServerSideProps type and no mixing with getStaticProps/getStaticPaths
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -106,7 +107,11 @@ const Browse = () => {
   const { data: favourites, isLoading: favouritesLoading } = useFavourites(
     currentProfileId || undefined
   );
-  const watching: MediaItem[] = [];
+  // const {data: watchingData, isLoading: watchLoading} = useWatching({profileId:currentProfileId || undefined, completed:true})
+  const { data: watchingData, isLoading: watchLoading } = useWatching({
+    profileId: currentProfileId || undefined,
+    completed: false,
+  });
 
   const { isOpen, closeModal } = useInfoModal();
 
@@ -122,7 +127,8 @@ const Browse = () => {
     topRatedTvShowsLoading ||
     tredningTvShowsLoading ||
     popularTvShowsLoading ||
-    favouritesLoading;
+    favouritesLoading ||
+    watchLoading;
 
   useEffect(() => {
     if (!isDataLoading) {
@@ -184,7 +190,7 @@ const Browse = () => {
         <MovieList title="My List" data={favourites || []} />
 
         {/* Continue Watching */}
-        <MovieList title="Continue Watching" data={watching} />
+        <WatchingMovieList title="Continue Watching" data={watchingData} />
 
         {/* TV Shows Only on This Platform */}
         <MovieList
