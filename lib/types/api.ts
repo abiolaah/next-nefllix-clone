@@ -42,6 +42,26 @@ export interface TransformedTvShow extends Omit<TvShow, "id"> {
 
 export type MediaItem = TransformedMovie | TransformedTvShow;
 
+interface EpisodeDetails {
+  id: string;
+  episodeNumber: number;
+  title: string;
+  description: string;
+  duration?: string;
+  videoUrl?: string;
+  thumbnailUrl?: string;
+}
+
+export type WatchingItem = MediaItem & {
+  source?: "local" | "tmdb";
+  progress?: number;
+  completed?: boolean;
+  lastWatched?: Date;
+  currentSeason?: number;
+  currentEpisode?: number;
+  episodeDetails?: EpisodeDetails;
+};
+
 export interface CategoryResponse {
   [key: string]: MediaItem[];
 }
