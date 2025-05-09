@@ -1,28 +1,54 @@
-import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { BsBell, BsChevronDown, BsSearch } from "react-icons/bs";
 import { IoMdArrowDropdown } from "react-icons/io";
+
+import Image from "next/image";
+import { useRouter } from "next/router";
+
 import NavbarItem from "./NavbarItem";
 import MobileMenu from "./MobileMenu";
 import AccountMenu from "./AccountMenu";
-import { navItem } from "@/constants/navItem";
 import Input from "./Input";
+
+import { navItem } from "@/constants/navItem";
+
 import useProfile from "@/hooks/useProfile";
 
 const TOP_OFFSET = 66;
 
 const Navbar = () => {
+  const router = useRouter();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showBackground, setShowBackground] = useState(false);
 
-  const [showSearch, setShowSearch] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  // Always show search on search page
+  const isSearchPage = router.pathname === "/search";
+
+  const [showSearch, setShowSearch] = useState(isSearchPage);
+  const [searchQuery, setSearchQuery] = useState(
+    (router.query.q as string) || ""
+  );
+  const [showClearButton, setShowClearButton] = useState(!!searchQuery);
   const searchRef = useRef<HTMLDivElement>(null);
 
   // Get the current profile with useProfile hooks
   const { currentProfile } = useProfile();
 
+  // Update search query when URL query changes
+  useEffect(() => {
+    if (router.query.q) {
+      setSearchQuery(router.query.q as string);
+      setShowClearButton(true);
+    }
+  }, [router.query.q]);
+
+  // Always show search on search page
+  useEffect(() => {
+    setShowSearch(isSearchPage || showSearch);
+  }, [isSearchPage, showSearch]);
+
+  // Handle scroll for background check
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > TOP_OFFSET) {
@@ -42,6 +68,7 @@ const Navbar = () => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
+        !isSearchPage &&
         searchRef.current &&
         !searchRef.current.contains(event.target as Node) &&
         showSearch
@@ -55,7 +82,7 @@ const Navbar = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showSearch]);
+  }, [showSearch, isSearchPage]);
 
   const toggleMobileMenu = useCallback(() => {
     setShowMobileMenu((current) => !current);
@@ -66,22 +93,39 @@ const Navbar = () => {
   }, []);
 
   const toggleSearch = useCallback(() => {
-    setShowSearch((current) => !current);
-    if (showSearch) {
-      setSearchQuery(""); // Clear search when closing
+    // Don't allow hiding search on search page
+    if (!isSearchPage) {
+      setShowSearch((current) => !current);
+      if (showSearch) {
+        setSearchQuery(""); // Clear search when closing
+      }
     }
-  }, [showSearch]);
+  }, [showSearch, isSearchPage]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-    // You can add search functionality here
+    const query = e.target.value;
+    setSearchQuery(query);
+    setShowClearButton(!!query);
+
+    // Naviaget to search page as user types
+    if (query.trim()) {
+      router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+    } else {
+      router.push("/browse");
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery("");
+    setShowClearButton(false);
+    router.push("/browse");
   };
 
   return (
     <nav className="w-full fixed z-40">
       <div
         className={`px-4 md:px-16 py-6 flex flex-row items-center transition duration-500 ${
-          showBackground ? `bg-green-900/90` : `bg-transparent`
+          showBackground ? `bg-zinc-900/90` : `bg-transparent`
         }`}
       >
         <Image
@@ -123,6 +167,15 @@ const Navbar = () => {
                 type="text"
                 className="block rounded-md px-6 pt-4 pb-2 w-full text-md text-white bg-neutral-700 appearance-none focus:outline-none focus:ring-0 peer"
               />
+              {showClearButton && (
+                <button
+                  type="button"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-400 focus:outline-none"
+                  onClick={handleClearSearch}
+                >
+                  &#x2715;
+                </button>
+              )}
             </div>
           ) : (
             <div
