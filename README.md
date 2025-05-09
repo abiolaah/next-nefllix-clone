@@ -62,6 +62,7 @@ Whether you're looking to explore Next.js capabilities, learn about API integrat
   - Smooth transitions and animations
   - Favorite/bookmark functionality
   - Watching/Watched functionality
+  - Search functionality
 
 ## Tech Stack
 
@@ -89,8 +90,8 @@ Whether you're looking to explore Next.js capabilities, learn about API integrat
 1. **Clone the repository**
 
    ```bash
-   git clone [repository-url]
-   cd netflix-clone
+   git clone https://github.com/abiolaah/next-nefllix-clone.git
+   cd netx-netflix-clone
    ```
 
 2. **Install dependencies**
@@ -117,13 +118,22 @@ Whether you're looking to explore Next.js capabilities, learn about API integrat
    npx prisma db push
    ```
 
-5. **Run the development server**
+5. **Add data to the database through seeding**
+   - Run the command below to seed the database with data for movies and tvshows:
+     ```bash
+     npm run import-movie
+     ```
+   - Run the command below to seed the database with data for tv shows' seasons and episodes details
+     ```bash
+     npm run import-seasons
+     ```
+6. **Run the development server**
 
    ```bash
    npm run dev
    ```
 
-6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+7. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Project Structure
 
@@ -141,6 +151,10 @@ Whether you're looking to explore Next.js capabilities, learn about API integrat
 - **MovieList** - Horizontal scrolling list of MovieCards
 - **Navbar** - Navigation and user controls
 - **Auth Forms** - Login and registration forms
+- **SearchBar** - Search input with filtering
+- **Profile** - Display media list based on Profile
+- **InfoModal** - Extend feature to dynamically display media data based on media type i.e. tv or movies; for tv, displays seasons and episode info.
+- **Watch** - Watch allows to watch a single video for movies and allows to watch an episode, upon ending the episode, it will automatically play the next episode.
 
 ## API Routes
 
@@ -151,6 +165,7 @@ Whether you're looking to explore Next.js capabilities, learn about API integrat
 - `/api/favorite` - User favorite management endpoint: Create, Update or Delete
 - `/api/watching` - User watching management endpoint: Create, Update or Delete
 - `/api/watchings` - User watching list endpoint
+- `/api/search` - Searching endpoint for movies and TV shows
 
 ## Contributing
 
@@ -180,4 +195,5 @@ This project is open source and available under the [MIT License](LICENSE).
 - [Next.js](https://nextjs.org/) for the amazing framework
 - [Tailwind CSS](https://tailwindcss.com/) for the utility-first CSS framework
 - [Prisma](https://www.prisma.io/) for the database ORM
-- [Blender Foundation](https://studio.blender.org/films/?utm_medium=www-footer) for sample video
+- [Blender Foundation](https://studio.blender.org/films/?utm_medium=www-footer) for sample videos
+- [Code With Antonio](https://www.youtube.com/watch?v=mqUN4N2q4qY&t=8929s) for providing guide for some of the features in the app such as `Authentication`, `Database setup`, `Billboard`, `Browse page`,`MovieCard`, `MovieList`, `Favourite functionality`, `Video playing` and `InfoModal` through the [Youtube Tutorial](<(https://www.youtube.com/watch?v=mqUN4N2q4qY&t=8929s)>)
