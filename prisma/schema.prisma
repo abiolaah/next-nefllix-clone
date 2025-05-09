@@ -52,6 +52,7 @@ model Favourite {
   @@index([profileId])
   @@unique([profileId, contentId])
 }
+
 model Reaction {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   profileId   String   @db.ObjectId
@@ -69,7 +70,7 @@ model Reaction {
 model Watching {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   profileId   String   @db.ObjectId
-  contentId   String   @db.ObjectId
+  contentId   String  
   contentType String   // "movie" or "tvshow"
   progress    Float    // percentage watched (0-100)
   lastWatched DateTime @default(now())
