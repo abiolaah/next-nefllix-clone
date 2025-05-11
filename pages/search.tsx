@@ -8,58 +8,31 @@ import Navbar from "@/components/Navbar";
 import useInfoModal from "@/hooks/useInfoModal";
 import MovieCard from "@/components/MovieCard";
 import type { MediaItem } from "@/lib/types/api";
+import useProfile from "@/hooks/useProfile";
 
 const Search = () => {
   const router = useRouter();
+  const { currentProfileId } = useProfile();
+
   const { q } = router.query;
   const [searchResults, setSearchResults] = useState<MediaItem[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [recommendations, setRecommendations] = useState<MediaItem[]>([]);
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
+  const [isRecommendationsLoading, setIsRecommendationsLoading] =
+    useState(false);
 
   const { isOpen, closeModal } = useInfoModal();
-
-  // Mock Data
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const searchMockResults: MediaItem[] = [
-    {
-      id: "1",
-      title: "CARRY-ON",
-      thumbnailUrl: "/images/placeholder.jpg",
-      description: "A carry-on bag with a sleek design.",
-      videoUrl: "",
-      trailerUrl: "",
-      genre: ["Action", "Adventure"],
-      rating: 0,
-      isAdult: false,
-      duration: "107 minutes",
-      isTvShow: false,
-      source: "local",
-    },
-    {
-      id: "2",
-      title: "THE ROSHANS",
-      thumbnailUrl: "/images/placeholder.jpg",
-      description: "A documentary about historic events.",
-      videoUrl: "",
-      trailerUrl: "",
-      genre: ["Documentary", "Historic"],
-      rating: 0,
-      isAdult: false,
-      numberOfSeasons: 1,
-      isTvShow: true,
-      source: "local",
-    },
-    // Add more mock items following the same pattern
-  ];
 
   // Fetch search results when query changes
   useEffect(() => {
     const fetchSearchResults = async () => {
       if (!q) {
         setSearchResults([]);
+        setRecommendations([]);
         return;
       }
 
-      setIsLoading(true);
+      setIsSearchLoading(true);
 
       try {
         const response = await fetch(
@@ -70,15 +43,44 @@ const Search = () => {
       } catch (error) {
         console.error("Error fetching search results:", error);
       } finally {
-        setIsLoading(false);
+        setIsSearchLoading(false);
       }
     };
     fetchSearchResults();
   }, [q]);
 
+  // Fetch recommendations after search results are loaded
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      if (!currentProfileId || !q) {
+        setRecommendations([]);
+        return;
+      }
+
+      setIsRecommendationsLoading(true);
+
+      try {
+        const response = await fetch(
+          `/api/recommend?profileId=${encodeURIComponent(currentProfileId)}`
+        );
+        const data = await response.json();
+        setRecommendations(data.results || []);
+      } catch (error) {
+        console.error("Error fetching recommendations:", error);
+      } finally {
+        setIsRecommendationsLoading(false);
+      }
+    };
+    if (searchResults.length > 0) {
+      fetchRecommendations();
+    }
+  }, [currentProfileId, q, searchResults]);
+
+  console.log(recommendations);
+
   // Render search results or empty state
   const renderSearchResults = () => {
-    if (isLoading) {
+    if (isSearchLoading) {
       return (
         <div className="flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
@@ -110,12 +112,42 @@ const Search = () => {
     }
     return (
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 md:gap-4">
-        {searchResults.map((movie) => (
-          <div key={movie.id} className="w-[16vw] netflix-card-container">
-            <MovieCard data={movie} />
+        {searchResults.map((media) => (
+          <div key={media.id} className="w-[16vw] netflix-card-container">
+            <MovieCard data={media} />
           </div>
         ))}
       </div>
+    );
+  };
+
+  // Render recommendations section
+  const renderRecommendations = () => {
+    if (!q || searchResults.length === 0) return null;
+
+    if (isRecommendationsLoading) {
+      return (
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+        </div>
+      );
+    }
+
+    if (recommendations.length === 0) return null;
+
+    return (
+      <>
+        <h2 className="text-2xl font-bold text-white mb-4 mt-12">
+          Recommendations based on your preferences
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 md:gap-4">
+          {recommendations.map((media) => (
+            <div key={media.id} className="w-[16vw] netflix-card-container">
+              <MovieCard data={media} />
+            </div>
+          ))}
+        </div>
+      </>
     );
   };
 
@@ -125,11 +157,14 @@ const Search = () => {
       <Navbar />
       <div className="pt-20 px-4 md:px-16 pb-40">
         <h2 className="text-2xl font-bold text-white mb-4">
-          {isLoading ? "Searching..." : `Results for "${q}"`}
+          {isSearchLoading ? "Searching..." : `Results for "${q}"`}
         </h2>
         <div className="relative mt-8 netflix-list-container">
           {/* Container - using a similar structure to MovieList but with grid layout */}
-          <div className="px-4 md:px-12">{renderSearchResults()}</div>
+          <div className="px-4 md:px-12">
+            {renderSearchResults()}
+            {renderRecommendations()}
+          </div>
         </div>
       </div>
     </>
