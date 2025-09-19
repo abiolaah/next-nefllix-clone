@@ -1,4 +1,4 @@
-import type React from "react";
+import React from "react";
 import Image from "next/image";
 import { DEFAULT_PROFILE_AVATAR } from "@/constants/data";
 
@@ -37,6 +37,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
           <div className="w-32 h-32 rounded-md overflow-hidden border-2 border-gray-800">
             {profileAvatar && (
               <Image
+                role="img"
                 src={profileAvatar || DEFAULT_PROFILE_AVATAR}
                 alt={profileName || "Loading profile"}
                 width={128}

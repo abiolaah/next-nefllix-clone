@@ -15,10 +15,10 @@ import SimilarMovieCard from "./SimilarMovieCard";
 import useInfoModal from "@/hooks/useInfoModal";
 import useMovieDetails from "@/hooks/useMovieDetails";
 import useTvShowDetails from "@/hooks/useTvShowDetails";
-
-import { MovieDetailsResponse, TvShowDetailsResponse } from "@/lib/types/api";
 import useProfile from "@/hooks/useProfile";
 import useWatching from "@/hooks/useWatching";
+
+import { MovieDetailsResponse, TvShowDetailsResponse } from "@/lib/types/api";
 
 interface InfoModalProps {
   visible?: boolean;
@@ -500,6 +500,9 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
                   <h2 className="text-white text-xl font-bold">Episodes</h2>
                   <div className="relative">
                     <select
+                      role="combobox"
+                      aria-controls="season-options"
+                      aria-expanded="false"
                       value={selectedSeason}
                       onChange={(e) =>
                         setSelectedSeason(Number(e.target.value))

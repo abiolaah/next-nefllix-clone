@@ -73,7 +73,11 @@ const FavouriteButton: React.FC<FavouriteButtonProps> = ({
       onClick={toggleFavourite}
       className="cursor-pointer group/item w-6 h-6 lg:w-10 lg:h-10 border-white border-2 rounded-full flex justify-center items-center transition hover:border-neutral-300"
     >
-      <Icon className="text-white" size={25} />
+      <Icon
+        className="text-white"
+        size={25}
+        data-testid={isFavourite ? "check-icon" : "plus-icon"}
+      />
     </div>
   );
 };
