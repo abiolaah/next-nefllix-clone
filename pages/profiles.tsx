@@ -1,9 +1,9 @@
+import React, { useState } from "react";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { NextPageContext } from "next";
 import { getSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import axios from "axios";
 import useProfile from "@/hooks/useProfile";
 import { MdOutlineEdit } from "react-icons/md";
