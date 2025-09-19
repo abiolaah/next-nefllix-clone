@@ -27,7 +27,9 @@ const Billboard = () => {
   }, []);
 
   if (isLoading || !isMounted || !data) {
-    return <div className="relative h-[56.25vw] bg-black"></div>;
+    return (
+      <div title="loading" className="relative h-[56.25vw] bg-black"></div>
+    );
   }
 
   const contentRating = data.isTvShow
@@ -39,8 +41,9 @@ const Billboard = () => {
     : "PG-13";
 
   return (
-    <div className="relative h-[56.25vw]">
+    <div title="main-section" className="relative h-[56.25vw]">
       <video
+        title="video"
         className="w-full h-[56.25vw] object-cover brightness-[60%]"
         autoPlay
         muted={isMuted}
@@ -49,15 +52,22 @@ const Billboard = () => {
         src={data.trailerUrl}
       ></video>
       <div className="absolute top-[30%] md:top-[40%] ml-4 md:ml-16">
-        <p className="text-white text-xl md:text-5xl h-full w-[50%] lg:text-6xl font-bold drop-shadow-xl">
+        <p
+          title="video-title"
+          className="text-white text-xl md:text-5xl h-full w-[50%] lg:text-6xl font-bold drop-shadow-xl"
+        >
           {data.title}
         </p>
-        <p className="text-white text-[8px] md:text-lg mt-3 md:mt-8 w-[90%] md:w-[80%] lg:w-[50%] drop-shadow-xl">
+        <p
+          title="description"
+          className="text-white text-[8px] md:text-lg mt-3 md:mt-8 w-[90%] md:w-[80%] lg:w-[50%] drop-shadow-xl"
+        >
           {data.description}
         </p>
         <div className="flex flex-row items-center mt-3 md:mt-4 gap-3">
           <PlayButton movieId={data?.id} />
           <button
+            role="button"
             type="button"
             onClick={handleOpenModal}
             className="bg-white/30 text-white rounded-md py-1 md:py-2 px-2 md:px-4 w-auto text-sm lg:text-lg font-semibold flex flex-row items-center hover:bg-white/20 transition"
@@ -70,6 +80,8 @@ const Billboard = () => {
       {/* Volume Control and content ratimg */}
       <div className="absolute bottom-10 right-10 flex items-center gap-4">
         <button
+          role="button"
+          title={isMuted ? "Unmute" : "Mute"}
           onClick={toggleMute}
           className="border-white/60 p-2 rounded-full hover:border-white/80 transition"
         >
@@ -80,7 +92,10 @@ const Billboard = () => {
           )}
         </button>
 
-        <span className="text-white bg-white/60 px-2 py-1 rounded text-sm font-semibold">
+        <span
+          title="content-rating"
+          className="text-white bg-white/60 px-2 py-1 rounded text-sm font-semibold"
+        >
           {contentRating}
         </span>
       </div>
