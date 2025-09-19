@@ -116,7 +116,11 @@ const ReactionsButton: React.FC<ReactionsButtonProps> = ({
   };
 
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      title="Reactions Button"
+      data-testid="reactions-button"
+    >
       <div
         onMouseEnter={() => handleReactionHover(true)}
         onMouseLeave={() => handleReactionHover(false)}
@@ -126,19 +130,30 @@ const ReactionsButton: React.FC<ReactionsButtonProps> = ({
           <BsHandThumbsUpFill
             className={isLiked ? "text-blue-400" : "text-white"}
             size={30}
+            data-testid="thumbs-up-fill-icon"
+            title="LikeFill"
           />
         ) : isDisliked ? (
           <BsHandThumbsDownFill
             className={isDisliked ? "text-red-400" : "text-white"}
             size={30}
+            data-testid="thumbs-down-fill-icon"
+            title="DislikeFill"
           />
         ) : isLoved ? (
           <AiFillHeart
             className={isLoved ? "text-pink-400" : "text-white"}
             size={30}
+            data-testid="heart-fill-icon"
+            title="LoveFill"
           />
         ) : (
-          <BsHandThumbsUp className="text-white" size={30} />
+          <BsHandThumbsUp
+            className="text-white"
+            size={30}
+            data-testid="thumbs-up-icon"
+            title="Like Default"
+          />
         )}
       </div>
 
@@ -152,23 +167,43 @@ const ReactionsButton: React.FC<ReactionsButtonProps> = ({
           <div
             className="cursor-pointer hover:scale-110 transition-transform"
             onClick={handleLikeButton}
-            title="Like"
+            title="LikeDiv"
           >
             {isLiked ? (
-              <BsHandThumbsUpFill className="text-blue-400" size={25} />
+              <BsHandThumbsUpFill
+                className="text-blue-400"
+                size={25}
+                data-testid="thumbs-up-fill-hover-icon"
+                title="LikeHoverFill"
+              />
             ) : (
-              <BsHandThumbsUp className="text-white" size={25} />
+              <BsHandThumbsUp
+                className="text-white"
+                size={25}
+                data-testid="thumbs-up-hover-icon"
+                title="LikeHover"
+              />
             )}
           </div>
           <div
             className="cursor-pointer hover:scale-110 transition-transform"
             onClick={handleDislikeButton}
-            title="Dislike"
+            title="DislikeDiv"
           >
             {isDisliked ? (
-              <BsHandThumbsDownFill className="text-red-400" size={25} />
+              <BsHandThumbsDownFill
+                className="text-red-400"
+                size={25}
+                data-testid="thumbs-down-fill-hover-icon"
+                title="DisLikeHoverFill"
+              />
             ) : (
-              <BsHandThumbsDown className="text-white" size={25} />
+              <BsHandThumbsDown
+                className="text-white"
+                size={25}
+                data-testid="thumbs-down-hover-icon"
+                title="DisLikeHover"
+              />
             )}
           </div>
           <div
@@ -177,9 +212,19 @@ const ReactionsButton: React.FC<ReactionsButtonProps> = ({
             title="Love"
           >
             {isLoved ? (
-              <AiFillHeart className="text-pink-400" size={25} />
+              <AiFillHeart
+                className="text-pink-400"
+                size={25}
+                data-testid="heart-fill-hover-icon"
+                title="LoveHoverFill"
+              />
             ) : (
-              <AiOutlineHeart className="text-white" size={25} />
+              <AiOutlineHeart
+                className="text-white"
+                size={25}
+                data-testid="heart-fill-hover-icon"
+                title="LoveHoverFill"
+              />
             )}
           </div>
         </div>
