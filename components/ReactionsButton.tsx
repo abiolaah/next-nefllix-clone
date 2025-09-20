@@ -116,15 +116,12 @@ const ReactionsButton: React.FC<ReactionsButtonProps> = ({
   };
 
   return (
-    <div
-      className="relative"
-      title="Reactions Button"
-      data-testid="reactions-button"
-    >
+    <div className="relative" title="Reaction Button">
       <div
         onMouseEnter={() => handleReactionHover(true)}
         onMouseLeave={() => handleReactionHover(false)}
         className="cursor-pointer rounded-lg"
+        data-testid="reactions-button"
       >
         {isLiked ? (
           <BsHandThumbsUpFill
@@ -163,6 +160,8 @@ const ReactionsButton: React.FC<ReactionsButtonProps> = ({
           className="absolute bottom-full left-0 mb-2 bg-zinc-700 p-2 rounded-md shadow-lg flex gap-2"
           onMouseEnter={() => handleReactionHover(true)}
           onMouseLeave={() => handleReactionHover(false)}
+          data-testid="reaction-options"
+          title="Reaction Options"
         >
           <div
             className="cursor-pointer hover:scale-110 transition-transform"
@@ -209,7 +208,7 @@ const ReactionsButton: React.FC<ReactionsButtonProps> = ({
           <div
             className="cursor-pointer hover:scale-110 transition-transform"
             onClick={handleLoveButton}
-            title="Love"
+            title="LoveDiv"
           >
             {isLoved ? (
               <AiFillHeart
