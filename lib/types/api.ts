@@ -24,6 +24,22 @@ export interface TvShowData {
   numberOfSeasons: number;
 }
 
+export interface User {
+  id: string;
+  name: string;
+  image: string | null;
+  email: string | null;
+  emailVerified: Date | null;
+  hashedPassword: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  profiles: {
+    id: string;
+    name: string;
+    avatar: string;
+  }[];
+}
+
 export interface TransformedMovie extends Omit<Movie, "id"> {
   id: string;
   genre: string[];
