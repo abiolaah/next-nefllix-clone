@@ -13,6 +13,8 @@ A modern Netflix clone built with Next.js, TypeScript, and Tailwind CSS. This pr
   - [Project Structure](#project-structure)
   - [Key Components](#key-components)
   - [API Routes](#api-routes)
+  - [Testing](#testing)
+  - [CI/CD](#cicd)
   - [Contributing](#contributing)
   - [Dependencies](#dependencies)
   - [License](#license)
@@ -166,6 +168,37 @@ Whether you're looking to explore Next.js capabilities, learn about API integrat
 - `/api/watching` - User watching management endpoint: Create, Update or Delete
 - `/api/watchings` - User watching list endpoint
 - `/api/search` - Searching endpoint for movies and TV shows
+
+## Testing
+
+- The repository includes three layers of automated tests:
+
+  - **Unit tests** (Jest + Testing Library)
+
+    - Targets React components, hooks and libs
+    - Suggested structure under `__test__/units/` (components, hooks, lib)
+    - Run: `npm run test:unit` or `npm run test:watch:unit` to specifically run unit tests
+
+  - **Integration tests** (Jest)
+
+    - Targets API routes, Prisma interactions (mocked), and business workflows
+    - Suggested structure under `__tests__/integration/` (API, database, external-apis, workflows)
+      - Run: `npm run test:integration` or `npm run test:watch:integartion` to specifically run integration tests
+
+  - **End-to-End (E2E) tests** (Playwright)
+    - Location: `tests/e2e/`
+    - Example files: `login.e2e.test.ts`, `content-details.e2e.test.ts`, `recommendations.e2e.test.ts`, `account-settings.e2e.test.ts`, `my-list-page.e2e.test.ts`
+    - Run: `npx playwright test`
+    - Configure base URL in `playwright.config.ts` (`use.baseURL`) or via `BASE_URL` env var
+    - Optionally enable `webServer` in `playwright.config.ts` to auto-start the app during tests
+
+## CI/CD
+
+- GitHub Actions workflow is included for Playwright E2E testing.
+  - The action runs the Playwright test suite on pushes/PRs and publishes an HTML report.
+  - Ensure your environment variables/secrets are set for any authenticated flows.
+
+> Note: This repository is actively being updated. Folder layout and test coverage will continue to evolve as features are added and refined.
 
 ## Contributing
 

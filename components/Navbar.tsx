@@ -181,11 +181,17 @@ const Navbar = () => {
             <div
               onClick={toggleSearch}
               className="text-gray-200 hover:text-gray-300 cursor-pointer transition"
+              role="button"
+              aria-label="Search"
             >
               <BsSearch />
             </div>
           )}
-          <div className="text-gray-200 hover:text-gray-300 cursor-pointer transition">
+          <div
+            role="button"
+            aria-label="Notification"
+            className="text-gray-200 hover:text-gray-300 cursor-pointer transition"
+          >
             <BsBell />
           </div>
 

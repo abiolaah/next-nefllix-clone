@@ -92,6 +92,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
         isolation: isHovered ? "isolate" : "auto",
       }}
       ref={expandedRef}
+      data-testid="movie-card"
     >
       {/* Base Card */}
       <div className="relative h-[12vw] w-[16vw] netflix-card-wrapper">
@@ -124,6 +125,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
         <div
           className="netflix-expanded-card z-100"
           style={getExpandedCardStyle()}
+          data-testid="expanded-card"
         >
           <div
             onClick={() =>
@@ -180,6 +182,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
               <div
                 onClick={handleOpenModal}
                 className="cursor-pointer ml-auto w-6 h-6 lg:w-10 lg:h-10 border-white/60 border-2 rounded-full flex justify-center items-center transition hover:border-white"
+                data-testid="info-button"
               >
                 <BiChevronDown className="text-white" size={25} />
               </div>
