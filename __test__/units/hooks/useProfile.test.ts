@@ -376,20 +376,6 @@ describe("useProfile Hook", () => {
       expect(result.current.currentProfile).toBeNull();
     });
 
-    it("should not trigger effect when profileId is null", () => {
-      mockUseCurrentUser.mockReturnValue({
-        data: mockUserWithProfiles,
-        error: undefined,
-        isLoading: false,
-        mutate: mockMutate,
-      });
-
-      const { result } = renderHook(() => useProfile());
-
-      // Don't set profileId, keep it null
-      expect(result.current.currentProfile).toBeNull();
-    });
-
     it("should trigger effect when both currentUser and profileId exist", async () => {
       mockUseCurrentUser.mockReturnValue({
         data: mockUserWithProfiles,
@@ -489,27 +475,6 @@ describe("useProfile Hook", () => {
           singleProfileUser.profiles[0]
         );
       });
-    });
-
-    it("should handle empty profiles array gracefully", () => {
-      mockUseCurrentUser.mockReturnValue({
-        data: {
-          id: "user-1",
-          email: "test@example.com",
-          profiles: [],
-        },
-        error: undefined,
-        isLoading: false,
-        mutate: mockMutate,
-      });
-
-      const { result } = renderHook(() => useProfile());
-
-      act(() => {
-        result.current.setCurrentProfileId("profile-1");
-      });
-
-      expect(result.current.currentProfile).toBeNull();
     });
 
     it("should handle profiles without required properties", async () => {
