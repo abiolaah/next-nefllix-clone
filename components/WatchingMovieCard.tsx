@@ -218,6 +218,7 @@ const WatchingMovieCard: React.FC<WatchingMovieCardProps> = ({ data }) => {
               />
               {/* New Remove Button */}
               <div
+                data-testid="remove-button"
                 onClick={handleRemove}
                 className="cursor-pointer w-6 h-6 lg:w-10 lg:h-10 border-2 border-white/60 rounded-full flex justify-center items-center transition hover:border-white hover:bg-red-500/20"
               >
