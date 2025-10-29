@@ -45,23 +45,34 @@ const config: Config = {
   // Options that will be passed to the testEnvironment
   testEnvironmentOptions: {
     customExportConditions: [""],
+    // Add URL for jsdom
+    url: "http://localhost:3000",
   },
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/.next/"],
 
   // Specify different environments for different tests
+
+  testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+
   projects: [
     {
       displayName: "dom",
       testEnvironment: "jsdom",
-      testMatch: ["**/*.test.tsx"], // React Components
+      testMatch: [
+        "**/*.test.tsx", // React Components
+        "**/**/hooks/**/*.test.ts", // React Hooks - ADD THIS LINE
+      ],
       setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
     },
     {
       displayName: "node",
       testEnvironment: "node",
-      testMatch: ["**/*.test.ts"], // API routes
+      testMatch: [
+        "**/*.test.ts", // API routes
+        "!**/**/hooks/**/*.test.ts", // Exclude hooks - ADD THIS LINE
+      ],
       setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
     },
   ],
@@ -72,6 +83,7 @@ const config: Config = {
       "ts-jest",
       {
         tsconfig: "tsconfig.jest.json",
+        useESM: true,
       },
     ],
   },
@@ -83,7 +95,7 @@ const config: Config = {
   ],
 
   // Add this to handle ESM modules
-  extensionsToTreatAsEsm: [".ts"],
+  extensionsToTreatAsEsm: [".ts", ".tsx"],
 
   globals: {
     "ts-jest": {

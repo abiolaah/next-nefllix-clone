@@ -3,7 +3,7 @@ import { TextDecoder, TextEncoder } from "node:util";
 import { jest } from "@jest/globals";
 
 // Use proper type casting to avoid TypeScript errors
-global.TextEncoder = TextEncoder;
+global.TextEncoder = TextEncoder as unknown as typeof global.TextEncoder;
 global.TextDecoder = TextDecoder as typeof global.TextDecoder;
 
 // Properly typed fetch mock
