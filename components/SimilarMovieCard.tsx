@@ -22,9 +22,13 @@ interface SimilarContentItem {
 
 interface SimilarMovieCardProps {
   data: SimilarContentItem;
+  profileId: string;
 }
 
-const SimilarMovieCard: React.FC<SimilarMovieCardProps> = ({ data }) => {
+const SimilarMovieCard: React.FC<SimilarMovieCardProps> = ({
+  data,
+  profileId,
+}) => {
   const router = useRouter();
 
   const maturityRating = data ? (data.isTvShow ? "TV-14" : "PG-13") : "PG-14";
@@ -87,7 +91,11 @@ const SimilarMovieCard: React.FC<SimilarMovieCardProps> = ({ data }) => {
             <span className="text-white/70 text-xs">HD</span>
           </div>
           <div className="flex items-center gap-2">
-            <FavouriteButton movieId={data.id} />
+            <FavouriteButton
+              mediaId={data.id}
+              mediaType={data.isTvShow ? "tv" : "movie"}
+              profileId={profileId}
+            />
           </div>
         </div>
 

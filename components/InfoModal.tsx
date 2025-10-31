@@ -584,7 +584,11 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
               </h2>
               <div className="grid grid-cols-3 gap-4">
                 {similarContent.map((item) => (
-                  <SimilarMovieCard key={item.id} data={item} />
+                  <SimilarMovieCard
+                    key={item.id}
+                    data={item}
+                    profileId={currentProfileId || ""}
+                  />
                 ))}
               </div>
             </div>
