@@ -29,6 +29,7 @@ const getImageUrl = (path: string | null): string => {
 };
 
 export const transformMovie = (movie: TMDBMovie): MediaItem => {
+  const runtime = movie.runtime || 0; // Handle undefined
   return {
     id: movie.id.toString(),
     title: movie.title,
@@ -38,7 +39,8 @@ export const transformMovie = (movie: TMDBMovie): MediaItem => {
     trailerUrl: "",
     genre: movie.genre_ids.map((id) => id.toString()),
     rating: movie.vote_average,
-    duration: `${Math.floor(movie.runtime / 60)}h ${movie.runtime % 60}m`,
+    duration: `${Math.floor(runtime / 60)}h ${runtime % 60}m`,
+    isAdult: movie.adult,
     isTvShow: false,
     source: "tmdb",
   };
@@ -54,14 +56,16 @@ export const transformTvShow = (show: ExtendedTMDBTvShow): MediaItem => {
     trailerUrl: "",
     genre: show.genre_ids.map((id) => id.toString()),
     rating: show.vote_average,
-    duration: `${show.episode_run_time?.[0] || 45}m`,
+    // duration: `${show.episode_run_time?.[0] || 45}m`,
     isTvShow: true,
+    isAdult: show.adult,
     numberOfSeasons: show.number_of_seasons,
     source: "tmdb",
   };
 };
 
 export const transformTMDBToLocal = (tmdbMovie: TMDBMovie): LocalMovie => {
+  const runtime = tmdbMovie.runtime || 0; // Handle undefined
   return {
     id: tmdbMovie.id.toString(),
     title: tmdbMovie.title,
@@ -70,9 +74,7 @@ export const transformTMDBToLocal = (tmdbMovie: TMDBMovie): LocalMovie => {
     thumbnailUrl: getImageUrl(tmdbMovie.poster_path),
     genre: tmdbMovie.genre_ids.join(", "),
     rating: tmdbMovie.vote_average,
-    duration: `${Math.floor(tmdbMovie.runtime / 60)}h ${
-      tmdbMovie.runtime % 60
-    }m`,
+    duration: `${Math.floor(runtime / 60)}h ${runtime % 60}m`,
   };
 };
 
