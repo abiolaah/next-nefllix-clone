@@ -5,6 +5,10 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+  schedule:
+    # Runs every Friday at 11 PM UTC
+    - cron: "0 23 * * FRI"
+  workflow_dispatch: # Allow manual run
 
 jobs:
   test:
@@ -33,7 +37,7 @@ jobs:
         continue-on-error: true
 
       - name: Run unit tests
-        run: npm test -- --coverage --watchAll=false
+        run: npm test:unit -- --coverage --watchAll=false
         env:
           CI: true
 
@@ -47,7 +51,7 @@ jobs:
 
       - name: Archive test results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-results-${{ matrix.node-version }}
           path: |
@@ -82,7 +86,7 @@ jobs:
           SKIP_ENV_VALIDATION: true
 
       - name: Archive build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-output
           path: .next/
