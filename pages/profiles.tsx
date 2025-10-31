@@ -107,8 +107,12 @@ const Profiles = () => {
         </h1>
         <div className="flex items-center justify-center gap-8 mt-10 flex-wrap">
           {user?.profiles?.map(
-            (profile: { id: string; name: string; avatar: string }) => (
+            (
+              profile: { id: string; name: string; avatar: string },
+              index: number
+            ) => (
               <div
+                data-testid={`profile-${index + 1}`}
                 key={profile.id}
                 onClick={() =>
                   !isManagingProfiles && handleProfileClick(profile.id)

@@ -10,7 +10,7 @@ test.describe("My List page", () => {
 
     // Either shows cards or an empty state message
     const cards = page.locator('[data-testid="movie-card"]');
-    const emptyState = page.getByText(/no favourites|no items|empty/i);
+    const emptyState = page.getByText(/no movies|no items|empty/i);
 
     const hasCards = await cards
       .first()
