@@ -10,6 +10,7 @@ import TopMovieList from "@/components/TopMovieList";
 
 import useInfoModal from "@/hooks/useInfoModal";
 import useTvShows from "@/hooks/useTvShows";
+import useProfile from "@/hooks/useProfile";
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -44,6 +45,8 @@ export default function TvShows() {
     useTvShows({ type: "trending", page: 2 });
 
   const { isOpen, closeModal } = useInfoModal();
+
+  const { currentProfileId } = useProfile();
 
   if (
     tvShowsLoading ||
@@ -89,6 +92,7 @@ export default function TvShows() {
         <TopMovieList
           title="Top 10 TV Shows"
           data={(tvShows?.tmdb || []).slice(0, 10)}
+          profileId={currentProfileId || ""}
         />
       </div>
     </>
