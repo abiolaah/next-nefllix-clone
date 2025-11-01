@@ -148,6 +148,7 @@ jobs:
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           scope: ${{ secrets.VERCEL_ORG_ID }}
           github-comment: true
+        continue-on-error: true
 
   deploy-production:
     name: Deploy to Production
@@ -167,3 +168,4 @@ jobs:
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           vercel-args: "--prod"
           scope: ${{ secrets.VERCEL_ORG_ID }}
+        continue-on-error: true
