@@ -52,6 +52,21 @@ describe("useProfile Hook", () => {
 
     // Clear localStorage before each test
     localStorage.clear();
+
+    // Set up a default mock to prevent undefined errors
+    mockUseCurrentUser.mockReturnValue({
+      data: undefined,
+      error: undefined,
+      isLoading: false,
+      mutate: mockMutate,
+    });
+
+    // Reset the store to initial state by calling the hook and resetting it
+    const { result } = renderHook(() => useProfile());
+    act(() => {
+      result.current.setCurrentProfileId(null);
+      result.current.setCurrentProfile(null);
+    });
   });
 
   afterEach(() => {
