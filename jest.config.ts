@@ -61,9 +61,8 @@ const config: Config = {
       displayName: "dom",
       testEnvironment: "jsdom",
       testMatch: [
-        "**/__test__/units/hooks/**/*.test.ts", // React Hooks
-        "**/__test__/units/components/**/*.test.tsx", // Components
-        "**/__test__/units/lib/**/*.test.ts", // Components
+        "**/__test__/units/**/*.test.ts",
+        "**/__test__/units/**/*.test.tsx",
       ],
       setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
     },
