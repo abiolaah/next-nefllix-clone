@@ -10,6 +10,7 @@ import TopMovieList from "@/components/TopMovieList";
 
 import useInfoModal from "@/hooks/useInfoModal";
 import useMovies from "@/hooks/useMovies";
+import useProfile from "@/hooks/useProfile";
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -49,6 +50,7 @@ export default function Movies() {
   });
 
   const { isOpen, closeModal } = useInfoModal();
+  const { currentProfileId } = useProfile();
 
   if (
     moviesLoading ||
@@ -102,6 +104,7 @@ export default function Movies() {
         <TopMovieList
           title="Top 10 Movies"
           data={(movies?.tmdb || []).slice(0, 10)}
+          profileId={currentProfileId || ""}
         />
       </div>
     </>

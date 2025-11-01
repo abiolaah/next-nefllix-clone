@@ -212,10 +212,12 @@ const Browse = () => {
         <TopMovieList
           title="Top 10 Movies"
           data={(movies?.tmdb || []).slice(0, 10)}
+          profileId={currentProfileId || ""}
         />
         <TopMovieList
           title="Top 10 TV Shows"
           data={(tvShows?.tmdb || []).slice(0, 10)}
+          profileId={currentProfileId || ""}
         />
       </div>
     </>

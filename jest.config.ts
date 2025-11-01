@@ -61,8 +61,8 @@ const config: Config = {
       displayName: "dom",
       testEnvironment: "jsdom",
       testMatch: [
-        "**/*.test.tsx", // React Components
-        "**/**/hooks/**/*.test.ts", // React Hooks - ADD THIS LINE
+        "**/__test__/units/**/*.test.ts",
+        "**/__test__/units/**/*.test.tsx",
       ],
       setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
     },
@@ -70,8 +70,8 @@ const config: Config = {
       displayName: "node",
       testEnvironment: "node",
       testMatch: [
-        "**/*.test.ts", // API routes
-        "!**/**/hooks/**/*.test.ts", // Exclude hooks - ADD THIS LINE
+        "**/__test__/integration/**/*.test.ts", // API routes
+        "**/__test__/integration/**/*.test.tsx",
       ],
       setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
     },

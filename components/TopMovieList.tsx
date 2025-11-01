@@ -7,9 +7,14 @@ import TopMovieCard from "./TopMovieCard";
 interface TopMovieListProps {
   data: MediaItem[];
   title: string;
+  profileId: string;
 }
 
-const TopMovieList: React.FC<TopMovieListProps> = ({ title, data }) => {
+const TopMovieList: React.FC<TopMovieListProps> = ({
+  title,
+  data,
+  profileId,
+}) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
@@ -86,7 +91,11 @@ const TopMovieList: React.FC<TopMovieListProps> = ({ title, data }) => {
         >
           {data.map((item, index) => (
             <div key={item.id} className="flex-none">
-              <TopMovieCard data={item} index={index + 1} />
+              <TopMovieCard
+                data={item}
+                index={index + 1}
+                profileId={profileId}
+              />
             </div>
           ))}
         </div>

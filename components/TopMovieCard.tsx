@@ -17,9 +17,14 @@ import { TMDB_IMAGE_BASE_URL } from "@/lib/tmdb";
 interface TopMovieCardProps {
   data: MediaItem;
   index: number;
+  profileId: string;
 }
 
-const TopMovieCard: React.FC<TopMovieCardProps> = ({ data, index }) => {
+const TopMovieCard: React.FC<TopMovieCardProps> = ({
+  data,
+  index,
+  profileId,
+}) => {
   const router = useRouter();
   const expandedRef = useRef<HTMLDivElement>(null);
   const { getPosition } = useExpandedPosition(expandedRef);
@@ -142,8 +147,16 @@ const TopMovieCard: React.FC<TopMovieCardProps> = ({ data, index }) => {
               >
                 <BsFillPlayFill className="text-white" size={25} />
               </div>
-              <FavouriteButton movieId={data.id} />
-              <ReactionsButton />
+              <FavouriteButton
+                mediaId={data.id}
+                mediaType={data.isTvShow ? "tv" : "movie"}
+                profileId={profileId}
+              />
+              <ReactionsButton
+                mediaId={data.id}
+                mediaType={data.isTvShow ? "tv" : "movie"}
+                profileId={profileId}
+              />
               <div
                 onClick={handleOpenModal}
                 className="cursor-pointer ml-auto w-6 h-6 lg:w-10 lg:h-10 border-white/60 border-2 rounded-full flex justify-center items-center transition hover:border-white"
