@@ -60,7 +60,7 @@ const AccountMenu: React.FC<AccountMenuProp> = ({ visible }) => {
             <>
               <Image
                 className="w-8 rounded-md"
-                src={currentProfile.avatar}
+                src={currentProfile.avatar || DEFAULT_PROFILE_AVATAR}
                 width={30}
                 height={30}
                 alt={currentProfile.name}

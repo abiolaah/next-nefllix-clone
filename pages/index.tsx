@@ -179,7 +179,7 @@ const Browse = () => {
                   <div className="relative w-36 md:w-52 h-56 md:h-72 overflow-hidden rounded-md">
                     {/* Show image */}
                     <Image
-                      src={show.image}
+                      src={show.image || "/placeholder.svg"}
                       alt={show.name}
                       fill
                       sizes="(max-width: 768px) 144px, 208px"
