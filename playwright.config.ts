@@ -77,7 +77,7 @@ export default defineConfig({
         ...devices["Desktop Firefox"],
         storageState: "playwright/.auth/user.json",
         screenshot: "only-on-failure", // Can override per project
-        video: "retain-on-failure",
+        video: "retain-on-failure", // Can override per project
       },
       dependencies: ["setup"],
     },
@@ -89,7 +89,7 @@ export default defineConfig({
         ...devices["Desktop Safari"],
         storageState: "playwright/.auth/user.json",
         screenshot: "only-on-failure", // Can override per project
-        video: "retain-on-failure",
+        video: "retain-on-failure", // Can override per project
       },
       dependencies: ["setup"],
     },
@@ -103,7 +103,7 @@ export default defineConfig({
       use: {
         ...devices["Desktop Chrome"], // No storageState - tests run without authentication
         screenshot: "only-on-failure", // Can override per project
-        video: "retain-on-failure",
+        video: "retain-on-failure", // Can override per project
       },
     },
 
@@ -113,7 +113,7 @@ export default defineConfig({
       use: {
         ...devices["Desktop Firefox"],
         screenshot: "only-on-failure", // Can override per project
-        video: "retain-on-failure",
+        video: "retain-on-failure", // Can override per project
       },
     },
 
@@ -123,7 +123,7 @@ export default defineConfig({
       use: {
         ...devices["Desktop Safari"],
         screenshot: "only-on-failure", // Can override per project
-        video: "retain-on-failure",
+        video: "retain-on-failure", // Can override per project
       },
     },
 
