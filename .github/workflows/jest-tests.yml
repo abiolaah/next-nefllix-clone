@@ -11,8 +11,8 @@ on:
   workflow_dispatch: # Allow manual run
 
 jobs:
-  test:
-    name: Run Tests
+  unit-tests:
+    name: Run Unit Tests
     runs-on: ubuntu-latest
 
     strategy:
@@ -45,18 +45,117 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           files: ./coverage/lcov.info
-          flags: unittests
-          name: codecov-umbrella
+          flags: unit-tests
+          name: codecov-unit-${{ matrix.node-version }}
           fail_ci_if_error: false
 
-      - name: Archive test results
+      - name: Archive unit test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results-${{ matrix.node-version }}
+          name: unit-test-results-${{ matrix.node-version }}
           path: |
             coverage/
             test-results/
+          retention-days: 30
+  integration-tests:
+    name: Run Integration Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Run integration tests
+        run: npm run test:integration -- --ci --coverage --watchAll=false
+        env:
+          CI: true
+
+      - name: Upload integration test coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/lcov.info
+          flags: integration-tests
+          name: codecov-integration-${{ matrix.node-version }}
+          fail_ci_if_error: false
+
+      - name: Archive integration test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-results-${{ matrix.node-version }}
+          path: |
+            coverage/
+            test-results/
+          retention-days: 30
+
+  e2e-tests:
+    name: Run E2E Tests (Playwright)
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Build application
+        run: npm run build
+        env:
+          SKIP_ENV_VALIDATION: true
+
+      - name: Run Playwright tests
+        run: npm run test:e2e
+        env:
+          CI: true
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.node-version }}
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-results-${{ matrix.node-version }}
+          path: test-results/
           retention-days: 30
 
   build:

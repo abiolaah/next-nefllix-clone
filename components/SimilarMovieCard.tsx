@@ -1,6 +1,6 @@
 "use client";
 
-import type React from "react";
+import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import FavouriteButton from "./FavouriteButton";

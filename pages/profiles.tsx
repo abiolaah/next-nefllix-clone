@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import useProfile from "@/hooks/useProfile";
 import { MdOutlineEdit } from "react-icons/md";
+import { DEFAULT_PROFILE_AVATAR } from "@/constants/data";
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -132,7 +133,7 @@ const Profiles = () => {
                     }`}
                   >
                     <Image
-                      src={profile.avatar}
+                      src={profile.avatar || DEFAULT_PROFILE_AVATAR}
                       width={140}
                       height={140}
                       alt={profile.name}
