@@ -23,7 +23,12 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: "html",
+  /* Reporter configuration */
+  reporter: [
+    ["html"], // HTML report
+    ["list"], // Console output
+    ["json", { outputFile: "test-results/results.json" }], // Optional: JSON report
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
@@ -31,6 +36,14 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
+
+    /* 🎯 SCREENSHOT CONFIGURATION */
+    // Options: 'off', 'on', 'only-on-failure', 'retain-on-failure'
+    screenshot: "only-on-failure", // ✅ Takes screenshot on test failure
+
+    /* 🎯 VIDEO CONFIGURATION (optional) */
+    // Options: 'off', 'on', 'retain-on-failure', 'on-first-retry'
+    video: "retain-on-failure", // ✅ Records video on failure
   },
 
   /* Configure projects for major browsers */
@@ -51,6 +64,8 @@ export default defineConfig({
       use: {
         ...devices["Desktop Chrome"],
         storageState: "playwright/.auth/user.json",
+        screenshot: "only-on-failure", // Can override per project
+        video: "retain-on-failure", // Can override per project
       },
       dependencies: ["setup"],
     },
@@ -61,6 +76,8 @@ export default defineConfig({
       use: {
         ...devices["Desktop Firefox"],
         storageState: "playwright/.auth/user.json",
+        screenshot: "only-on-failure", // Can override per project
+        video: "retain-on-failure",
       },
       dependencies: ["setup"],
     },
@@ -71,6 +88,8 @@ export default defineConfig({
       use: {
         ...devices["Desktop Safari"],
         storageState: "playwright/.auth/user.json",
+        screenshot: "only-on-failure", // Can override per project
+        video: "retain-on-failure",
       },
       dependencies: ["setup"],
     },
@@ -82,8 +101,9 @@ export default defineConfig({
       name: "chromium:public",
       testDir: "./tests/e2e/public",
       use: {
-        ...devices["Desktop Chrome"],
-        // No storageState - tests run without authentication
+        ...devices["Desktop Chrome"], // No storageState - tests run without authentication
+        screenshot: "only-on-failure", // Can override per project
+        video: "retain-on-failure",
       },
     },
 
@@ -92,6 +112,8 @@ export default defineConfig({
       testDir: "./tests/e2e/public",
       use: {
         ...devices["Desktop Firefox"],
+        screenshot: "only-on-failure", // Can override per project
+        video: "retain-on-failure",
       },
     },
 
@@ -100,6 +122,8 @@ export default defineConfig({
       testDir: "./tests/e2e/public",
       use: {
         ...devices["Desktop Safari"],
+        screenshot: "only-on-failure", // Can override per project
+        video: "retain-on-failure",
       },
     },
 
@@ -173,10 +197,11 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run dev',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  //   timeout: 120 * 1000,
-  // },
+  webServer: {
+    command: "npm run dev",
+    url: "http://localhost:3000",
+    reuseExistingServer: !process.env.CI,
+    stdout: "ignore",
+    stderr: "pipe",
+  },
 });
