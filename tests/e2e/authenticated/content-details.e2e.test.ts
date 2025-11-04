@@ -29,12 +29,6 @@ test.describe("Content details", () => {
     await infoButton.click();
     // console.log("✅ Successfully clicked info button on movie card");
 
-    // Take a screenshot for debugging
-    await page.screenshot({
-      path: "test-results/debug-info-modal.png",
-      fullPage: true,
-    });
-
     // Expect a modal or details view to appear with title text present
     await expect(page.getByRole("button", { name: /play/i })).toBeVisible({
       timeout: 10000,

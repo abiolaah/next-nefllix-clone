@@ -99,6 +99,11 @@ export const authOptions = {
       return session;
     },
     async redirect({ url, baseUrl }: RedirectCallback) {
+      // Handle relative URLs (starting with /)
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      }
+
       // If the URL is relative (starts with baseUrl), allow it
       if (url.startsWith(baseUrl)) return url;
 
