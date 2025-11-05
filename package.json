@@ -26,7 +26,8 @@
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:seed": "node scripts/import-movies.js && node scripts/import-seasons.js",
-    "setup:test-user": "node scripts/create-test-user.js",
+    "setup:test-user:ci": "node scripts/create-test-user.js",
+    "setup:test-user": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/create-test-user.js",
     "cleanup:test": "rm -rf test-results playwright-report playwright/.auth coverage",
     "import-movies": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/import-movies.ts",
     "import-seasons": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/import-seasons.ts"
