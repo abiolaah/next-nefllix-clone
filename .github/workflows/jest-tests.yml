@@ -545,12 +545,12 @@ jobs:
 
       - name: Generate HTML dashboard
         run: |
-          # Copy scripts to current directory
-          cp main-branch/scripts/dashboard-template.html scripts/dashboard-template.html
-          cp main-branch/scripts/generate-dashboard.js scripts/generate-dashboard.js
-
           # Make sure scripts directory exists
           mkdir -p scripts
+
+          # Copy scripts to current directory
+          cp main-branch/scripts/dashboard-template.html scripts/dashboard-template.html
+          cp main-branch/scripts/generate-dashboard.ts scripts/generate-dashboard.ts
 
           # Generate the dashboard
           tsx scripts/generate-dashboard.ts
