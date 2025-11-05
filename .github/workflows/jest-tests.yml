@@ -61,6 +61,7 @@ jobs:
             coverage/
             test-results/
           retention-days: 30
+
   integration-tests:
     name: Run Integration Tests
     runs-on: ubuntu-latest
@@ -186,8 +187,10 @@ jobs:
 
       - name: Run Playwright tests
         run: |
+          # Create test-results directory if it doesn't exist
           mkdir -p test-results
-          npm run test:e2e -- --reporter=json --output=test-results/e2e-results.json || true
+          # Run Playwright tests
+          npx playwright test
         env:
           CI: true
           # 🎯 Critical environment variables for E2E tests
@@ -200,6 +203,18 @@ jobs:
           NEXT_PUBLIC_TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}
         continue-on-error: true
 
+      - name: List test output files
+        if: always()
+        run: |
+          echo "=== Playwright Report ==="
+          ls -la playwright-report/ || echo "No playwright-report directory"
+          echo ""
+          echo "=== Test Results ==="
+          ls -la test-results/ || echo "No test-results directory"
+          echo ""
+          echo "=== Current Directory ==="
+          ls -la
+
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
@@ -207,6 +222,7 @@ jobs:
           name: playwright-report-${{ matrix.node-version }}
           path: playwright-report/
           retention-days: 30
+          if-no-files-found: warn
 
       - name: Upload test results (screenshots & videos)
         if: always()
@@ -215,6 +231,7 @@ jobs:
           name: e2e-test-results-${{ matrix.node-version }}
           path: test-results/
           retention-days: 30
+          if-no-files-found: warn
 
       # 🎯 NEW: Upload trace files for debugging
       - name: Upload Playwright traces
@@ -224,6 +241,7 @@ jobs:
           name: playwright-traces-${{ matrix.node-version }}
           path: test-results/**/*.zip
           retention-days: 30
+          if-no-files-found: ignore
 
   build:
     name: Build Application
@@ -586,9 +604,9 @@ jobs:
                         font-size: 0.5em;
                         font-weight: normal;
                     }
-                    .badge.unit { background: #2196f3; }
-                    .badge.integration { background: #ff9800; }
-                    .badge.e2e { background: #4caf50; }
+                    .badge.unit { background: #2196F3; color: #b71c00  }
+                    .badge.integration { background: #ff9800; color: #D42A0B }
+                    .badge.e2e { background: #4caf50; color: #D82100}
                     table {
                         width: 100%;
                         border-collapse: collapse;
