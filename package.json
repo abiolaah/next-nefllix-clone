@@ -26,9 +26,10 @@
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:seed": "node scripts/import-movies.js && node scripts/import-seasons.js",
-    "setup:test-user:ci": "node scripts/create-test-user.js",
-    "setup:test-user": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/create-test-user.js",
+    "setup:test-user": "tsx scripts/create-test-user.ts",
     "cleanup:test": "rm -rf test-results playwright-report playwright/.auth coverage",
+    "dashboard:generate": "tsx scripts/generate-dashboard.ts",
+    "dashboard:serve": "npm run dashboard:generate && npx http-server . -p 8080",
     "import-movies": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/import-movies.ts",
     "import-seasons": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/import-seasons.ts"
   },
@@ -78,6 +79,7 @@
     "tailwindcss": "^4.1.3",
     "ts-jest": "^29.3.2",
     "ts-node": "^10.9.2",
+    "tsx": "^4.20.6",
     "typescript": "^5"
   }
 }
