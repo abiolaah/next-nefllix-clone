@@ -1,8 +1,10 @@
 // scripts/create-test-user.js
 // This script creates a test user for E2E testing in CI environments
 
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { PrismaClient } = require("@prisma/client");
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const bcrypt = require("bcrypt");
 
 const prisma = new PrismaClient();
 
