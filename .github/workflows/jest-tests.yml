@@ -159,7 +159,7 @@ jobs:
 
       # 🎯 NEW: Create test user for E2E tests
       - name: Create test user
-        run: node scripts/create-test-user.js
+        run: node scripts/create-test-user.ts
         env:
           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}
           E2E_EMAIL: test@gmail.com
@@ -298,6 +298,7 @@ jobs:
         with:
           ref: gh-pages
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download all test artifacts
         uses: actions/download-artifact@v4
