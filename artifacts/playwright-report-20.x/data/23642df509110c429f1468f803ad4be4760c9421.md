@@ -1,0 +1,196 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - img "Streaming Service Logo" [ref=e5]
+        - generic [ref=e6]:
+          - generic [ref=e7] [cursor=pointer]: Home
+          - generic [ref=e8] [cursor=pointer]: TV Shows
+          - generic [ref=e9] [cursor=pointer]: Movies
+          - generic [ref=e10] [cursor=pointer]: New & Popular
+          - generic [ref=e11] [cursor=pointer]: My List
+          - generic [ref=e12] [cursor=pointer]: Browse by languages
+        - generic [ref=e13]:
+          - button "Search" [ref=e14] [cursor=pointer]:
+            - img [ref=e15]
+          - button "Notification" [ref=e17] [cursor=pointer]:
+            - img [ref=e18]
+          - generic [ref=e20] [cursor=pointer]:
+            - img "Avatar for TestProfile1" [ref=e22]
+            - img [ref=e23]
+    - generic "main-section" [ref=e25]:
+      - generic "video" [ref=e26]
+      - generic [ref=e27]:
+        - paragraph [ref=e28]: The Shawshank Redemption
+        - paragraph [ref=e29]: Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.
+        - generic [ref=e30]:
+          - button "Play" [ref=e31]:
+            - img [ref=e32]
+            - text: Play
+          - button "More Info" [ref=e34]:
+            - img [ref=e35]
+            - text: More Info
+      - generic [ref=e38]:
+        - button "Unmute" [ref=e39]:
+          - img [ref=e40]
+        - generic "content-rating" [ref=e42]: PG-13
+    - generic [ref=e43]:
+      - heading "Top 10 Movies" [level=1] [ref=e45]
+      - heading "Top 10 TV Shows" [level=1] [ref=e48]
+  - generic [active]:
+    - generic [ref=e55] [cursor=pointer]:
+      - button "Open issues overlay" [ref=e56]:
+        - img [ref=e58]
+        - generic [ref=e60]:
+          - generic [ref=e61]: "0"
+          - generic [ref=e62]: "1"
+        - generic [ref=e63]: Issue
+      - button "Collapse issues badge" [ref=e64]:
+        - img [ref=e65]
+    - generic [ref=e69]:
+      - dialog "Unhandled Runtime Error" [ref=e70]:
+        - generic [ref=e72]:
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - generic [ref=e75]:
+                - generic [ref=e77]: Unhandled Runtime Error
+                - generic [ref=e78]:
+                  - button "Copy Stack Trace" [ref=e79] [cursor=pointer]:
+                    - img [ref=e80]
+                  - button "No related documentation found" [disabled] [ref=e82]:
+                    - img [ref=e83]
+                  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools" [ref=e85] [cursor=pointer]:
+                    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+                    - img [ref=e86]
+              - paragraph [ref=e95]: "Error: Failed to fetch TV shows: 500"
+            - generic [ref=e96]:
+              - generic [ref=e97]:
+                - paragraph [ref=e99]:
+                  - img [ref=e101]
+                  - generic [ref=e105]: hooks/useTvShows.ts (50:15) @ fetchTvShows
+                  - button "Open in editor" [ref=e106] [cursor=pointer]:
+                    - img [ref=e108]
+                - generic [ref=e110]: "48 | }); 49 | > 50 | throw new Error(`Failed to fetch TV shows: ${response.status}`); | ^ 51 | } 52 | 53 | const responseData = await response.json();"
+              - generic [ref=e111]:
+                - generic [ref=e112]:
+                  - paragraph [ref=e113]:
+                    - text: Call Stack
+                    - generic [ref=e114]: "84"
+                  - button "Show 56 ignore-listed frame(s)" [ref=e115] [cursor=pointer]:
+                    - text: Show 56 ignore-listed frame(s)
+                    - img [ref=e116]
+                - generic [ref=e118]:
+                  - generic [ref=e119]:
+                    - text: fetchTvShows
+                    - button [ref=e120] [cursor=pointer]:
+                      - img [ref=e121]
+                  - text: hooks/useTvShows.ts (50:15)
+                - generic [ref=e123]:
+                  - generic [ref=e124]:
+                    - text: async*useTvShows/<
+                    - button [ref=e125] [cursor=pointer]:
+                      - img [ref=e126]
+                  - text: hooks/useTvShows.ts (73:7)
+                - generic [ref=e128]:
+                  - generic [ref=e129]: ./node_modules/scheduler/cjs/scheduler.development.js
+                  - text: .next/static/chunks/main.js (2486:1)
+                - generic [ref=e130]:
+                  - generic [ref=e131]: options.factory
+                  - text: .next/static/chunks/webpack.js (703:31)
+                - generic [ref=e132]:
+                  - generic [ref=e133]: __webpack_require__
+                  - text: .next/static/chunks/webpack.js (37:33)
+                - generic [ref=e134]:
+                  - generic [ref=e135]: fn
+                  - text: .next/static/chunks/webpack.js (360:21)
+                - generic [ref=e136]:
+                  - generic [ref=e137]: ./node_modules/scheduler/index.js
+                  - text: .next/static/chunks/main.js (2497:1)
+                - generic [ref=e138]:
+                  - generic [ref=e139]: options.factory
+                  - text: .next/static/chunks/webpack.js (703:31)
+                - generic [ref=e140]:
+                  - generic [ref=e141]: __webpack_require__
+                  - text: .next/static/chunks/webpack.js (37:33)
+                - generic [ref=e142]:
+                  - generic [ref=e143]: fn
+                  - text: .next/static/chunks/webpack.js (360:21)
+                - generic [ref=e144]:
+                  - generic [ref=e145]: ./node_modules/react-dom/cjs/react-dom-client.development.js
+                  - text: .next/static/chunks/main.js (2398:1)
+                - generic [ref=e146]:
+                  - generic [ref=e147]: options.factory
+                  - text: .next/static/chunks/webpack.js (703:31)
+                - generic [ref=e148]:
+                  - generic [ref=e149]: __webpack_require__
+                  - text: .next/static/chunks/webpack.js (37:33)
+                - generic [ref=e150]:
+                  - generic [ref=e151]: fn
+                  - text: .next/static/chunks/webpack.js (360:21)
+                - generic [ref=e152]:
+                  - generic [ref=e153]: ./node_modules/react-dom/client.js
+                  - text: .next/static/chunks/main.js (2420:1)
+                - generic [ref=e154]:
+                  - generic [ref=e155]: options.factory
+                  - text: .next/static/chunks/webpack.js (703:31)
+                - generic [ref=e156]:
+                  - generic [ref=e157]: __webpack_require__
+                  - text: .next/static/chunks/webpack.js (37:33)
+                - generic [ref=e158]:
+                  - generic [ref=e159]: fn
+                  - text: .next/static/chunks/webpack.js (360:21)
+                - generic [ref=e160]:
+                  - generic [ref=e161]: ./node_modules/next/dist/client/index.js
+                  - text: .next/static/chunks/main.js (1436:1)
+                - generic [ref=e162]:
+                  - generic [ref=e163]: options.factory
+                  - text: .next/static/chunks/webpack.js (703:31)
+                - generic [ref=e164]:
+                  - generic [ref=e165]: __webpack_require__
+                  - text: .next/static/chunks/webpack.js (37:33)
+                - generic [ref=e166]:
+                  - generic [ref=e167]: fn
+                  - text: .next/static/chunks/webpack.js (360:21)
+                - generic [ref=e168]:
+                  - generic [ref=e169]: ./node_modules/next/dist/client/next-dev.js
+                  - text: .next/static/chunks/main.js (1447:1)
+                - generic [ref=e170]:
+                  - generic [ref=e171]: options.factory
+                  - text: .next/static/chunks/webpack.js (703:31)
+                - generic [ref=e172]:
+                  - generic [ref=e173]: __webpack_require__
+                  - text: .next/static/chunks/webpack.js (37:33)
+                - generic [ref=e174]:
+                  - generic [ref=e175]: __webpack_exec__
+                  - text: .next/static/chunks/main.js (2513:67)
+                - generic [ref=e176]:
+                  - generic [ref=e177]: <unknown>
+                  - text: .next/static/chunks/main.js (2514:53)
+                - generic [ref=e178]:
+                  - generic [ref=e179]: <unknown>
+                  - text: .next/static/chunks/main.js (9:61)
+          - generic [ref=e180]:
+            - generic [ref=e181]: "1"
+            - generic [ref=e182]: "2"
+      - generic [ref=e183]:
+        - generic [ref=e184]:
+          - navigation [ref=e185]:
+            - button "previous" [disabled] [ref=e186]:
+              - img "previous" [ref=e187]
+            - generic [ref=e189]:
+              - generic [ref=e190]: 1/
+              - text: "1"
+            - button "next" [disabled] [ref=e191]:
+              - img "next" [ref=e192]
+          - img
+        - generic [ref=e194]:
+          - link "Next.js 15.2.4 (outdated)" [ref=e195] [cursor=pointer]:
+            - /url: https://nextjs.org/docs/messages/version-staleness
+            - img [ref=e196]
+            - generic "An outdated version detected (latest is 16.0.1), upgrade is highly recommended!" [ref=e198]: Next.js 15.2.4 (outdated)
+          - img
+  - alert [ref=e199]
+```

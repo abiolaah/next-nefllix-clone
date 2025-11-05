@@ -1,0 +1,89 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - img "Streaming Service Logo" [ref=e5]
+        - generic [ref=e6]:
+          - generic [ref=e7] [cursor=pointer]: Home
+          - generic [ref=e8] [cursor=pointer]: TV Shows
+          - generic [ref=e9] [cursor=pointer]: Movies
+          - generic [ref=e10] [cursor=pointer]: New & Popular
+          - generic [ref=e11] [cursor=pointer]: My List
+          - generic [ref=e12] [cursor=pointer]: Browse by languages
+        - generic [ref=e13]:
+          - button "Search" [ref=e14] [cursor=pointer]:
+            - img [ref=e15]
+          - button "Notification" [ref=e17] [cursor=pointer]:
+            - img [ref=e18]
+          - generic [ref=e20] [cursor=pointer]:
+            - img "Avatar for TestProfile1" [ref=e22]
+            - img [ref=e23]
+    - generic "main-section" [ref=e25]:
+      - generic "video" [ref=e26]
+      - generic [ref=e27]:
+        - paragraph [ref=e28]: Tears of Steel
+        - paragraph [ref=e29]: In an apocalyptic future, a group of soldiers and scientists takes refuge in Amsterdam to try to stop an army of robots that threatens the planet.
+        - generic [ref=e30]:
+          - button "Play" [ref=e31]:
+            - img [ref=e32]
+            - text: Play
+          - button "More Info" [ref=e34]:
+            - img [ref=e35]
+            - text: More Info
+      - generic [ref=e38]:
+        - button "Unmute" [ref=e39]:
+          - img [ref=e40]
+        - generic "content-rating" [ref=e42]: PG-13
+    - generic [ref=e43]:
+      - heading "Top 10 Movies" [level=1] [ref=e45]
+      - heading "Top 10 TV Shows" [level=1] [ref=e48]
+  - generic [active]:
+    - generic [ref=e55] [cursor=pointer]:
+      - button "Open issues overlay" [ref=e56]:
+        - img [ref=e58]
+        - generic [ref=e60]:
+          - generic [ref=e61]: "0"
+          - generic [ref=e62]: "1"
+        - generic [ref=e63]: Issue
+      - button "Collapse issues badge" [ref=e64]:
+        - img [ref=e65]
+    - generic [ref=e69]:
+      - dialog "Unhandled Runtime Error" [ref=e70]:
+        - generic [ref=e72]:
+          - generic [ref=e74]:
+            - generic [ref=e75]:
+              - generic [ref=e77]: Unhandled Runtime Error
+              - generic [ref=e78]:
+                - button "Copy Stack Trace" [ref=e79] [cursor=pointer]:
+                  - img [ref=e80]
+                - button "No related documentation found" [disabled] [ref=e82]:
+                  - img [ref=e83]
+                - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools" [ref=e85]:
+                  - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+                  - img [ref=e86]
+            - paragraph [ref=e98]: "Error: Failed to fetch TV shows: 500"
+          - generic [ref=e100]:
+            - generic [ref=e101]: "1"
+            - generic [ref=e102]: "2"
+      - generic [ref=e103]:
+        - generic [ref=e104]:
+          - navigation [ref=e105]:
+            - button "previous" [disabled] [ref=e106]:
+              - img "previous" [ref=e107]
+            - generic [ref=e109]:
+              - generic [ref=e110]: 1/
+              - text: "1"
+            - button "next" [disabled] [ref=e111]:
+              - img "next" [ref=e112]
+          - img
+        - generic [ref=e114]:
+          - link "Next.js 15.2.4 (outdated)" [ref=e115]:
+            - /url: https://nextjs.org/docs/messages/version-staleness
+            - img [ref=e116]
+            - generic "An outdated version detected (latest is 16.0.1), upgrade is highly recommended!" [ref=e118]: Next.js 15.2.4 (outdated)
+          - img
+  - alert [ref=e119]
+```

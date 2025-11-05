@@ -1,0 +1,108 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - img "Streaming Service Logo" [ref=e5]
+        - generic [ref=e6]:
+          - generic [ref=e7] [cursor=pointer]: Home
+          - generic [ref=e8] [cursor=pointer]: TV Shows
+          - generic [ref=e9] [cursor=pointer]: Movies
+          - generic [ref=e10] [cursor=pointer]: New & Popular
+          - generic [ref=e11] [cursor=pointer]: My List
+          - generic [ref=e12] [cursor=pointer]: Browse by languages
+        - generic [ref=e13]:
+          - button "Search" [ref=e14] [cursor=pointer]:
+            - img [ref=e15]
+          - button "Notification" [ref=e17] [cursor=pointer]:
+            - img [ref=e18]
+          - generic [ref=e20] [cursor=pointer]:
+            - img "Avatar for TestProfile1" [ref=e22]
+            - img [ref=e23]
+    - generic "main-section" [ref=e25]:
+      - generic "video" [ref=e26]
+      - generic [ref=e27]:
+        - paragraph [ref=e28]: Big Buck Bunny
+        - paragraph [ref=e29]: Three rodents amuse themselves by harassing creatures of the forest. However, when they mess with a bunny, he decides to teach them a lesson.
+        - generic [ref=e30]:
+          - button "Play" [ref=e31]:
+            - img [ref=e32]
+            - text: Play
+          - button "More Info" [ref=e34]:
+            - img [ref=e35]
+            - text: More Info
+      - generic [ref=e38]:
+        - button "Unmute" [ref=e39]:
+          - img [ref=e40]
+        - generic "content-rating" [ref=e42]: PG-13
+    - generic [ref=e43]:
+      - heading "Top 10 Movies" [level=1] [ref=e45]
+      - heading "Top 10 TV Shows" [level=1] [ref=e48]
+  - generic [active]:
+    - generic [ref=e55] [cursor=pointer]:
+      - button "Open issues overlay" [ref=e56]:
+        - img [ref=e58]
+        - generic [ref=e60]:
+          - generic [ref=e61]: "0"
+          - generic [ref=e62]: "1"
+        - generic [ref=e63]: Issue
+      - button "Collapse issues badge" [ref=e64]:
+        - img [ref=e65]
+    - generic [ref=e69]:
+      - dialog "Unhandled Runtime Error" [ref=e70]:
+        - generic [ref=e72]:
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - generic [ref=e75]:
+                - generic [ref=e77]: Unhandled Runtime Error
+                - generic [ref=e78]:
+                  - button "Copy Stack Trace" [ref=e79] [cursor=pointer]:
+                    - img [ref=e80]
+                  - button "No related documentation found" [disabled] [ref=e82]:
+                    - img [ref=e83]
+                  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools" [ref=e85] [cursor=pointer]:
+                    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+                    - img [ref=e86]
+              - paragraph [ref=e95]: "Error: Failed to fetch TV shows: 500"
+            - generic [ref=e96]:
+              - generic [ref=e97]:
+                - paragraph [ref=e99]:
+                  - img [ref=e101]
+                  - generic [ref=e105]: hooks/useTvShows.ts (50:15) @ fetchTvShows
+                  - button "Open in editor" [ref=e106] [cursor=pointer]:
+                    - img [ref=e108]
+                - generic [ref=e110]: "48 | }); 49 | > 50 | throw new Error(`Failed to fetch TV shows: ${response.status}`); | ^ 51 | } 52 | 53 | const responseData = await response.json();"
+              - generic [ref=e111]:
+                - paragraph [ref=e113]:
+                  - text: Call Stack
+                  - generic [ref=e114]: "1"
+                - generic [ref=e115]:
+                  - generic [ref=e116]:
+                    - text: fetchTvShows
+                    - button [ref=e117] [cursor=pointer]:
+                      - img [ref=e118]
+                  - text: hooks/useTvShows.ts (50:15)
+          - generic [ref=e120]:
+            - generic [ref=e121]: "1"
+            - generic [ref=e122]: "2"
+      - generic [ref=e123]:
+        - generic [ref=e124]:
+          - navigation [ref=e125]:
+            - button "previous" [disabled] [ref=e126]:
+              - img "previous" [ref=e127]
+            - generic [ref=e129]:
+              - generic [ref=e130]: 1/
+              - text: "1"
+            - button "next" [disabled] [ref=e131]:
+              - img "next" [ref=e132]
+          - img
+        - generic [ref=e134]:
+          - link "Next.js 15.2.4 (outdated)" [ref=e135] [cursor=pointer]:
+            - /url: https://nextjs.org/docs/messages/version-staleness
+            - img [ref=e136]
+            - generic "An outdated version detected (latest is 16.0.1), upgrade is highly recommended!" [ref=e138]: Next.js 15.2.4 (outdated)
+          - img
+  - alert [ref=e139]
+```
