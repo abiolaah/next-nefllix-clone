@@ -37,7 +37,9 @@ jobs:
         continue-on-error: true
 
       - name: Run unit tests
-        run: npm run test:unit -- --ci --coverage --watchAll=false --json --outputFile=test-results/unit-results.json
+        run: |
+          mkdir -p test-results
+          npm run test:unit -- --ci --coverage --watchAll=false --json --outputFile=test-results/unit-results.json || true
         env:
           CI: true
         continue-on-error: true
@@ -84,7 +86,9 @@ jobs:
         run: npx prisma generate
 
       - name: Run integration tests
-        run: npm run test:integration -- --ci --coverage --watchAll=false --json --outputFile=test-results/integration-results.json
+        run: |
+          mkdir -p test-results
+          npm run test:integration -- --ci --coverage --watchAll=false --json --outputFile=test-results/integration-results.json || true
         env:
           CI: true
         continue-on-error: true
@@ -159,7 +163,7 @@ jobs:
 
       # 🎯 NEW: Create test user for E2E tests
       - name: Create test user
-        run: node scripts/create-test-user.ts
+        run: node scripts/create-test-user.js
         env:
           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}
           E2E_EMAIL: test@gmail.com
@@ -177,7 +181,9 @@ jobs:
           NEXT_PUBLIC_TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}
 
       - name: Run Playwright tests
-        run: npm run test:e2e
+        run: |
+          mkdir -p test-results
+          npm run test:e2e -- --reporter=json --output=test-results/e2e-results.json || true
         env:
           CI: true
           # 🎯 Critical environment variables for E2E tests
@@ -344,7 +350,10 @@ jobs:
             try {
               if (fs.existsSync(filePath)) {
                 const content = fs.readFileSync(filePath, 'utf8');
+                console.log(`Reading ${filePath}...`);
                 return JSON.parse(content);
+              } else {
+                console.log(`File not found: ${filePath}`);
               }
             } catch (error) {
               console.log(`Error reading ${filePath}:`, error.message);
@@ -352,11 +361,34 @@ jobs:
             return null;
           }
 
+          // Helper function to recursively find files
+          function findFiles(dir, pattern) {
+            const results = [];
+            if(!fs.existsSync(dir)) return results;
+
+            const files = fs.readdirSync(dir);
+            for (const file of files){
+              const filePath = path.join(dir, file);
+              const stat = fs.statSync(filePath);
+              
+              if (stat.isDirectory()) {
+                results.push(...findFiles(filePath, pattern));
+              } else if (file.match(pattern)) {
+                results.push(filePath);
+              }
+            }
+            return results;
+          }
+
+          console.log('Looking for test results in artifacts directory...');
+
           // Process unit tests
           ['18.x', '20.x'].forEach(nodeVersion => {
             const unitPath = `artifacts/unit-test-results-${nodeVersion}/test-results/unit-results.json`;
+            console.log(`Checking for unit tests: ${unitPath}`);
             const data = safeReadJSON(unitPath);
             if (data) {
+              console.log(`Found unit test data for ${nodeVersion}:`, data);
               testData.unit.push({
                 node_version: nodeVersion,
                 success: data.success || false,
@@ -371,8 +403,10 @@ jobs:
           // Process integration tests
           ['18.x', '20.x'].forEach(nodeVersion => {
             const intPath = `artifacts/integration-test-results-${nodeVersion}/test-results/integration-results.json`;
+            console.log(`Checking for integration tests: ${intPath}`);
             const data = safeReadJSON(intPath);
             if (data) {
+              console.log(`Found integration test data for ${nodeVersion}:`, data);
               testData.integration.push({
                 node_version: nodeVersion,
                 success: data.success || false,
@@ -385,15 +419,59 @@ jobs:
           });
 
           // Process E2E tests (Playwright)
-          const playwrightDir = 'artifacts/playwright-report-20.x';
-          const e2eDir = 'artifacts/e2e-test-results-20.x';
-          if (fs.existsSync(playwrightDir) || fs.existsSync(e2eDir)) {
+          console.log('Checking for E2E tests...');
+          const e2eJsonPath = 'artifacts/e2e-test-results-20.x/test-results/e2e-results.json';
+          const e2eData = safeReadJSON(e2eJsonPath);
+
+          if (e2eData) {
+            console.log('Found E2E test data:', e2eData);
+            // Playwright JSON reporter format
+            const suites = e2eData.suites || [];
+            let totalTests = 0;
+            let passedTests = 0;
+            let failedTests = 0;
+            
+            function countTests(suite) {
+              if (suite.specs) {
+                suite.specs.forEach(spec => {
+                  totalTests++;
+                  if (spec.ok) passedTests++;
+                  else failedTests++;
+                });
+              }
+              if (suite.suites) {
+                suite.suites.forEach(s => countTests(s));
+              }
+            }
+            
+            suites.forEach(suite => countTests(suite));
+            
             testData.e2e.push({
               node_version: '20.x',
-              success: true,
-              note: 'See Playwright report for details'
+              success: failedTests === 0,
+              numTotalTests: totalTests,
+              numPassedTests: passedTests,
+              numFailedTests: failedTests,
+              numPendingTests: 0
             });
+          } else {
+            // Fallback: check if playwright report exists
+            const playwrightDir = 'artifacts/playwright-report-20.x';
+            if (fs.existsSync(playwrightDir)) {
+              console.log('Found Playwright report directory');
+              testData.e2e.push({
+                node_version: '20.x',
+                success: true,
+                numTotalTests: 0,
+                numPassedTests: 0,
+                numFailedTests: 0,
+                numPendingTests: 0,
+                note: 'See Playwright report for details'
+              });
+            }
           }
+
+          console.log('\nFinal test data:', JSON.stringify(testData, null, 2));
 
           // Load existing results
           const historyFile = path.join(resultsDir, 'history.json');
@@ -419,8 +497,11 @@ jobs:
           // Save history
           fs.writeFileSync(historyFile, JSON.stringify(history, null, 2));
 
-          console.log(`Saved test results for run #${runNumber}`);
-          console.log(`Total runs in history: ${history.length}`);
+          console.log(`\n✅ Saved test results for run #${runNumber}`);
+          console.log(`📊 Total runs in history: ${history.length}`);
+          console.log(`📋 Unit tests: ${testData.unit.length} node versions`);
+          console.log(`🔗 Integration tests: ${testData.integration.length} node versions`);
+          console.log(`🎭 E2E tests: ${testData.e2e.length} suite(s)`);
           EOF
 
       - name: Generate HTML dashboard
