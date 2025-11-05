@@ -168,7 +168,8 @@ jobs:
 
       # 🎯 NEW: Create test user for E2E tests
       - name: Create test user
-        run: tsx scripts/create-test-user.ts
+        # run: tsx scripts/create-test-user.ts
+        run: nom run setup:test-user
         env:
           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}
           E2E_EMAIL: test@gmail.com
