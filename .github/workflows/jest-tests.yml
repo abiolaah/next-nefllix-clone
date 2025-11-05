@@ -159,51 +159,11 @@ jobs:
 
       # 🎯 NEW: Create test user for E2E tests
       - name: Create test user
-        run: |
-          node -e "
-          const { PrismaClient } = require('@prisma/client');
-          const bcrypt = require('bcrypt');
-
-          const prisma = new PrismaClient();
-
-          async function createTestUser() {
-            try {
-              const hashedPassword = await bcrypt.hash('Test1234', 12);
-              
-              const user = await prisma.user.upsert({
-                where: { email: 'test@gmail.com' },
-                update: {},
-                create: {
-                  email: 'test@gmail.com',
-                  name: 'Test User',
-                  hashedPassword: hashedPassword,
-                  emailVerified: new Date(),
-                },
-              });
-              
-              // Create a profile for the test user
-              await prisma.profile.upsert({
-                where: { id: 'test-profile-1' },
-                update: {},
-                create: {
-                  id: 'test-profile-1',
-                  name: 'Test Profile',
-                  userId: user.id,
-                },
-              });
-              
-              console.log('✅ Test user created successfully');
-              await prisma.\$disconnect();
-            } catch (error) {
-              console.error('❌ Error creating test user:', error);
-              process.exit(1);
-            }
-          }
-
-          createTestUser();
-          "
+        run: node scripts/create-test-user.js
         env:
           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}
+          E2E_EMAIL: test@gmail.com
+          E2E_PASSWORD: Test1234
 
       - name: Build application
         run: npm run build
@@ -215,11 +175,6 @@ jobs:
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}
           NEXTAUTH_URL: http://localhost:3000
           NEXT_PUBLIC_TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}
-
-      - name: Build application
-        run: npm run build
-        env:
-          SKIP_ENV_VALIDATION: true
 
       - name: Run Playwright tests
         run: npm run test:e2e
