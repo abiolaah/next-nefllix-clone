@@ -22,20 +22,27 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
+  /* Timeout configuration */
+  timeout: 30000, // 30 seconds per test
+  expect: {
+    timeout: 10000, // 10 seconds for each expect assertion
+  },
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   /* Reporter configuration */
-  reporter: [
-    ["html"], // HTML report
-    ["list"], // Console output
-    ["json", { outputFile: "test-results/results.json" }], // Optional: JSON report
-  ],
+  reporter: process.env.CI
+    ? [
+        ["html"], // HTML report
+        ["github"], // GitHub Actions annotations
+        ["list"], // Console output
+      ]
+    : [
+        ["html"], // HTML report
+        ["list"], // Console output
+      ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
     baseURL: process.env.BASE_URL || "http://localhost:3000",
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: "on-first-retry",
 
     /* 🎯 SCREENSHOT CONFIGURATION */
     // Options: 'off', 'on', 'only-on-failure', 'retain-on-failure'
@@ -44,6 +51,15 @@ export default defineConfig({
     /* 🎯 VIDEO CONFIGURATION (optional) */
     // Options: 'off', 'on', 'retain-on-failure', 'on-first-retry'
     video: "retain-on-failure", // ✅ Records video on failure
+
+    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    trace: process.env.Ci ? "on-first-retry" : "on-first-retry",
+
+    /* Action timeout */
+    actionTimeout: 10000,
+
+    /* Navigation timeout */
+    navigationTimeout: 15000,
   },
 
   /* Configure projects for major browsers */
