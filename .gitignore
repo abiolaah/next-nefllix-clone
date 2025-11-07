@@ -51,7 +51,7 @@ public/images/symbol.png
 #prisma
 generated/prisma
 
-# geneated html
+# generated html
 index.html
 
 # Playwright
