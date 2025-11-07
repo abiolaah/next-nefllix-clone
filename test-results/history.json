@@ -275,5 +275,54 @@
         "note": "See Playwright report for details"
       }
     ]
+  },
+  {
+    "timestamp": "2025-11-07T23:13:15.333Z",
+    "run_id": "19183710910",
+    "run_number": "26",
+    "commit_sha": "d26c16b",
+    "unit": [
+      {
+        "node_version": "18.x",
+        "success": true,
+        "numTotalTests": 182,
+        "numPassedTests": 182,
+        "numFailedTests": 0,
+        "numPendingTests": 0
+      },
+      {
+        "node_version": "20.x",
+        "success": true,
+        "numTotalTests": 182,
+        "numPassedTests": 182,
+        "numFailedTests": 0,
+        "numPendingTests": 0
+      }
+    ],
+    "integration": [
+      {
+        "node_version": "18.x",
+        "success": true,
+        "numTotalTests": 21,
+        "numPassedTests": 21,
+        "numFailedTests": 0,
+        "numPendingTests": 0
+      },
+      {
+        "node_version": "20.x",
+        "success": true,
+        "numTotalTests": 21,
+        "numPassedTests": 21,
+        "numFailedTests": 0,
+        "numPendingTests": 0
+      }
+    ],
+    "e2e": [
+      {
+        "node_version": "20.x",
+        "success": true,
+        "note": "See Playwright report for details"
+      }
+    ]
   }
 ]
