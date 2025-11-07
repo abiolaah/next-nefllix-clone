@@ -343,6 +343,17 @@ jobs:
         with:
           node-version: "20.x"
 
+      - name: Debug - List artifact structure
+        run: |
+          echo "📁 Artifacts directory structure:"
+          find artifacts/ -type f -name "*.json" | head -20
+          echo ""
+          echo "🔍 Looking specifically for e2e-results.json:"
+          find artifacts/ -name "e2e-results.json" -exec ls -lh {} \;
+          echo ""
+          echo "📊 E2E test results directory contents:"
+          ls -la artifacts/e2e-test-results-20.x/ || echo "Directory not found"
+
       - name: Generate test results with Node.js
         run: |
           node << 'EOF'
@@ -377,45 +388,47 @@ jobs:
             try {
               if (fs.existsSync(filePath)) {
                 const content = fs.readFileSync(filePath, 'utf8');
-                console.log(`Reading ${filePath}...`);
+                console.log(`✅ Reading ${filePath}...`);
                 return JSON.parse(content);
               } else {
-                console.log(`File not found: ${filePath}`);
+                console.log(`❌ File not found: ${filePath}`);
               }
             } catch (error) {
-              console.log(`Error reading ${filePath}:`, error.message);
+              console.log(`⚠️ Error reading ${filePath}:`, error.message);
             }
             return null;
           }
 
+          console.log('🔍 Looking for test results in artifacts directory...');
+
           // Helper function to recursively find files
-          function findFiles(dir, pattern) {
-            const results = [];
-            if(!fs.existsSync(dir)) return results;
+          # function findFiles(dir, pattern) {
+          #   const results = [];
+          #   if(!fs.existsSync(dir)) return results;
 
-            const files = fs.readdirSync(dir);
-            for (const file of files){
-              const filePath = path.join(dir, file);
-              const stat = fs.statSync(filePath);
+          #   const files = fs.readdirSync(dir);
+          #   for (const file of files){
+          #     const filePath = path.join(dir, file);
+          #     const stat = fs.statSync(filePath);
               
-              if (stat.isDirectory()) {
-                results.push(...findFiles(filePath, pattern));
-              } else if (file.match(pattern)) {
-                results.push(filePath);
-              }
-            }
-            return results;
-          }
+          #     if (stat.isDirectory()) {
+          #       results.push(...findFiles(filePath, pattern));
+          #     } else if (file.match(pattern)) {
+          #       results.push(filePath);
+          #     }
+          #   }
+          #   return results;
+          # }
 
-          console.log('Looking for test results in artifacts directory...');
+          # console.log('Looking for test results in artifacts directory...');
 
           // Process unit tests
           ['18.x', '20.x'].forEach(nodeVersion => {
             const unitPath = `artifacts/unit-test-results-${nodeVersion}/test-results/unit-results.json`;
-            console.log(`Checking for unit tests: ${unitPath}`);
+            # console.log(`Checking for unit tests: ${unitPath}`);
             const data = safeReadJSON(unitPath);
             if (data) {
-              console.log(`Found unit test data for ${nodeVersion}:`, data);
+              # console.log(`Found unit test data for ${nodeVersion}:`, data);
               testData.unit.push({
                 node_version: nodeVersion,
                 success: data.success || false,
@@ -430,10 +443,10 @@ jobs:
           // Process integration tests
           ['18.x', '20.x'].forEach(nodeVersion => {
             const intPath = `artifacts/integration-test-results-${nodeVersion}/test-results/integration-results.json`;
-            console.log(`Checking for integration tests: ${intPath}`);
+            # console.log(`Checking for integration tests: ${intPath}`);
             const data = safeReadJSON(intPath);
             if (data) {
-              console.log(`Found integration test data for ${nodeVersion}:`, data);
+              # console.log(`Found integration test data for ${nodeVersion}:`, data);
               testData.integration.push({
                 node_version: nodeVersion,
                 success: data.success || false,
@@ -446,12 +459,30 @@ jobs:
           });
 
           // Process E2E tests (Playwright)
-          console.log('Checking for E2E tests...');
-          const e2eJsonPath = 'artifacts/e2e-test-results-20.x/test-results/e2e-results.json';
-          const e2eData = safeReadJSON(e2eJsonPath);
+          console.log('🎭 Checking for E2E tests...');
+
+          // Try different possible paths for e2e results
+          const e2ePaths = [
+           'artifacts/e2e-test-results-20.x/e2e-results.json',  // Root of artifact
+           'artifacts/e2e-test-results-20.x/test-results/e2e-results.json',  // In test-results subdir
+          ]
+
+          let e2eData = null;
+          let foundPath = null;
+
+          for (const tryPath of e2ePaths){
+           console.log(`   Trying: ${tryPath}`);
+           e2eData = safeReadJSON(tryPath);
+           if(e2eData) {
+            foundPath = tryPath;
+            console.log(`   ✅ Found E2E data at: ${tryPath}`);
+            break;
+           }
+          }
 
           if (e2eData) {
-            console.log('Found E2E test data:', e2eData);
+            console.log('📊 Processing E2E test data...');
+
             // Playwright JSON reporter format
             const suites = e2eData.suites || [];
             let totalTests = 0;
@@ -472,10 +503,12 @@ jobs:
             }
             
             suites.forEach(suite => countTests(suite));
+
+            console.log(`   Total: ${totalTests}, Passed: ${passedTests}, Failed: ${failedTests}`);
             
             testData.e2e.push({
               node_version: '20.x',
-              success: failedTests === 0,
+              success: failedTests === 0 && totalTests > 0,
               numTotalTests: totalTests,
               numPassedTests: passedTests,
               numFailedTests: failedTests,
@@ -483,9 +516,10 @@ jobs:
             });
           } else {
             // Fallback: check if playwright report exists
+            console.log('⚠️  No E2E JSON found, checking for Playwright report...');
             const playwrightDir = 'artifacts/playwright-report-20.x';
             if (fs.existsSync(playwrightDir)) {
-              console.log('Found Playwright report directory');
+              console.log('📁 Found Playwright report directory (but no JSON data)');
               testData.e2e.push({
                 node_version: '20.x',
                 success: true,
@@ -495,10 +529,12 @@ jobs:
                 numPendingTests: 0,
                 note: 'See Playwright report for details'
               });
+            } else {
+              console.log('❌ No E2E test results found')
             }
           }
 
-          console.log('\nFinal test data:', JSON.stringify(testData, null, 2));
+          console.log('\n📈 Final test data:', JSON.stringify(testData, null, 2));
 
           // Load existing results
           const historyFile = path.join(resultsDir, 'history.json');
@@ -529,6 +565,19 @@ jobs:
           console.log(`📋 Unit tests: ${testData.unit.length} node versions`);
           console.log(`🔗 Integration tests: ${testData.integration.length} node versions`);
           console.log(`🎭 E2E tests: ${testData.e2e.length} suite(s)`);
+
+          // Summary
+          const unitTotal = testData.unit.reduce((sum, t) => sum + t.numTotalTests, 0);
+          const unitPassed = testData.unit.reduce((sum, t) => sum + t.numPassedTests, 0);
+          const intTotal = testData.integration.reduce((sum, t) => sum + t.numTotalTests, 0);
+          const intPassed = testData.integration.reduce((sum, t) => sum + t.numPassedTests, 0);
+          const e2eTotal = testData.e2e.reduce((sum, t) => sum + t.numTotalTests, 0);
+          const e2ePassed = testData.e2e.reduce((sum, t) => sum + t.numPassedTests, 0);
+
+          console.log('\n📊 Test Summary:');
+          console.log(`   Unit: ${unitPassed}/${unitTotal} passed`);
+          console.log(`   Integration: ${intPassed}/${intTotal} passed`);
+          console.log(`   E2E: ${e2ePassed}/${e2eTotal} passed`);
           EOF
 
       - name: Checkout main branch for dashboard scripts
@@ -545,15 +594,27 @@ jobs:
 
       - name: Generate HTML dashboard
         run: |
-          # Make sure scripts directory exists
+          # Create scripts directory first
           mkdir -p scripts
+
+          # Verify source files exist
+          echo "Checking source files in main-branch..."
+          ls -la main-branch/scripts/
 
           # Copy scripts to current directory
           cp main-branch/scripts/dashboard-template.html scripts/dashboard-template.html
           cp main-branch/scripts/generate-dashboard.ts scripts/generate-dashboard.ts
 
+          # Verify files were copied
+          echo "Checking copied files..."
+          ls -la scripts/
+
           # Generate the dashboard
           tsx scripts/generate-dashboard.ts
+
+          # Verify output was created
+          echo "Checking generated output..."
+          ls -la index.html
 
           echo "✅ Dashboard generated successfully"
 
