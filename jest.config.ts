@@ -56,6 +56,29 @@ const config: Config = {
 
   testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
 
+  // Configure HTML reporter
+  // Configure HTML reporter - dynamically set based on which tests are running
+  reporters: [
+    "default",
+    [
+      "jest-html-reporters",
+      {
+        publicPath:
+          process.env.JEST_HTML_REPORTERS_PUBLIC_PATH ||
+          "./test-results/all-tests",
+        filename: "report.html",
+        openReport: "onFailure",
+        expand: true,
+        pageTitle: process.env.JEST_HTML_REPORTERS_TITLE || "Test Report",
+        hideIcon: false,
+        includeFailureMsg: true,
+        includeConsoleLog: true,
+        enableMergeData: true,
+        dataMergeLevel: 1,
+      },
+    ],
+  ],
+
   projects: [
     {
       displayName: "dom",

@@ -401,26 +401,6 @@ jobs:
 
           console.log('🔍 Looking for test results in artifacts directory...');
 
-          // Helper function to recursively find files
-          # function findFiles(dir, pattern) {
-          #   const results = [];
-          #   if(!fs.existsSync(dir)) return results;
-
-          #   const files = fs.readdirSync(dir);
-          #   for (const file of files){
-          #     const filePath = path.join(dir, file);
-          #     const stat = fs.statSync(filePath);
-              
-          #     if (stat.isDirectory()) {
-          #       results.push(...findFiles(filePath, pattern));
-          #     } else if (file.match(pattern)) {
-          #       results.push(filePath);
-          #     }
-          #   }
-          #   return results;
-          # }
-
-          # console.log('Looking for test results in artifacts directory...');
 
           // Process unit tests
           ['18.x', '20.x'].forEach(nodeVersion => {

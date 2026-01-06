@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Netflix Clone - Test Results Dashboard</title>
+    <title>Netflix Clone - Test Results Dashboard (LOCAL TEST)</title>
     <link rel="icon" type="image/netflix-icon" href="/images/favicon.ico" />
     <link
       rel="apple-touch-icon"
@@ -267,20 +267,287 @@
     </div>
 
     <script>
-      let testHistory = [];
-      let currentLimit = 10;
+      const testHistory = [
+        {
+          timestamp: "2025-11-05T06:55:31.983Z",
+          run_id: "19093811144",
+          run_number: "17",
+          commit_sha: "bacf030",
+          unit: [],
+          integration: [],
+          e2e: [],
+        },
+        {
+          timestamp: "2025-11-05T07:24:22.900Z",
+          run_id: "19094414741",
+          run_number: "18",
+          commit_sha: "11320ab",
+          unit: [
+            {
+              node_version: "18.x",
+              success: true,
+              numTotalTests: 182,
+              numPassedTests: 182,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+            {
+              node_version: "20.x",
+              success: true,
+              numTotalTests: 182,
+              numPassedTests: 182,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+          ],
+          integration: [
+            {
+              node_version: "18.x",
+              success: true,
+              numTotalTests: 21,
+              numPassedTests: 21,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+            {
+              node_version: "20.x",
+              success: true,
+              numTotalTests: 21,
+              numPassedTests: 21,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+          ],
+          e2e: [],
+        },
+        {
+          timestamp: "2025-11-05T08:12:20.854Z",
+          run_id: "19095377337",
+          run_number: "19",
+          commit_sha: "64a60fe",
+          unit: [
+            {
+              node_version: "18.x",
+              success: true,
+              numTotalTests: 182,
+              numPassedTests: 182,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+            {
+              node_version: "20.x",
+              success: true,
+              numTotalTests: 182,
+              numPassedTests: 182,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+          ],
+          integration: [
+            {
+              node_version: "18.x",
+              success: true,
+              numTotalTests: 21,
+              numPassedTests: 21,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+            {
+              node_version: "20.x",
+              success: true,
+              numTotalTests: 21,
+              numPassedTests: 21,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+          ],
+          e2e: [],
+        },
+        {
+          timestamp: "2025-11-05T08:22:24.568Z",
+          run_id: "19095654564",
+          run_number: "20",
+          commit_sha: "0f8e629",
+          unit: [
+            {
+              node_version: "18.x",
+              success: true,
+              numTotalTests: 182,
+              numPassedTests: 182,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+            {
+              node_version: "20.x",
+              success: true,
+              numTotalTests: 182,
+              numPassedTests: 182,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+          ],
+          integration: [
+            {
+              node_version: "18.x",
+              success: true,
+              numTotalTests: 21,
+              numPassedTests: 21,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+            {
+              node_version: "20.x",
+              success: true,
+              numTotalTests: 21,
+              numPassedTests: 21,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+          ],
+          e2e: [],
+        },
+        {
+          timestamp: "2025-11-05T20:09:25.001Z",
+          run_id: "19114808867",
+          run_number: "21",
+          commit_sha: "3d1c3ea",
+          unit: [
+            {
+              node_version: "18.x",
+              success: true,
+              numTotalTests: 182,
+              numPassedTests: 182,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+            {
+              node_version: "20.x",
+              success: true,
+              numTotalTests: 182,
+              numPassedTests: 182,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+          ],
+          integration: [
+            {
+              node_version: "18.x",
+              success: true,
+              numTotalTests: 21,
+              numPassedTests: 21,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+            {
+              node_version: "20.x",
+              success: true,
+              numTotalTests: 21,
+              numPassedTests: 21,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+          ],
+          e2e: [],
+        },
+        {
+          timestamp: "2025-11-05T20:29:44.949Z",
+          run_id: "19115337164",
+          run_number: "22",
+          commit_sha: "b0a2f63",
+          unit: [
+            {
+              node_version: "18.x",
+              success: true,
+              numTotalTests: 182,
+              numPassedTests: 182,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+            {
+              node_version: "20.x",
+              success: true,
+              numTotalTests: 182,
+              numPassedTests: 182,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+          ],
+          integration: [
+            {
+              node_version: "18.x",
+              success: true,
+              numTotalTests: 21,
+              numPassedTests: 21,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+            {
+              node_version: "20.x",
+              success: true,
+              numTotalTests: 21,
+              numPassedTests: 21,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+          ],
+          e2e: [],
+        },
+        {
+          timestamp: "2025-11-05T21:37:53.110Z",
+          run_id: "19116850267",
+          run_number: "24",
+          commit_sha: "10e8843",
+          unit: [
+            {
+              node_version: "18.x",
+              success: true,
+              numTotalTests: 182,
+              numPassedTests: 182,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+            {
+              node_version: "20.x",
+              success: true,
+              numTotalTests: 182,
+              numPassedTests: 182,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+          ],
+          integration: [
+            {
+              node_version: "18.x",
+              success: true,
+              numTotalTests: 21,
+              numPassedTests: 21,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+            {
+              node_version: "20.x",
+              success: true,
+              numTotalTests: 21,
+              numPassedTests: 21,
+              numFailedTests: 0,
+              numPendingTests: 0,
+            },
+          ],
+          e2e: [
+            {
+              node_version: "20.x",
+              success: true,
+              numTotalTests: 0,
+              numPassedTests: 0,
+              numFailedTests: 0,
+              numPendingTests: 0,
+              note: "See Playwright report for details",
+            },
+          ],
+        },
+      ];
 
-      async function loadTestResults() {
-        try {
-          const response = await fetch("test-results/history.json");
-          testHistory = await response.json();
-          displayTestResults();
-        } catch (error) {
-          console.error("Error loading test results:", error);
-          document.getElementById("historyContainer").innerHTML =
-            '<p style="text-align: center; color: #f44336;">Error loading test results. Please check that test-results/history.json exists.</p>';
-        }
-      }
+      let currentLimit = 10;
 
       function calculateRunStats(run) {
         const stats = {
@@ -316,10 +583,11 @@
       function getRunStatus(stats) {
         if (stats.total === 0)
           return { text: "NO TESTS", class: "status-no-tests" };
-        if (stats.failed > 0) return { text: "✗ FAILED", class: "status-fail" };
+        if (stats.failed > 0)
+          return { text: "❌ FAILED", class: "status-fail" };
         if (stats.skipped > 0)
           return { text: "⚠️ SKIPPED", class: "status-skipped" };
-        return { text: "✓ PASSED", class: "status-pass" };
+        return { text: "✅ PASSED", class: "status-pass" };
       }
 
       function displayTestResults() {
@@ -331,8 +599,10 @@
         }
 
         // Update stats
+        // Total Run Stat
         document.getElementById("totalRuns").textContent = testHistory.length;
 
+        // Last Run Stat
         const lastRun = testHistory[testHistory.length - 1];
         const date = new Date(lastRun.timestamp);
         document.getElementById("lastRun").textContent =
@@ -348,12 +618,13 @@
         let successfulRuns = 0;
         testHistory.forEach((run) => {
           const stats = calculateRunStats(run);
-          if (stats.total > 0 && stats.failed === 0) successfulRuns++;
+          if (stats.total > 0 && stats.passed > 0) successfulRuns++;
         });
         const successRate =
           testHistory.length > 0
             ? Math.round((successfulRuns / testHistory.length) * 100)
             : 0;
+        document.getElementById("successRate").textContent = `${successRate}%`;
 
         const rateClass =
           successRate > 50 ? "success-rate-high" : "success-rate-low";
@@ -448,6 +719,7 @@
       }
 
       function showHistory(limit) {
+        console.log("Initial Limit:", limit);
         currentLimit = limit;
 
         // Update active button
@@ -522,7 +794,7 @@
       }
 
       // Initialize dashboard
-      loadTestResults();
+      displayTestResults();
     </script>
   </body>
 </html>
