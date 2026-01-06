@@ -354,9 +354,6 @@ jobs:
           echo "📊 E2E test results directory contents:"
           ls -la artifacts/e2e-test-results-20.x/ || echo "Directory not found"
 
-      - name: Generate test results
-        run: tsx scripts/generate-test-results.ts
-
       - name: Checkout main branch for dashboard scripts
         uses: actions/checkout@v4
         with:
@@ -368,6 +365,9 @@ jobs:
 
       - name: Install tsx for TypeScript execution
         run: npm install -g tsx
+
+      - name: Generate test results
+        run: tsx scripts/generate-test-results.ts
 
       - name: Generate HTML dashboard
         run: |
