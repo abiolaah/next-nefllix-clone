@@ -88,6 +88,31 @@ function countTests(suite: PlaywrightSuite): {
   return { total: totalTests, passed: passedTests, failed: failedTests };
 }
 
+// DRY Function for unit and integration test processing
+function processJestTests(
+  nodeVersions: string[],
+  artifactPrefix: string,
+  resultFile: string
+): TestResult[] {
+  const results: TestResult[] = [];
+  nodeVersions.forEach((nodeVersion) => {
+    const testPath = `artifacts/${artifactPrefix}-${nodeVersion}/test-results/${resultFile}`;
+    console.log(`Checking for tests: ${testPath}`);
+    const data = safeReadJSON(testPath) as JestTestResults | null;
+    if (data) {
+      results.push({
+        node_version: nodeVersion,
+        success: data.success || false,
+        numTotalTests: data.numTotalTests || 0,
+        numPassedTests: data.numPassedTests || 0,
+        numFailedTests: data.numFailedTests || 0,
+        numPendingTests: data.numPendingTests || 0,
+      });
+    }
+  });
+  return results;
+}
+
 function main() {
   // Create results directory if it doesn't exist
   const resultsDir = "test-results";
@@ -115,38 +140,18 @@ function main() {
   console.log("🔍 Looking for test results in artifacts directory...");
 
   // Process unit tests
-  ["18.x", "20.x"].forEach((nodeVersion) => {
-    const unitPath = `artifacts/unit-test-results-${nodeVersion}/test-results/unit-results.json`;
-    console.log(`Checking for unit tests: ${unitPath}`);
-    const data = safeReadJSON(unitPath) as JestTestResults | null;
-    if (data) {
-      testData.unit.push({
-        node_version: nodeVersion,
-        success: data.success || false,
-        numTotalTests: data.numTotalTests || 0,
-        numPassedTests: data.numPassedTests || 0,
-        numFailedTests: data.numFailedTests || 0,
-        numPendingTests: data.numPendingTests || 0,
-      });
-    }
-  });
+  testData.unit = processJestTests(
+    ["18.x", "20.x"],
+    "unit-test-results",
+    "unit-results.json"
+  );
 
   // Process integration tests
-  ["18.x", "20.x"].forEach((nodeVersion) => {
-    const intPath = `artifacts/integration-test-results-${nodeVersion}/test-results/integration-results.json`;
-    const data = safeReadJSON(intPath) as JestTestResults | null;
-    if (data) {
-      console.log(`Found integration test data for ${nodeVersion}:`, data);
-      testData.integration.push({
-        node_version: nodeVersion,
-        success: data.success || false,
-        numTotalTests: data.numTotalTests || 0,
-        numPassedTests: data.numPassedTests || 0,
-        numFailedTests: data.numFailedTests || 0,
-        numPendingTests: data.numPendingTests || 0,
-      });
-    }
-  });
+  testData.integration = processJestTests(
+    ["18.x", "20.x"],
+    "integration-test-results",
+    "integration-results.json"
+  );
 
   // Process E2E tests (Playwright)
   console.log("🎭 Checking for E2E tests...");
@@ -202,12 +207,12 @@ function main() {
       console.log("📁 Found Playwright report directory (but no JSON data)");
       testData.e2e.push({
         node_version: "20.x",
-        success: true,
+        success: false, //Unknown - no data to confirm
         numTotalTests: 0,
         numPassedTests: 0,
         numFailedTests: 0,
         numPendingTests: 0,
-        note: "See Playwright report for details",
+        note: "No JSON data available - check Playwright report manually",
       });
     } else {
       console.log("❌ No E2E test results found");

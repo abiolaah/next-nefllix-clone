@@ -172,7 +172,6 @@ jobs:
 
       # 🎯 NEW: Create test user for E2E tests
       - name: Create test user
-        # run: tsx scripts/create-test-user.ts
         run: npm run setup:test-user
         env:
           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}
@@ -203,8 +202,8 @@ jobs:
           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}
           NEXTAUTH_URL: http://localhost:3000
-          E2E_EMAIL: test@gmail.com
-          E2E_PASSWORD: Test1234
+          E2E_EMAIL: ${{secrets.E2E_EMAIL}}
+          E2E_PASSWORD: ${{secrets.E2E_PASSWORD}}
           NEXT_PUBLIC_TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}
         continue-on-error: true
 
@@ -338,7 +337,7 @@ jobs:
         with:
           path: artifacts/
 
-      - name: Setup Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20.x"
@@ -354,6 +353,12 @@ jobs:
           echo "📊 E2E test results directory contents:"
           ls -la artifacts/e2e-test-results-20.x/ || echo "Directory not found"
 
+      - name: Install tsx for TypeScript execution
+        run: npm install -g tsx
+
+      - name: Generate test results
+        run: tsx scripts/generate-test-result.ts
+
       - name: Checkout main branch for dashboard scripts
         uses: actions/checkout@v4
         with:
@@ -362,12 +367,6 @@ jobs:
           sparse-checkout: |
             scripts/dashboard-template.html
             scripts/generate-dashboard.ts
-
-      - name: Install tsx for TypeScript execution
-        run: npm install -g tsx
-
-      - name: Generate test results
-        run: tsx scripts/generate-test-results.ts
 
       - name: Generate HTML dashboard
         run: |
