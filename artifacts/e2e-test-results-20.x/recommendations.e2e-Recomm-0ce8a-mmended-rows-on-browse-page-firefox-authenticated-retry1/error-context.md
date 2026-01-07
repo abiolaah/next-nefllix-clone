@@ -24,8 +24,8 @@
     - generic "main-section" [ref=e25]:
       - generic "video" [ref=e26]
       - generic [ref=e27]:
-        - paragraph [ref=e28]: Tears of Steel
-        - paragraph [ref=e29]: In an apocalyptic future, a group of soldiers and scientists takes refuge in Amsterdam to try to stop an army of robots that threatens the planet.
+        - paragraph [ref=e28]: Parasite
+        - paragraph [ref=e29]: Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.
         - generic [ref=e30]:
           - button "Play" [ref=e31]:
             - img [ref=e32]
@@ -190,7 +190,7 @@
           - link "Next.js 15.2.4 (outdated)" [ref=e195] [cursor=pointer]:
             - /url: https://nextjs.org/docs/messages/version-staleness
             - img [ref=e196]
-            - generic "An outdated version detected (latest is 16.0.1), upgrade is highly recommended!" [ref=e198]: Next.js 15.2.4 (outdated)
+            - generic "An outdated version detected (latest is 16.1.1), upgrade is highly recommended!" [ref=e198]: Next.js 15.2.4 (outdated)
           - img
   - alert [ref=e199]
 ```

@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Netflix Clone - Test Results Dashboard</title>
+    <link rel="icon" type="image/netflix-icon" href="/images/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/images/apple-touch-icon.png"
+    />
+    <link rel="manifest" href="/site.webmanifest" />
     <style>
       * {
         margin: 0;
@@ -19,7 +26,7 @@
         min-height: 100vh;
       }
       .container {
-        max-width: 1400px;
+        max-width: 1600px;
         margin: 0 auto;
       }
       h1 {
@@ -59,6 +66,16 @@
       .stat-value {
         font-size: 2.5em;
         font-weight: bold;
+        color: #f8f6f6;
+      }
+      .success-rate-high {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #6dec71;
+      }
+      .success-rate-low {
+        font-size: 2.5em;
+        font-weight: bold;
         color: #e50914;
       }
       .section {
@@ -72,44 +89,36 @@
         color: #e50914;
         margin-bottom: 20px;
         font-size: 1.8em;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .badge {
-        display: inline-block;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 0.5em;
-        font-weight: normal;
-      }
-      .badge.unit {
-        background: #2196f3;
-      }
-      .badge.integration {
-        background: #ff9800;
-      }
-      .badge.e2e {
-        background: #4caf50;
       }
       table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 20px;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 8px;
+        overflow: hidden;
       }
       th,
       td {
-        padding: 15px;
+        padding: 12px;
         text-align: left;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       }
       th {
-        background: rgba(229, 9, 20, 0.1);
-        color: #e50914;
+        background: rgba(229, 9, 20, 0.2);
+        color: #fff;
         font-weight: 600;
+        font-size: 0.9em;
+        text-transform: uppercase;
       }
-      tr:hover {
-        background: rgba(255, 255, 255, 0.02);
+      .main-table tbody tr {
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .main-table tbody tr:hover {
+        background: rgba(229, 9, 20, 0.1);
+      }
+      .main-table tbody tr.expanded {
+        background: rgba(229, 9, 20, 0.15);
       }
       .status-pass {
         color: #4caf50;
@@ -120,29 +129,69 @@
         font-weight: bold;
       }
       .status-skipped {
+        color: #ec9808;
+        font-style: bold;
+      }
+      .status-no-tests {
         color: #999;
         font-style: italic;
       }
-      .chart-container {
-        margin-top: 30px;
-        background: rgba(255, 255, 255, 0.02);
-        border-radius: 8px;
+      .accordion-content {
+        display: none;
+        background: rgba(0, 0, 0, 0.3);
+      }
+      .accordion-content.show {
+        display: table-row;
+      }
+      .accordion-inner {
         padding: 20px;
       }
-      .history-item {
-        padding: 10px;
-        margin: 5px 0;
-        background: rgba(255, 255, 255, 0.03);
-        border-radius: 6px;
-        border-left: 3px solid #e50914;
-      }
-      .history-item:hover {
+      .detail-table {
+        margin-top: 10px;
         background: rgba(255, 255, 255, 0.05);
+      }
+      .detail-table th {
+        background: rgba(255, 255, 255, 0.1);
+        color: #999;
+      }
+      .detail-table tbody tr {
+        cursor: pointer;
+      }
+      .detail-table tbody tr:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.75em;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      .badge.unit {
+        background: #2196f3;
+        color: white;
+      }
+      .badge.integration {
+        background: #ff9800;
+        color: white;
+      }
+      .badge.e2e {
+        background: #4caf50;
+        color: white;
       }
       .loading {
         text-align: center;
         padding: 50px;
         color: #999;
+      }
+      .expand-icon {
+        display: inline-block;
+        margin-right: 8px;
+        transition: transform 0.3s;
+      }
+      .expand-icon.expanded {
+        transform: rotate(90deg);
       }
       .filter-buttons {
         display: flex;
@@ -167,12 +216,6 @@
         background: #e50914;
         border-color: #e50914;
       }
-      .no-tests {
-        padding: 20px;
-        text-align: center;
-        color: #999;
-        font-style: italic;
-      }
     </style>
   </head>
   <body>
@@ -195,6 +238,12 @@
             -
           </div>
         </div>
+        <div class="stat-card">
+          <h3>Success Rate</h3>
+          <div class="stat-value" style="font-size: 1.5em" id="successRate">
+            -
+          </div>
+        </div>
       </div>
 
       <div class="section">
@@ -209,225 +258,270 @@
           <button class="filter-btn" onclick="showHistory(50)">
             Last 50 Runs
           </button>
-          <button class="filter-btn" onclick="showHistory(100)">
+          <button class="filter-btn" onclick="showHistory(Infinity)">
             All Runs
           </button>
         </div>
-        <div id="historyContainer" class="loading">Loading...</div>
+        <div id="historyContainer" class="loading">Loading test results..</div>
       </div>
     </div>
 
     <script>
-      let fullHistory = [];
+      let testHistory = [];
+      let currentLimit = 10;
 
       async function loadTestResults() {
         try {
           const response = await fetch("test-results/history.json");
-          fullHistory = await response.json();
-
-          if (fullHistory.length === 0) {
-            document.getElementById("totalRuns").textContent = "0";
-            document.querySelectorAll(".loading").forEach((el) => {
-              el.innerHTML =
-                '<p class="no-tests">No test results available yet.</p>';
-            });
-            return;
-          }
-
-          // Update stats
-          document.getElementById("totalRuns").textContent = fullHistory.length;
-          const lastRun = fullHistory[fullHistory.length - 1];
-          const date = new Date(lastRun.timestamp);
-          document.getElementById("lastRun").textContent =
-            date.toLocaleDateString();
-
-          // Calculate latest status
-          const hasFailures =
-            (lastRun.unit && lastRun.unit.some((t) => t.numFailedTests > 0)) ||
-            (lastRun.integration &&
-              lastRun.integration.some((t) => t.numFailedTests > 0)) ||
-            (lastRun.e2e && lastRun.e2e.some((t) => t.numFailedTests > 0));
-
-          const hasTests =
-            (lastRun.unit && lastRun.unit.length > 0) ||
-            (lastRun.integration && lastRun.integration.length > 0) ||
-            (lastRun.e2e && lastRun.e2e.length > 0);
-
-          if (!hasTests) {
-            document.getElementById("latestStatus").innerHTML =
-              '<span class="status-skipped">NO TESTS</span>';
-          } else {
-            document.getElementById("latestStatus").innerHTML = hasFailures
-              ? '<span class="status-fail">FAILED</span>'
-              : '<span class="status-pass">PASSED</span>';
-          }
-
-          // Show default history
-          showHistory(10);
+          testHistory = await response.json();
+          displayTestResults();
         } catch (error) {
           console.error("Error loading test results:", error);
-          document.querySelectorAll(".loading").forEach((el) => {
-            el.innerHTML =
-              '<p class="no-tests">Error loading test results.</p>';
-          });
+          document.getElementById("historyContainer").innerHTML =
+            '<p style="text-align: center; color: #f44336;">Error loading test results. Please check that test-results/history.json exists.</p>';
         }
       }
 
-      function renderRunDetails(run, testType) {
-        const tests = run[testType];
+      function calculateRunStats(run) {
+        const stats = {
+          total: 0,
+          passed: 0,
+          failed: 0,
+          skipped: 0,
+          unitCount: 0,
+          integrationCount: 0,
+          e2eCount: 0,
+        };
 
-        if (!tests || tests.length === 0) {
-          return '<p class="no-tests">No tests run for this suite.</p>';
+        ["unit", "integration", "e2e"].forEach((type) => {
+          if (run[type] && run[type].length > 0) {
+            let typeTotal = 0;
+            run[type].forEach((test) => {
+              stats.total += test.numTotalTests || 0;
+              stats.passed += test.numPassedTests || 0;
+              stats.failed += test.numFailedTests || 0;
+              stats.skipped += test.numPendingTests || 0;
+              typeTotal += test.numTotalTests || 0;
+            });
+
+            if (type === "unit") stats.unitCount = typeTotal;
+            if (type === "integration") stats.integrationCount = typeTotal;
+            if (type === "e2e") stats.e2eCount = typeTotal;
+          }
+        });
+
+        return stats;
+      }
+
+      function getRunStatus(stats) {
+        if (stats.total === 0)
+          return { text: "NO TESTS", class: "status-no-tests" };
+        if (stats.failed > 0) return { text: "✗ FAILED", class: "status-fail" };
+        if (stats.skipped > 0)
+          return { text: "⚠️ SKIPPED", class: "status-skipped" };
+        return { text: "✓ PASSED", class: "status-pass" };
+      }
+
+      function displayTestResults() {
+        if (testHistory.length === 0) {
+          document.getElementById("totalRuns").textContent = "0";
+          document.getElementById("historyContainer").innerHTML =
+            '<p style="text-align: center; color: #999;">No test results available.</p>';
+          return;
         }
 
-        let html =
-          "<table><thead><tr><th>Node Version</th><th>Total</th><th>Passed</th><th>Failed</th><th>Pending</th><th>Status</th></tr></thead><tbody>";
+        // Update stats
+        document.getElementById("totalRuns").textContent = testHistory.length;
 
-        tests.forEach((test) => {
-          const status =
-            test.success || test.numFailedTests === 0 ? "PASS" : "FAIL";
-          const statusClass = status === "PASS" ? "status-pass" : "status-fail";
+        const lastRun = testHistory[testHistory.length - 1];
+        const date = new Date(lastRun.timestamp);
+        document.getElementById("lastRun").textContent =
+          date.toLocaleDateString();
 
-          html += `
-                    <tr>
-                        <td>${test.node_version || "N/A"}</td>
-                        <td>${test.numTotalTests || "0"}</td>
-                        <td class="status-pass">${
-                          test.numPassedTests || "0"
-                        }</td>
-                        <td class="${
-                          test.numFailedTests > 0 ? "status-fail" : ""
-                        }">${test.numFailedTests || "0"}</td>
-                        <td>${test.numPendingTests || "0"}</td>
-                        <td class="${statusClass}">${status}</td>
-                    </tr>
-                `;
+        const lastStats = calculateRunStats(lastRun);
+        const lastStatus = getRunStatus(lastStats);
+        document.getElementById(
+          "latestStatus"
+        ).innerHTML = `<span class="${lastStatus.class}">${lastStatus.text}</span>`;
+
+        // Calculate success rate
+        let successfulRuns = 0;
+        testHistory.forEach((run) => {
+          const stats = calculateRunStats(run);
+          if (stats.total > 0 && stats.failed === 0) successfulRuns++;
         });
+        const successRate =
+          testHistory.length > 0
+            ? Math.round((successfulRuns / testHistory.length) * 100)
+            : 0;
+
+        const rateClass =
+          successRate > 50 ? "success-rate-high" : "success-rate-low";
+        document.getElementById(
+          "successRate"
+        ).innerHTML = `<span class="${rateClass}">${successRate}%</span>`;
+
+        showHistory(currentLimit);
+      }
+
+      function toggleAccordion(runIndex) {
+        const accordionRow = document.getElementById(`accordion-${runIndex}`);
+        const mainRow = document.getElementById(`run-${runIndex}`);
+        const icon = mainRow.querySelector(".expand-icon");
+
+        if (accordionRow.classList.contains("show")) {
+          accordionRow.classList.remove("show");
+          mainRow.classList.remove("expanded");
+          icon.classList.remove("expanded");
+        } else {
+          // Close all other accordions
+          document
+            .querySelectorAll(".accordion-content")
+            .forEach((el) => el.classList.remove("show"));
+          document
+            .querySelectorAll(".main-table tbody tr")
+            .forEach((el) => el.classList.remove("expanded"));
+          document
+            .querySelectorAll(".expand-icon")
+            .forEach((el) => el.classList.remove("expanded"));
+
+          accordionRow.classList.add("show");
+          mainRow.classList.add("expanded");
+          icon.classList.add("expanded");
+        }
+      }
+
+      function navigateToReport(runNumber, testType, nodeVersion) {
+        // In a real implementation, this would navigate to the actual test report
+        // For now, we'll show an alert with the information
+        const message = `Navigating to detailed report:\n\nRun #${runNumber}\nTest Type: ${testType}\nNode Version: ${nodeVersion}\n\nNote: In production, this would link to the actual Playwright/Jest report for this specific test run.`;
+        alert(message);
+
+        // Example of how this might work in production:
+        // window.location.href = `/test-results/run-${runNumber}/${testType}-${nodeVersion}/index.html`;
+      }
+
+      function renderDetailTable(run, runIndex) {
+        let html = '<table class="detail-table"><thead><tr>';
+        html +=
+          "<th>Test Layer</th><th>Node Version</th><th>Total</th><th>Passed</th><th>Failed</th><th>Pending/Skipped</th><th>Status</th>";
+        html += "</tr></thead><tbody>";
+
+        const testTypes = [
+          { key: "unit", label: "Unit", badge: "unit" },
+          { key: "integration", label: "Integration", badge: "integration" },
+          { key: "e2e", label: "E2E", badge: "e2e" },
+        ];
+
+        testTypes.forEach(({ key, label, badge }) => {
+          if (run[key] && run[key].length > 0) {
+            run[key].forEach((test) => {
+              const status =
+                test.success || test.numFailedTests === 0 ? "✓ PASS" : "✗ FAIL";
+              const statusClass =
+                test.numFailedTests === 0 ? "status-pass" : "status-fail";
+
+              html += `<tr onclick="navigateToReport('${run.run_number}', '${label}', '${test.node_version}')">`;
+              html += `<td><span class="badge ${badge}">${label}</span></td>`;
+              html += `<td>${test.node_version || "N/A"}</td>`;
+              html += `<td>${test.numTotalTests || 0}</td>`;
+              html += `<td class="status-pass">${
+                test.numPassedTests || 0
+              }</td>`;
+              html += `<td class="${
+                test.numFailedTests > 0 ? "status-fail" : ""
+              }">${test.numFailedTests || 0}</td>`;
+              html += `<td>${test.numPendingTests || 0}</td>`;
+              html += `<td class="${statusClass}">${status}</td>`;
+              html += "</tr>";
+            });
+          }
+        });
+
+        if (html.includes("<tbody>") && !html.includes("<tr onclick=")) {
+          html +=
+            '<tr><td colspan="7" style="text-align: center; color: #999;">No test details available</td></tr>';
+        }
 
         html += "</tbody></table>";
         return html;
       }
 
       function showHistory(limit) {
+        currentLimit = limit;
+
         // Update active button
         document
           .querySelectorAll(".filter-btn")
           .forEach((btn) => btn.classList.remove("active"));
-        event.target.classList.add("active");
+
+        if (event && event.target) {
+          event.target.classList.add("active");
+        } else {
+          // Set default active button on initial load
+          const buttons = document.querySelectorAll(".filter-btn");
+          if (limit === 10 && buttons.length > 0) {
+            buttons[0].classList.add("active");
+          }
+        }
 
         const container = document.getElementById("historyContainer");
-        const history = fullHistory.slice(-limit).reverse();
+        const history = testHistory.slice(-limit).reverse();
 
         if (history.length === 0) {
-          container.innerHTML = '<p class="no-tests">No history available.</p>';
+          container.innerHTML =
+            '<p style="text-align: center; color: #999;">No history available.</p>';
           return;
         }
 
-        let html = "";
-        history.forEach((run) => {
+        let html = '<table class="main-table"><thead><tr>';
+        html +=
+          "<th>S/N</th><th>Run Number</th><th>Run Date & Time</th><th>Commit ID</th>";
+        html +=
+          "<th>Total Tests</th><th>Failed</th><th>Passed</th><th>Skipped</th>";
+        html +=
+          "<th>Run Status</th><th>Unit</th><th>Integration</th><th>E2E</th>";
+        html += "</tr></thead><tbody>";
+
+        history.forEach((run, index) => {
+          const stats = calculateRunStats(run);
+          const status = getRunStatus(stats);
           const date = new Date(run.timestamp);
+          const sn = history.length - index;
 
-          // Calculate totals safely
-          const unitTotal = run.unit
-            ? run.unit.reduce((sum, t) => sum + (t.numTotalTests || 0), 0)
-            : 0;
-          const unitPassed = run.unit
-            ? run.unit.reduce((sum, t) => sum + (t.numPassedTests || 0), 0)
-            : 0;
-          const intTotal = run.integration
-            ? run.integration.reduce(
-                (sum, t) => sum + (t.numTotalTests || 0),
-                0
-              )
-            : 0;
-          const intPassed = run.integration
-            ? run.integration.reduce(
-                (sum, t) => sum + (t.numPassedTests || 0),
-                0
-              )
-            : 0;
-          const e2eTotal = run.e2e
-            ? run.e2e.reduce((sum, t) => sum + (t.numTotalTests || 0), 0)
-            : 0;
-          const e2ePassed = run.e2e
-            ? run.e2e.reduce((sum, t) => sum + (t.numPassedTests || 0), 0)
-            : 0;
+          html += `<tr id="run-${index}" onclick="toggleAccordion(${index})">`;
+          html += `<td><span class="expand-icon">▶</span>${sn}</td>`;
+          html += `<td><strong>#${run.run_number}</strong></td>`;
+          html += `<td>${date.toLocaleString()}</td>`;
+          html += `<td><code>${run.commit_sha}</code></td>`;
+          html += `<td><strong>${stats.total}</strong></td>`;
+          html += `<td class="${
+            stats.failed > 0 ? "status-fail" : "status-no-tests"
+          }">${stats.failed}</td>`;
+          html += `<td class="${
+            stats.passed > 0 ? "status-pass" : "status-no-tests"
+          }">${stats.passed}</td>`;
+          html += `<td class="${
+            stats.skipped > 0 ? "status-skipped" : "status-no-tests"
+          }">${stats.skipped}</td>`;
+          html += `<td class="${status.class}">${status.text}</td>`;
+          html += `<td>${stats.unitCount}</td>`;
+          html += `<td>${stats.integrationCount}</td>`;
+          html += `<td>${stats.e2eCount}</td>`;
+          html += "</tr>";
 
-          const hasFailures =
-            (run.unit && run.unit.some((t) => t.numFailedTests > 0)) ||
-            (run.integration &&
-              run.integration.some((t) => t.numFailedTests > 0)) ||
-            (run.e2e && run.e2e.some((t) => t.numFailedTests > 0));
-
-          const hasTests = unitTotal > 0 || intTotal > 0 || e2eTotal > 0;
-
-          let statusHtml;
-          let statusClass;
-          if (!hasTests) {
-            statusHtml = "⊘ NO TESTS";
-            statusClass = "status-skipped";
-          } else if (hasFailures) {
-            statusHtml = "❌ FAILED";
-            statusClass = "status-fail";
-          } else {
-            statusHtml = "✅ PASSED";
-            statusClass = "status-pass";
-          }
-
-          html += `
-                    <div class="history-item">
-                        <div style="margin-bottom: 15px;">
-                            <strong>Run #${
-                              run.run_number
-                            }</strong> - ${date.toLocaleString()} 
-                            <span style="float: right;" class="${statusClass}">
-                                ${statusHtml}
-                            </span>
-                            <br>
-                            <small style="color: #999;">
-                                Commit: ${run.commit_sha} | 
-                                Unit: ${
-                                  unitTotal > 0
-                                    ? `${unitPassed}/${unitTotal}`
-                                    : "Not run"
-                                } | 
-                                Integration: ${
-                                  intTotal > 0
-                                    ? `${intPassed}/${intTotal}`
-                                    : "Not run"
-                                } |
-                                E2E: ${
-                                  e2eTotal > 0
-                                    ? `${e2ePassed}/${e2eTotal}`
-                                    : "Not run"
-                                }
-                            </small>
-                        </div>
-                        
-                        <div style="margin-top: 15px;">
-                            <div style="margin-bottom: 10px;">
-                                <strong><span class="badge unit" style="font-size: 0.85em;">Unit Tests</span></strong>
-                                ${renderRunDetails(run, "unit")}
-                            </div>
-                            
-                            <div style="margin-bottom: 10px;">
-                                <strong><span class="badge integration" style="font-size: 0.85em;">Integration Tests</span></strong>
-                                ${renderRunDetails(run, "integration")}
-                            </div>
-                            
-                            <div>
-                                <strong><span class="badge e2e" style="font-size: 0.85em;">E2E Tests</span></strong>
-                                ${renderRunDetails(run, "e2e")}
-                            </div>
-                        </div>
-                    </div>
-                `;
+          // Accordion content row
+          html += `<tr id="accordion-${index}" class="accordion-content">`;
+          html += `<td colspan="12"><div class="accordion-inner">`;
+          html += renderDetailTable(run, index);
+          html += "</div></td></tr>";
         });
 
+        html += "</tbody></table>";
         container.innerHTML = html;
       }
 
-      // Load results on page load
+      // Initialize dashboard
       loadTestResults();
     </script>
   </body>

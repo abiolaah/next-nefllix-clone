@@ -24,8 +24,8 @@
     - generic "main-section" [ref=e25]:
       - generic "video" [ref=e26]
       - generic [ref=e27]:
-        - paragraph [ref=e28]: Parasite
-        - paragraph [ref=e29]: Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.
+        - paragraph [ref=e28]: Elephant's Dream
+        - paragraph [ref=e29]: Friends Proog and Emo journey inside the folds of a seemingly infinite Machine, exploring the dark and twisted complex of wires, gears, and cogs, until a moment of conflict negates all their assumptions.
         - generic [ref=e30]:
           - button "Play" [ref=e31]:
             - img [ref=e32]
@@ -83,7 +83,7 @@
           - link "Next.js 15.2.4 (outdated)" [ref=e115]:
             - /url: https://nextjs.org/docs/messages/version-staleness
             - img [ref=e116]
-            - generic "An outdated version detected (latest is 16.0.1), upgrade is highly recommended!" [ref=e118]: Next.js 15.2.4 (outdated)
+            - generic "An outdated version detected (latest is 16.1.1), upgrade is highly recommended!" [ref=e118]: Next.js 15.2.4 (outdated)
           - img
   - alert [ref=e119]
 ```

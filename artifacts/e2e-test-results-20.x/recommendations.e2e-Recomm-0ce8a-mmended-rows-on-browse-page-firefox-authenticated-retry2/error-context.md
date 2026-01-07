@@ -24,8 +24,8 @@
     - generic "main-section" [ref=e25]:
       - generic "video" [ref=e26]
       - generic [ref=e27]:
-        - paragraph [ref=e28]: Inception
-        - paragraph [ref=e29]: A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.
+        - paragraph [ref=e28]: The Dark Knight
+        - paragraph [ref=e29]: When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.
         - generic [ref=e30]:
           - button "Play" [ref=e31]:
             - img [ref=e32]
@@ -190,7 +190,7 @@
           - link "Next.js 15.2.4 (outdated)" [ref=e195] [cursor=pointer]:
             - /url: https://nextjs.org/docs/messages/version-staleness
             - img [ref=e196]
-            - generic "An outdated version detected (latest is 16.0.1), upgrade is highly recommended!" [ref=e198]: Next.js 15.2.4 (outdated)
+            - generic "An outdated version detected (latest is 16.1.1), upgrade is highly recommended!" [ref=e198]: Next.js 15.2.4 (outdated)
           - img
   - alert [ref=e199]
 ```
