@@ -24,8 +24,8 @@
     - generic "main-section" [ref=e25]:
       - generic "video" [ref=e26]
       - generic [ref=e27]:
-        - paragraph [ref=e28]: Parasite
-        - paragraph [ref=e29]: Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.
+        - paragraph [ref=e28]: The Shawshank Redemption
+        - paragraph [ref=e29]: Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.
         - generic [ref=e30]:
           - button "Play" [ref=e31]:
             - img [ref=e32]
