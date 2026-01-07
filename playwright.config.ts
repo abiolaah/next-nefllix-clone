@@ -31,7 +31,8 @@ export default defineConfig({
   /* Reporter configuration */
   reporter: process.env.CI
     ? [
-        ["html"], // HTML report
+        ["html", { outputFolder: "playwright-report" }], // HTML report
+        ["json", { outputFile: "test-results/e2e-results.json" }], // 🎯 JSON report for CI
         ["github"], // GitHub Actions annotations
         ["list"], // Console output
       ]

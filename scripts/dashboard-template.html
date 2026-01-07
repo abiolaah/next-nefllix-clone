@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Netflix Clone - Test Results Dashboard</title>
+    <link rel="icon" type="image/netflix-icon" href="/images/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/images/apple-touch-icon.png"
+    />
+    <link rel="manifest" href="/site.webmanifest" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+        color: #e5e5e5;
+        padding: 20px;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1600px;
+        margin: 0 auto;
+      }
+      h1 {
+        color: #e50914;
+        margin-bottom: 10px;
+        font-size: 2.5em;
+        text-align: center;
+      }
+      .subtitle {
+        text-align: center;
+        color: #999;
+        margin-bottom: 40px;
+        font-size: 1.1em;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+      .stat-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.2s;
+      }
+      .stat-card:hover {
+        transform: translateY(-5px);
+      }
+      .stat-card h3 {
+        color: #999;
+        font-size: 0.9em;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      .stat-value {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #f8f6f6;
+      }
+      .success-rate-high {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #6dec71;
+      }
+      .success-rate-low {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #e50914;
+      }
+      .section {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .section h2 {
+        color: #e50914;
+        margin-bottom: 20px;
+        font-size: 1.8em;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      th {
+        background: rgba(229, 9, 20, 0.2);
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.9em;
+        text-transform: uppercase;
+      }
+      .main-table tbody tr {
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .main-table tbody tr:hover {
+        background: rgba(229, 9, 20, 0.1);
+      }
+      .main-table tbody tr.expanded {
+        background: rgba(229, 9, 20, 0.15);
+      }
+      .status-pass {
+        color: #4caf50;
+        font-weight: bold;
+      }
+      .status-fail {
+        color: #f44336;
+        font-weight: bold;
+      }
+      .status-skipped {
+        color: #ec9808;
+        font-style: bold;
+      }
+      .status-no-tests {
+        color: #999;
+        font-style: italic;
+      }
+      .accordion-content {
+        display: none;
+        background: rgba(0, 0, 0, 0.3);
+      }
+      .accordion-content.show {
+        display: table-row;
+      }
+      .accordion-inner {
+        padding: 20px;
+      }
+      .detail-table {
+        margin-top: 10px;
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .detail-table th {
+        background: rgba(255, 255, 255, 0.1);
+        color: #999;
+      }
+      .detail-table tbody tr {
+        cursor: pointer;
+      }
+      .detail-table tbody tr:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.75em;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      .badge.unit {
+        background: #2196f3;
+        color: white;
+      }
+      .badge.integration {
+        background: #ff9800;
+        color: white;
+      }
+      .badge.e2e {
+        background: #4caf50;
+        color: white;
+      }
+      .loading {
+        text-align: center;
+        padding: 50px;
+        color: #999;
+      }
+      .expand-icon {
+        display: inline-block;
+        margin-right: 8px;
+        transition: transform 0.3s;
+      }
+      .expand-icon.expanded {
+        transform: rotate(90deg);
+      }
+      .filter-buttons {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+      .filter-btn {
+        padding: 8px 16px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 6px;
+        color: #e5e5e5;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .filter-btn:hover {
+        background: rgba(229, 9, 20, 0.2);
+        border-color: #e50914;
+      }
+      .filter-btn.active {
+        background: #e50914;
+        border-color: #e50914;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🎬 Netflix Clone Test Dashboard</h1>
+      <p class="subtitle">Continuous Integration Test Results</p>
+
+      <div class="stats" id="stats">
+        <div class="stat-card">
+          <h3>Total Runs</h3>
+          <div class="stat-value" id="totalRuns">-</div>
+        </div>
+        <div class="stat-card">
+          <h3>Last Run</h3>
+          <div class="stat-value" style="font-size: 1.2em" id="lastRun">-</div>
+        </div>
+        <div class="stat-card">
+          <h3>Latest Status</h3>
+          <div class="stat-value" style="font-size: 1.5em" id="latestStatus">
+            -
+          </div>
+        </div>
+        <div class="stat-card">
+          <h3>Success Rate</h3>
+          <div class="stat-value" style="font-size: 1.5em" id="successRate">
+            -
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>📊 Test History</h2>
+        <div class="filter-buttons">
+          <button class="filter-btn active" onclick="showHistory(10)">
+            Last 10 Runs
+          </button>
+          <button class="filter-btn" onclick="showHistory(25)">
+            Last 25 Runs
+          </button>
+          <button class="filter-btn" onclick="showHistory(50)">
+            Last 50 Runs
+          </button>
+          <button class="filter-btn" onclick="showHistory(Infinity)">
+            All Runs
+          </button>
+        </div>
+        <div id="historyContainer" class="loading">Loading test results..</div>
+      </div>
+    </div>
+
+    <script>
+      let testHistory = [];
+      let currentLimit = 10;
+
+      async function loadTestResults() {
+        try {
+          const response = await fetch("test-results/history.json");
+          testHistory = await response.json();
+          displayTestResults();
+        } catch (error) {
+          console.error("Error loading test results:", error);
+          document.getElementById("historyContainer").innerHTML =
+            '<p style="text-align: center; color: #f44336;">Error loading test results. Please check that test-results/history.json exists.</p>';
+        }
+      }
+
+      function calculateRunStats(run) {
+        const stats = {
+          total: 0,
+          passed: 0,
+          failed: 0,
+          skipped: 0,
+          unitCount: 0,
+          integrationCount: 0,
+          e2eCount: 0,
+        };
+
+        ["unit", "integration", "e2e"].forEach((type) => {
+          if (run[type] && run[type].length > 0) {
+            let typeTotal = 0;
+            run[type].forEach((test) => {
+              stats.total += test.numTotalTests || 0;
+              stats.passed += test.numPassedTests || 0;
+              stats.failed += test.numFailedTests || 0;
+              stats.skipped += test.numPendingTests || 0;
+              typeTotal += test.numTotalTests || 0;
+            });
+
+            if (type === "unit") stats.unitCount = typeTotal;
+            if (type === "integration") stats.integrationCount = typeTotal;
+            if (type === "e2e") stats.e2eCount = typeTotal;
+          }
+        });
+
+        return stats;
+      }
+
+      function getRunStatus(stats) {
+        if (stats.total === 0)
+          return { text: "NO TESTS", class: "status-no-tests" };
+        if (stats.failed > 0) return { text: "✗ FAILED", class: "status-fail" };
+        if (stats.skipped > 0)
+          return { text: "⚠️ SKIPPED", class: "status-skipped" };
+        return { text: "✓ PASSED", class: "status-pass" };
+      }
+
+      function displayTestResults() {
+        if (testHistory.length === 0) {
+          document.getElementById("totalRuns").textContent = "0";
+          document.getElementById("historyContainer").innerHTML =
+            '<p style="text-align: center; color: #999;">No test results available.</p>';
+          return;
+        }
+
+        // Update stats
+        document.getElementById("totalRuns").textContent = testHistory.length;
+
+        const lastRun = testHistory[testHistory.length - 1];
+        const date = new Date(lastRun.timestamp);
+        document.getElementById("lastRun").textContent =
+          date.toLocaleDateString();
+
+        const lastStats = calculateRunStats(lastRun);
+        const lastStatus = getRunStatus(lastStats);
+        document.getElementById(
+          "latestStatus"
+        ).innerHTML = `<span class="${lastStatus.class}">${lastStatus.text}</span>`;
+
+        // Calculate success rate
+        let successfulRuns = 0;
+        testHistory.forEach((run) => {
+          const stats = calculateRunStats(run);
+          if (stats.total > 0 && stats.failed === 0) successfulRuns++;
+        });
+        const successRate =
+          testHistory.length > 0
+            ? Math.round((successfulRuns / testHistory.length) * 100)
+            : 0;
+
+        const rateClass =
+          successRate > 50 ? "success-rate-high" : "success-rate-low";
+        document.getElementById(
+          "successRate"
+        ).innerHTML = `<span class="${rateClass}">${successRate}%</span>`;
+
+        showHistory(currentLimit);
+      }
+
+      function toggleAccordion(runIndex) {
+        const accordionRow = document.getElementById(`accordion-${runIndex}`);
+        const mainRow = document.getElementById(`run-${runIndex}`);
+        const icon = mainRow.querySelector(".expand-icon");
+
+        if (accordionRow.classList.contains("show")) {
+          accordionRow.classList.remove("show");
+          mainRow.classList.remove("expanded");
+          icon.classList.remove("expanded");
+        } else {
+          // Close all other accordions
+          document
+            .querySelectorAll(".accordion-content")
+            .forEach((el) => el.classList.remove("show"));
+          document
+            .querySelectorAll(".main-table tbody tr")
+            .forEach((el) => el.classList.remove("expanded"));
+          document
+            .querySelectorAll(".expand-icon")
+            .forEach((el) => el.classList.remove("expanded"));
+
+          accordionRow.classList.add("show");
+          mainRow.classList.add("expanded");
+          icon.classList.add("expanded");
+        }
+      }
+
+      function navigateToReport(runNumber, testType, nodeVersion) {
+        // In a real implementation, this would navigate to the actual test report
+        // For now, we'll show an alert with the information
+        const message = `Navigating to detailed report:\n\nRun #${runNumber}\nTest Type: ${testType}\nNode Version: ${nodeVersion}\n\nNote: In production, this would link to the actual Playwright/Jest report for this specific test run.`;
+        alert(message);
+
+        // Example of how this might work in production:
+        // window.location.href = `/test-results/run-${runNumber}/${testType}-${nodeVersion}/index.html`;
+      }
+
+      function renderDetailTable(run, runIndex) {
+        let html = '<table class="detail-table"><thead><tr>';
+        html +=
+          "<th>Test Layer</th><th>Node Version</th><th>Total</th><th>Passed</th><th>Failed</th><th>Pending/Skipped</th><th>Status</th>";
+        html += "</tr></thead><tbody>";
+
+        const testTypes = [
+          { key: "unit", label: "Unit", badge: "unit" },
+          { key: "integration", label: "Integration", badge: "integration" },
+          { key: "e2e", label: "E2E", badge: "e2e" },
+        ];
+
+        testTypes.forEach(({ key, label, badge }) => {
+          if (run[key] && run[key].length > 0) {
+            run[key].forEach((test) => {
+              const status =
+                test.success || test.numFailedTests === 0 ? "✓ PASS" : "✗ FAIL";
+              const statusClass =
+                test.numFailedTests === 0 ? "status-pass" : "status-fail";
+
+              html += `<tr onclick="navigateToReport('${run.run_number}', '${label}', '${test.node_version}')">`;
+              html += `<td><span class="badge ${badge}">${label}</span></td>`;
+              html += `<td>${test.node_version || "N/A"}</td>`;
+              html += `<td>${test.numTotalTests || 0}</td>`;
+              html += `<td class="status-pass">${
+                test.numPassedTests || 0
+              }</td>`;
+              html += `<td class="${
+                test.numFailedTests > 0 ? "status-fail" : ""
+              }">${test.numFailedTests || 0}</td>`;
+              html += `<td>${test.numPendingTests || 0}</td>`;
+              html += `<td class="${statusClass}">${status}</td>`;
+              html += "</tr>";
+            });
+          }
+        });
+
+        if (html.includes("<tbody>") && !html.includes("<tr onclick=")) {
+          html +=
+            '<tr><td colspan="7" style="text-align: center; color: #999;">No test details available</td></tr>';
+        }
+
+        html += "</tbody></table>";
+        return html;
+      }
+
+      function showHistory(limit) {
+        currentLimit = limit;
+
+        // Update active button
+        document
+          .querySelectorAll(".filter-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+
+        if (event && event.target) {
+          event.target.classList.add("active");
+        } else {
+          // Set default active button on initial load
+          const buttons = document.querySelectorAll(".filter-btn");
+          if (limit === 10 && buttons.length > 0) {
+            buttons[0].classList.add("active");
+          }
+        }
+
+        const container = document.getElementById("historyContainer");
+        const history = testHistory.slice(-limit).reverse();
+
+        if (history.length === 0) {
+          container.innerHTML =
+            '<p style="text-align: center; color: #999;">No history available.</p>';
+          return;
+        }
+
+        let html = '<table class="main-table"><thead><tr>';
+        html +=
+          "<th>S/N</th><th>Run Number</th><th>Run Date & Time</th><th>Commit ID</th>";
+        html +=
+          "<th>Total Tests</th><th>Failed</th><th>Passed</th><th>Skipped</th>";
+        html +=
+          "<th>Run Status</th><th>Unit</th><th>Integration</th><th>E2E</th>";
+        html += "</tr></thead><tbody>";
+
+        history.forEach((run, index) => {
+          const stats = calculateRunStats(run);
+          const status = getRunStatus(stats);
+          const date = new Date(run.timestamp);
+          const sn = history.length - index;
+
+          html += `<tr id="run-${index}" onclick="toggleAccordion(${index})">`;
+          html += `<td><span class="expand-icon">▶</span>${sn}</td>`;
+          html += `<td><strong>#${run.run_number}</strong></td>`;
+          html += `<td>${date.toLocaleString()}</td>`;
+          html += `<td><code>${run.commit_sha}</code></td>`;
+          html += `<td><strong>${stats.total}</strong></td>`;
+          html += `<td class="${
+            stats.failed > 0 ? "status-fail" : "status-no-tests"
+          }">${stats.failed}</td>`;
+          html += `<td class="${
+            stats.passed > 0 ? "status-pass" : "status-no-tests"
+          }">${stats.passed}</td>`;
+          html += `<td class="${
+            stats.skipped > 0 ? "status-skipped" : "status-no-tests"
+          }">${stats.skipped}</td>`;
+          html += `<td class="${status.class}">${status.text}</td>`;
+          html += `<td>${stats.unitCount}</td>`;
+          html += `<td>${stats.integrationCount}</td>`;
+          html += `<td>${stats.e2eCount}</td>`;
+          html += "</tr>";
+
+          // Accordion content row
+          html += `<tr id="accordion-${index}" class="accordion-content">`;
+          html += `<td colspan="12"><div class="accordion-inner">`;
+          html += renderDetailTable(run, index);
+          html += "</div></td></tr>";
+        });
+
+        html += "</tbody></table>";
+        container.innerHTML = html;
+      }
+
+      // Initialize dashboard
+      loadTestResults();
+    </script>
+  </body>
+</html>

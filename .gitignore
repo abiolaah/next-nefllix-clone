@@ -51,6 +51,9 @@ public/images/symbol.png
 #prisma
 generated/prisma
 
+# generated html
+index.html
+
 # Playwright
 node_modules/
 /test-results/
