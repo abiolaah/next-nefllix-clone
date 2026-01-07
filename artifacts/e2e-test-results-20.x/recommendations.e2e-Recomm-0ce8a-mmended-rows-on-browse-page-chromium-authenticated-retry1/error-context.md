@@ -24,8 +24,8 @@
     - generic "main-section" [ref=e25]:
       - generic "video" [ref=e26]
       - generic [ref=e27]:
-        - paragraph [ref=e28]: Elephant's Dream
-        - paragraph [ref=e29]: Friends Proog and Emo journey inside the folds of a seemingly infinite Machine, exploring the dark and twisted complex of wires, gears, and cogs, until a moment of conflict negates all their assumptions.
+        - paragraph [ref=e28]: Parasite
+        - paragraph [ref=e29]: Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.
         - generic [ref=e30]:
           - button "Play" [ref=e31]:
             - img [ref=e32]

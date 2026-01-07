@@ -820,5 +820,57 @@
         "numPendingTests": 0
       }
     ]
+  },
+  {
+    "timestamp": "2026-01-07T21:31:28.084Z",
+    "run_id": "20796912315",
+    "run_number": "40",
+    "commit_sha": "aa9894e",
+    "unit": [
+      {
+        "node_version": "18.x",
+        "success": true,
+        "numTotalTests": 182,
+        "numPassedTests": 182,
+        "numFailedTests": 0,
+        "numPendingTests": 0
+      },
+      {
+        "node_version": "20.x",
+        "success": true,
+        "numTotalTests": 182,
+        "numPassedTests": 182,
+        "numFailedTests": 0,
+        "numPendingTests": 0
+      }
+    ],
+    "integration": [
+      {
+        "node_version": "18.x",
+        "success": true,
+        "numTotalTests": 21,
+        "numPassedTests": 21,
+        "numFailedTests": 0,
+        "numPendingTests": 0
+      },
+      {
+        "node_version": "20.x",
+        "success": true,
+        "numTotalTests": 21,
+        "numPassedTests": 21,
+        "numFailedTests": 0,
+        "numPendingTests": 0
+      }
+    ],
+    "e2e": [
+      {
+        "node_version": "20.x",
+        "success": false,
+        "numTotalTests": 16,
+        "numPassedTests": 10,
+        "numFailedTests": 6,
+        "numPendingTests": 0
+      }
+    ]
   }
 ]

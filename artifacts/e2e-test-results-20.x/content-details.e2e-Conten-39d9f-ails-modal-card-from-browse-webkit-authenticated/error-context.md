@@ -24,8 +24,8 @@
     - generic "main-section" [ref=e25]:
       - generic "video" [ref=e26]
       - generic [ref=e27]:
-        - paragraph [ref=e28]: Sintel
-        - paragraph [ref=e29]: A lonely young woman, Sintel, helps and befriends a dragon, whom she calls Scales. But when he is kidnapped by an adult dragon, Sintel decides to embark on a dangerous quest to find her lost friend Scales.
+        - paragraph [ref=e28]: Parasite
+        - paragraph [ref=e29]: Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.
         - generic [ref=e30]:
           - button "Play" [ref=e31]:
             - img [ref=e32]

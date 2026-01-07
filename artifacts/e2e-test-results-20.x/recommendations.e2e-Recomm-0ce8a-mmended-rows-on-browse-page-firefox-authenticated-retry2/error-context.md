@@ -24,8 +24,8 @@
     - generic "main-section" [ref=e25]:
       - generic "video" [ref=e26]
       - generic [ref=e27]:
-        - paragraph [ref=e28]: Tears of Steel
-        - paragraph [ref=e29]: In an apocalyptic future, a group of soldiers and scientists takes refuge in Amsterdam to try to stop an army of robots that threatens the planet.
+        - paragraph [ref=e28]: Sintel
+        - paragraph [ref=e29]: A lonely young woman, Sintel, helps and befriends a dragon, whom she calls Scales. But when he is kidnapped by an adult dragon, Sintel decides to embark on a dangerous quest to find her lost friend Scales.
         - generic [ref=e30]:
           - button "Play" [ref=e31]:
             - img [ref=e32]
