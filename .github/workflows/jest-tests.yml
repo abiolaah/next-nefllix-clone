@@ -202,8 +202,8 @@ jobs:
           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}
           NEXTAUTH_URL: http://localhost:3000
-          E2E_EMAIL: ${{secrets.E2E_EMAIL}}
-          E2E_PASSWORD: ${{secrets.E2E_PASSWORD}}
+          E2E_EMAIL: ${{ secrets.E2E_EMAIL }}
+          E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
           NEXT_PUBLIC_TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}
         continue-on-error: true
 
@@ -353,12 +353,6 @@ jobs:
           echo "📊 E2E test results directory contents:"
           ls -la artifacts/e2e-test-results-20.x/ || echo "Directory not found"
 
-      - name: Install tsx for TypeScript execution
-        run: npm install -g tsx
-
-      - name: Generate test results
-        run: tsx scripts/generate-test-result.ts
-
       - name: Checkout main branch for dashboard scripts
         uses: actions/checkout@v4
         with:
@@ -367,6 +361,13 @@ jobs:
           sparse-checkout: |
             scripts/dashboard-template.html
             scripts/generate-dashboard.ts
+            scripts/generate-test-result.ts
+
+      - name: Install tsx for TypeScript execution
+        run: npm install -g tsx
+
+      - name: Generate test results
+        run: tsx main-branch/scripts/generate-test-result.ts
 
       - name: Generate HTML dashboard
         run: |
