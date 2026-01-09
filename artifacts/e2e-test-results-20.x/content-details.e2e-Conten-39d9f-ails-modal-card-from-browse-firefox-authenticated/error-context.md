@@ -24,8 +24,8 @@
     - generic "main-section" [ref=e25]:
       - generic "video" [ref=e26]
       - generic [ref=e27]:
-        - paragraph [ref=e28]: Inception
-        - paragraph [ref=e29]: A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.
+        - paragraph [ref=e28]: The Shawshank Redemption
+        - paragraph [ref=e29]: Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.
         - generic [ref=e30]:
           - button "Play" [ref=e31]:
             - img [ref=e32]

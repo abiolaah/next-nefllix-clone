@@ -24,8 +24,8 @@
     - generic "main-section" [ref=e25]:
       - generic "video" [ref=e26]
       - generic [ref=e27]:
-        - paragraph [ref=e28]: The Dark Knight
-        - paragraph [ref=e29]: When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.
+        - paragraph [ref=e28]: Big Buck Bunny
+        - paragraph [ref=e29]: Three rodents amuse themselves by harassing creatures of the forest. However, when they mess with a bunny, he decides to teach them a lesson.
         - generic [ref=e30]:
           - button "Play" [ref=e31]:
             - img [ref=e32]

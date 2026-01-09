@@ -24,8 +24,8 @@
     - generic "main-section" [ref=e25]:
       - generic "video" [ref=e26]
       - generic [ref=e27]:
-        - paragraph [ref=e28]: Tears of Steel
-        - paragraph [ref=e29]: In an apocalyptic future, a group of soldiers and scientists takes refuge in Amsterdam to try to stop an army of robots that threatens the planet.
+        - paragraph [ref=e28]: Inception
+        - paragraph [ref=e29]: A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.
         - generic [ref=e30]:
           - button "Play" [ref=e31]:
             - img [ref=e32]

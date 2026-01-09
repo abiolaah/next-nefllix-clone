@@ -14,7 +14,7 @@
       "ci": {
         "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
         "commitHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-        "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20796912315"
+        "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20868305516"
       },
       "gitCommit": {
         "shortHash": "aa9894e",
@@ -72,7 +72,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
             "commitHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20796912315"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20868305516"
           },
           "gitCommit": {
             "shortHash": "aa9894e",
@@ -110,7 +110,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
             "commitHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20796912315"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20868305516"
           },
           "gitCommit": {
             "shortHash": "aa9894e",
@@ -148,7 +148,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
             "commitHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20796912315"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20868305516"
           },
           "gitCommit": {
             "shortHash": "aa9894e",
@@ -186,7 +186,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
             "commitHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20796912315"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20868305516"
           },
           "gitCommit": {
             "shortHash": "aa9894e",
@@ -224,7 +224,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
             "commitHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20796912315"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20868305516"
           },
           "gitCommit": {
             "shortHash": "aa9894e",
@@ -262,7 +262,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
             "commitHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20796912315"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20868305516"
           },
           "gitCommit": {
             "shortHash": "aa9894e",
@@ -300,7 +300,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
             "commitHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20796912315"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20868305516"
           },
           "gitCommit": {
             "shortHash": "aa9894e",
@@ -367,7 +367,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 21782,
+                  "duration": 22522,
                   "errors": [],
                   "stdout": [
                     {
@@ -415,7 +415,7 @@
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-01-07T21:24:37.739Z",
+                  "startTime": "2026-01-09T23:16:03.397Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -459,12 +459,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 8348,
+                      "duration": 9273,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T21:25:23.994Z",
+                      "startTime": "2026-01-09T23:16:51.401Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -493,12 +493,12 @@
                       "workerIndex": 10,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4113,
+                      "duration": 4256,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T21:27:17.917Z",
+                      "startTime": "2026-01-09T23:18:45.713Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -527,12 +527,12 @@
                       "workerIndex": 16,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2996,
+                      "duration": 3028,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T21:29:18.239Z",
+                      "startTime": "2026-01-09T23:20:46.313Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -578,7 +578,7 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 18347,
+                      "duration": 18462,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
@@ -602,7 +602,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T21:25:32.442Z",
+                      "startTime": "2026-01-09T23:17:00.843Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -631,7 +631,7 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 19280,
+                      "duration": 18898,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
@@ -655,7 +655,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 1,
-                      "startTime": "2026-01-07T21:25:51.398Z",
+                      "startTime": "2026-01-09T23:17:19.926Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -689,7 +689,7 @@
                       "workerIndex": 6,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 17965,
+                      "duration": 17930,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
@@ -713,7 +713,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 2,
-                      "startTime": "2026-01-07T21:26:11.447Z",
+                      "startTime": "2026-01-09T23:17:39.609Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -763,7 +763,7 @@
                       "workerIndex": 10,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 18243,
+                      "duration": 18310,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
@@ -787,7 +787,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T21:27:22.409Z",
+                      "startTime": "2026-01-09T23:18:50.367Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -816,7 +816,7 @@
                       "workerIndex": 11,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 22050,
+                      "duration": 22383,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
@@ -840,7 +840,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 1,
-                      "startTime": "2026-01-07T21:27:41.765Z",
+                      "startTime": "2026-01-09T23:19:09.760Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -874,7 +874,7 @@
                       "workerIndex": 12,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 18809,
+                      "duration": 18770,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
@@ -898,7 +898,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 2,
-                      "startTime": "2026-01-07T21:28:05.516Z",
+                      "startTime": "2026-01-09T23:19:33.883Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -948,7 +948,7 @@
                       "workerIndex": 16,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 19366,
+                      "duration": 19492,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
@@ -972,7 +972,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T21:29:21.351Z",
+                      "startTime": "2026-01-09T23:20:49.461Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1001,7 +1001,7 @@
                       "workerIndex": 17,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 19363,
+                      "duration": 19565,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
@@ -1025,7 +1025,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 1,
-                      "startTime": "2026-01-07T21:29:41.319Z",
+                      "startTime": "2026-01-09T23:21:09.567Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1059,7 +1059,7 @@
                       "workerIndex": 18,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 18775,
+                      "duration": 18309,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
@@ -1083,7 +1083,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 2,
-                      "startTime": "2026-01-07T21:30:01.560Z",
+                      "startTime": "2026-01-09T23:21:30.016Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1150,12 +1150,12 @@
                       "workerIndex": 7,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 6691,
+                      "duration": 6426,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T21:26:30.088Z",
+                      "startTime": "2026-01-09T23:17:58.227Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1184,12 +1184,12 @@
                       "workerIndex": 13,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4046,
+                      "duration": 3858,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T21:28:26.586Z",
+                      "startTime": "2026-01-09T23:19:55.002Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1218,12 +1218,12 @@
                       "workerIndex": 19,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2928,
+                      "duration": 2661,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T21:30:21.193Z",
+                      "startTime": "2026-01-09T23:21:49.177Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1269,7 +1269,7 @@
                       "workerIndex": 7,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 13128,
+                      "duration": 13144,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
@@ -1293,7 +1293,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T21:26:36.866Z",
+                      "startTime": "2026-01-09T23:18:04.742Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1322,7 +1322,7 @@
                       "workerIndex": 8,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 13401,
+                      "duration": 13316,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
@@ -1346,7 +1346,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 1,
-                      "startTime": "2026-01-07T21:26:50.592Z",
+                      "startTime": "2026-01-09T23:18:18.485Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1380,7 +1380,7 @@
                       "workerIndex": 9,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 12448,
+                      "duration": 12464,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
@@ -1404,7 +1404,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 2,
-                      "startTime": "2026-01-07T21:27:04.801Z",
+                      "startTime": "2026-01-09T23:18:32.573Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1454,7 +1454,7 @@
                       "workerIndex": 13,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 12501,
+                      "duration": 12478,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
@@ -1478,7 +1478,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T21:28:31.229Z",
+                      "startTime": "2026-01-09T23:19:59.285Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1507,7 +1507,7 @@
                       "workerIndex": 14,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 16785,
+                      "duration": 16856,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
@@ -1531,7 +1531,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 1,
-                      "startTime": "2026-01-07T21:28:44.791Z",
+                      "startTime": "2026-01-09T23:20:12.863Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1565,7 +1565,7 @@
                       "workerIndex": 15,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 13351,
+                      "duration": 13485,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
@@ -1589,7 +1589,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 2,
-                      "startTime": "2026-01-07T21:29:03.193Z",
+                      "startTime": "2026-01-09T23:20:31.372Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1639,7 +1639,7 @@
                       "workerIndex": 19,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 13121,
+                      "duration": 13968,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
@@ -1663,7 +1663,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T21:30:24.236Z",
+                      "startTime": "2026-01-09T23:21:51.952Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1692,7 +1692,7 @@
                       "workerIndex": 20,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 13630,
+                      "duration": 13484,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
@@ -1716,7 +1716,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 1,
-                      "startTime": "2026-01-07T21:30:39.338Z",
+                      "startTime": "2026-01-09T23:22:06.522Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1750,7 +1750,7 @@
                       "workerIndex": 21,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 13322,
+                      "duration": 13631,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
@@ -1774,7 +1774,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 2,
-                      "startTime": "2026-01-07T21:30:53.975Z",
+                      "startTime": "2026-01-09T23:22:21.700Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1841,12 +1841,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 9798,
+                      "duration": 10140,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T21:25:01.332Z",
+                      "startTime": "2026-01-09T23:16:27.675Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1875,12 +1875,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3172,
+                      "duration": 3228,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T21:25:11.848Z",
+                      "startTime": "2026-01-09T23:16:38.539Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1909,12 +1909,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 6251,
+                      "duration": 6557,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T21:25:16.542Z",
+                      "startTime": "2026-01-09T23:16:43.339Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1934,8 +1934,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-01-07T21:24:08.774Z",
-    "duration": 419079.71,
+    "startTime": "2026-01-09T23:15:33.380Z",
+    "duration": 422254.608,
     "expected": 10,
     "skipped": 0,
     "unexpected": 6,
