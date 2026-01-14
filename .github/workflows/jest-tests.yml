@@ -183,6 +183,7 @@ jobs:
         env:
           SKIP_ENV_VALIDATION: true
           # 🎯 Add required environment variables for build
+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}
           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}
           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}
@@ -197,7 +198,11 @@ jobs:
           npx playwright test
         env:
           CI: true
+          NODE_ENV: production
+          # Suppress Babel warnings about large files
+          BABEL_COMPACT: false
           # 🎯 Critical environment variables for E2E tests
+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}
           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}
           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}
@@ -332,6 +337,13 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Clean submodule references
+        run: |
+          rm -f .gitmodules
+          rm -rf main-branch
+          git config --local --unset-all submodule.main-branch.url || true
+          git rm --cached main-branch || true
+
       - name: Download all test artifacts
         uses: actions/download-artifact@v4
         with:
@@ -362,6 +374,7 @@ jobs:
             scripts/dashboard-template.html
             scripts/generate-dashboard.ts
             scripts/generate-test-result.ts
+          sparse-checkout-cone: false
 
       - name: Install tsx for TypeScript execution
         run: npm install -g tsx
@@ -394,6 +407,12 @@ jobs:
           ls -la index.html
 
           echo "✅ Dashboard generated successfully"
+
+      # Clean up main-branch checkout before committing
+      - name: Clean up temporary checkout
+        run: |
+          rm -rf main-branch
+          git rm -rf --cached main-branch 2>/dev/null || true
 
       - name: Commit and push to gh-pages
         run: |
