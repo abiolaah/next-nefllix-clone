@@ -12,27 +12,31 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-        "commitHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-        "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20868305516"
+        "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/92c30845186f546329464e009ab0ff172f57115e",
+        "commitHash": "92c30845186f546329464e009ab0ff172f57115e",
+        "prHref": "https://github.com/abiolaah/next-nefllix-clone/pull/26",
+        "prTitle": "Tests/alltest",
+        "prBaseHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
+        "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20984947144"
       },
       "gitCommit": {
-        "shortHash": "aa9894e",
-        "hash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-        "subject": "Merge pull request #25 from abiolaah/tests/alltest",
-        "body": "Merge pull request #25 from abiolaah/tests/alltest\n\nfix: Use separate script file for test user creation, dashboard html code, dashboard generation, and test result generation in CI",
+        "shortHash": "92c3084",
+        "hash": "92c30845186f546329464e009ab0ff172f57115e",
+        "subject": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
+        "body": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7\n",
         "author": {
           "name": "Victoria Ajuwon",
           "email": "oluwapelumi.ajuwon@gmail.com",
-          "time": 1767820874000
+          "time": 1768372690000
         },
         "committer": {
           "name": "GitHub",
           "email": "noreply@github.com",
-          "time": 1767820874000
+          "time": 1768372690000
         },
-        "branch": "main"
+        "branch": "HEAD"
       },
+      "gitDiff": "diff --git a/.github/workflows/jest-tests.yml b/.github/workflows/jest-tests.yml\nindex b742974..26f4939 100644\n--- a/.github/workflows/jest-tests.yml\n+++ b/.github/workflows/jest-tests.yml\n@@ -183,6 +183,7 @@ jobs:\n         env:\n           SKIP_ENV_VALIDATION: true\n           # 🎯 Add required environment variables for build\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -197,7 +198,11 @@ jobs:\n           npx playwright test\n         env:\n           CI: true\n+          NODE_ENV: production\n+          # Suppress Babel warnings about large files\n+          BABEL_COMPACT: false\n           # 🎯 Critical environment variables for E2E tests\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -332,6 +337,13 @@ jobs:\n           fetch-depth: 0\n           token: ${{ secrets.GITHUB_TOKEN }}\n \n+      - name: Clean submodule references\n+        run: |\n+          rm -f .gitmodules\n+          rm -rf main-branch\n+          git config --local --unset-all submodule.main-branch.url || true\n+          git rm --cached main-branch || true\n+\n       - name: Download all test artifacts\n         uses: actions/download-artifact@v4\n         with:\n@@ -362,6 +374,7 @@ jobs:\n             scripts/dashboard-template.html\n             scripts/generate-dashboard.ts\n             scripts/generate-test-result.ts\n+          sparse-checkout-cone: false\n \n       - name: Install tsx for TypeScript execution\n         run: npm install -g tsx\n@@ -395,6 +408,12 @@ jobs:\n \n           echo \"✅ Dashboard generated successfully\"\n \n+      # Clean up main-branch checkout before committing\n+      - name: Clean up temporary checkout\n+        run: |\n+          rm -rf main-branch\n+          git rm -rf --cached main-branch 2>/dev/null || true\n+\n       - name: Commit and push to gh-pages\n         run: |\n           git config user.name \"github-actions[bot]\"\ndiff --git a/components/Navbar.tsx b/components/Navbar.tsx\nindex a2a3fd1..7c82c5e 100644\n--- a/components/Navbar.tsx\n+++ b/components/Navbar.tsx\n@@ -201,7 +201,7 @@ const Navbar = () => {\n           >\n             <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n               <Image\n-                src={currentProfile?.avatar || \"\"}\n+                src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n                 width={30}\n                 height={30}\n                 alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/components/SettingsNavBar.tsx b/components/SettingsNavBar.tsx\nindex 24e3efb..513d644 100644\n--- a/components/SettingsNavBar.tsx\n+++ b/components/SettingsNavBar.tsx\n@@ -85,7 +85,7 @@ const SettingsNavBar = () => {\n         >\n           <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n             <Image\n-              src={currentProfile?.avatar || \"\"}\n+              src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n               width={30}\n               height={30}\n               alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/pages/api/auth/[...nextauth].ts b/pages/api/auth/[...nextauth].ts\nindex 3209aa0..1051dad 100644\n--- a/pages/api/auth/[...nextauth].ts\n+++ b/pages/api/auth/[...nextauth].ts\n@@ -85,7 +85,7 @@ export const authOptions = {\n   pages: {\n     signIn: \"/auth\",\n   },\n-  debug: process.env.NODE_ENV === \"development\",\n+  debug: process.env.NODE_ENV === \"development\" && !process.env.CI,\n   adapter: PrismaAdapter(prismadb),\n   session: {\n     strategy: \"jwt\" as const,\ndiff --git a/pages/api/movies/index.ts b/pages/api/movies/index.ts\nindex b049e12..3ebbaaf 100644\n--- a/pages/api/movies/index.ts\n+++ b/pages/api/movies/index.ts\n@@ -60,7 +60,9 @@ export default async function handler(\n     }\n \n     if (!TMDB_API_KEY) {\n-      console.error(\"TMDB API key is not configured\");\n+      if (!process.env.CI) {\n+        console.error(\"TMDB API key is not configured\");\n+      }\n       return res.status(500).json({ error: \"TMDB API key is not configured\" });\n     }",
       "actualWorkers": 1
     },
     "preserveOutput": "always",
@@ -70,27 +74,31 @@
         "retries": 2,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "commitHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20868305516"
+            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/92c30845186f546329464e009ab0ff172f57115e",
+            "commitHash": "92c30845186f546329464e009ab0ff172f57115e",
+            "prHref": "https://github.com/abiolaah/next-nefllix-clone/pull/26",
+            "prTitle": "Tests/alltest",
+            "prBaseHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20984947144"
           },
           "gitCommit": {
-            "shortHash": "aa9894e",
-            "hash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "subject": "Merge pull request #25 from abiolaah/tests/alltest",
-            "body": "Merge pull request #25 from abiolaah/tests/alltest\n\nfix: Use separate script file for test user creation, dashboard html code, dashboard generation, and test result generation in CI",
+            "shortHash": "92c3084",
+            "hash": "92c30845186f546329464e009ab0ff172f57115e",
+            "subject": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
+            "body": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7\n",
             "author": {
               "name": "Victoria Ajuwon",
               "email": "oluwapelumi.ajuwon@gmail.com",
-              "time": 1767820874000
+              "time": 1768372690000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1767820874000
+              "time": 1768372690000
             },
-            "branch": "main"
+            "branch": "HEAD"
           },
+          "gitDiff": "diff --git a/.github/workflows/jest-tests.yml b/.github/workflows/jest-tests.yml\nindex b742974..26f4939 100644\n--- a/.github/workflows/jest-tests.yml\n+++ b/.github/workflows/jest-tests.yml\n@@ -183,6 +183,7 @@ jobs:\n         env:\n           SKIP_ENV_VALIDATION: true\n           # 🎯 Add required environment variables for build\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -197,7 +198,11 @@ jobs:\n           npx playwright test\n         env:\n           CI: true\n+          NODE_ENV: production\n+          # Suppress Babel warnings about large files\n+          BABEL_COMPACT: false\n           # 🎯 Critical environment variables for E2E tests\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -332,6 +337,13 @@ jobs:\n           fetch-depth: 0\n           token: ${{ secrets.GITHUB_TOKEN }}\n \n+      - name: Clean submodule references\n+        run: |\n+          rm -f .gitmodules\n+          rm -rf main-branch\n+          git config --local --unset-all submodule.main-branch.url || true\n+          git rm --cached main-branch || true\n+\n       - name: Download all test artifacts\n         uses: actions/download-artifact@v4\n         with:\n@@ -362,6 +374,7 @@ jobs:\n             scripts/dashboard-template.html\n             scripts/generate-dashboard.ts\n             scripts/generate-test-result.ts\n+          sparse-checkout-cone: false\n \n       - name: Install tsx for TypeScript execution\n         run: npm install -g tsx\n@@ -395,6 +408,12 @@ jobs:\n \n           echo \"✅ Dashboard generated successfully\"\n \n+      # Clean up main-branch checkout before committing\n+      - name: Clean up temporary checkout\n+        run: |\n+          rm -rf main-branch\n+          git rm -rf --cached main-branch 2>/dev/null || true\n+\n       - name: Commit and push to gh-pages\n         run: |\n           git config user.name \"github-actions[bot]\"\ndiff --git a/components/Navbar.tsx b/components/Navbar.tsx\nindex a2a3fd1..7c82c5e 100644\n--- a/components/Navbar.tsx\n+++ b/components/Navbar.tsx\n@@ -201,7 +201,7 @@ const Navbar = () => {\n           >\n             <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n               <Image\n-                src={currentProfile?.avatar || \"\"}\n+                src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n                 width={30}\n                 height={30}\n                 alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/components/SettingsNavBar.tsx b/components/SettingsNavBar.tsx\nindex 24e3efb..513d644 100644\n--- a/components/SettingsNavBar.tsx\n+++ b/components/SettingsNavBar.tsx\n@@ -85,7 +85,7 @@ const SettingsNavBar = () => {\n         >\n           <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n             <Image\n-              src={currentProfile?.avatar || \"\"}\n+              src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n               width={30}\n               height={30}\n               alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/pages/api/auth/[...nextauth].ts b/pages/api/auth/[...nextauth].ts\nindex 3209aa0..1051dad 100644\n--- a/pages/api/auth/[...nextauth].ts\n+++ b/pages/api/auth/[...nextauth].ts\n@@ -85,7 +85,7 @@ export const authOptions = {\n   pages: {\n     signIn: \"/auth\",\n   },\n-  debug: process.env.NODE_ENV === \"development\",\n+  debug: process.env.NODE_ENV === \"development\" && !process.env.CI,\n   adapter: PrismaAdapter(prismadb),\n   session: {\n     strategy: \"jwt\" as const,\ndiff --git a/pages/api/movies/index.ts b/pages/api/movies/index.ts\nindex b049e12..3ebbaaf 100644\n--- a/pages/api/movies/index.ts\n+++ b/pages/api/movies/index.ts\n@@ -60,7 +60,9 @@ export default async function handler(\n     }\n \n     if (!TMDB_API_KEY) {\n-      console.error(\"TMDB API key is not configured\");\n+      if (!process.env.CI) {\n+        console.error(\"TMDB API key is not configured\");\n+      }\n       return res.status(500).json({ error: \"TMDB API key is not configured\" });\n     }",
           "actualWorkers": 1
         },
         "id": "setup",
@@ -108,27 +116,31 @@
         "retries": 2,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "commitHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20868305516"
+            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/92c30845186f546329464e009ab0ff172f57115e",
+            "commitHash": "92c30845186f546329464e009ab0ff172f57115e",
+            "prHref": "https://github.com/abiolaah/next-nefllix-clone/pull/26",
+            "prTitle": "Tests/alltest",
+            "prBaseHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20984947144"
           },
           "gitCommit": {
-            "shortHash": "aa9894e",
-            "hash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "subject": "Merge pull request #25 from abiolaah/tests/alltest",
-            "body": "Merge pull request #25 from abiolaah/tests/alltest\n\nfix: Use separate script file for test user creation, dashboard html code, dashboard generation, and test result generation in CI",
+            "shortHash": "92c3084",
+            "hash": "92c30845186f546329464e009ab0ff172f57115e",
+            "subject": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
+            "body": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7\n",
             "author": {
               "name": "Victoria Ajuwon",
               "email": "oluwapelumi.ajuwon@gmail.com",
-              "time": 1767820874000
+              "time": 1768372690000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1767820874000
+              "time": 1768372690000
             },
-            "branch": "main"
+            "branch": "HEAD"
           },
+          "gitDiff": "diff --git a/.github/workflows/jest-tests.yml b/.github/workflows/jest-tests.yml\nindex b742974..26f4939 100644\n--- a/.github/workflows/jest-tests.yml\n+++ b/.github/workflows/jest-tests.yml\n@@ -183,6 +183,7 @@ jobs:\n         env:\n           SKIP_ENV_VALIDATION: true\n           # 🎯 Add required environment variables for build\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -197,7 +198,11 @@ jobs:\n           npx playwright test\n         env:\n           CI: true\n+          NODE_ENV: production\n+          # Suppress Babel warnings about large files\n+          BABEL_COMPACT: false\n           # 🎯 Critical environment variables for E2E tests\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -332,6 +337,13 @@ jobs:\n           fetch-depth: 0\n           token: ${{ secrets.GITHUB_TOKEN }}\n \n+      - name: Clean submodule references\n+        run: |\n+          rm -f .gitmodules\n+          rm -rf main-branch\n+          git config --local --unset-all submodule.main-branch.url || true\n+          git rm --cached main-branch || true\n+\n       - name: Download all test artifacts\n         uses: actions/download-artifact@v4\n         with:\n@@ -362,6 +374,7 @@ jobs:\n             scripts/dashboard-template.html\n             scripts/generate-dashboard.ts\n             scripts/generate-test-result.ts\n+          sparse-checkout-cone: false\n \n       - name: Install tsx for TypeScript execution\n         run: npm install -g tsx\n@@ -395,6 +408,12 @@ jobs:\n \n           echo \"✅ Dashboard generated successfully\"\n \n+      # Clean up main-branch checkout before committing\n+      - name: Clean up temporary checkout\n+        run: |\n+          rm -rf main-branch\n+          git rm -rf --cached main-branch 2>/dev/null || true\n+\n       - name: Commit and push to gh-pages\n         run: |\n           git config user.name \"github-actions[bot]\"\ndiff --git a/components/Navbar.tsx b/components/Navbar.tsx\nindex a2a3fd1..7c82c5e 100644\n--- a/components/Navbar.tsx\n+++ b/components/Navbar.tsx\n@@ -201,7 +201,7 @@ const Navbar = () => {\n           >\n             <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n               <Image\n-                src={currentProfile?.avatar || \"\"}\n+                src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n                 width={30}\n                 height={30}\n                 alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/components/SettingsNavBar.tsx b/components/SettingsNavBar.tsx\nindex 24e3efb..513d644 100644\n--- a/components/SettingsNavBar.tsx\n+++ b/components/SettingsNavBar.tsx\n@@ -85,7 +85,7 @@ const SettingsNavBar = () => {\n         >\n           <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n             <Image\n-              src={currentProfile?.avatar || \"\"}\n+              src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n               width={30}\n               height={30}\n               alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/pages/api/auth/[...nextauth].ts b/pages/api/auth/[...nextauth].ts\nindex 3209aa0..1051dad 100644\n--- a/pages/api/auth/[...nextauth].ts\n+++ b/pages/api/auth/[...nextauth].ts\n@@ -85,7 +85,7 @@ export const authOptions = {\n   pages: {\n     signIn: \"/auth\",\n   },\n-  debug: process.env.NODE_ENV === \"development\",\n+  debug: process.env.NODE_ENV === \"development\" && !process.env.CI,\n   adapter: PrismaAdapter(prismadb),\n   session: {\n     strategy: \"jwt\" as const,\ndiff --git a/pages/api/movies/index.ts b/pages/api/movies/index.ts\nindex b049e12..3ebbaaf 100644\n--- a/pages/api/movies/index.ts\n+++ b/pages/api/movies/index.ts\n@@ -60,7 +60,9 @@ export default async function handler(\n     }\n \n     if (!TMDB_API_KEY) {\n-      console.error(\"TMDB API key is not configured\");\n+      if (!process.env.CI) {\n+        console.error(\"TMDB API key is not configured\");\n+      }\n       return res.status(500).json({ error: \"TMDB API key is not configured\" });\n     }",
           "actualWorkers": 1
         },
         "id": "chromium:authenticated",
@@ -146,27 +158,31 @@
         "retries": 2,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "commitHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20868305516"
+            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/92c30845186f546329464e009ab0ff172f57115e",
+            "commitHash": "92c30845186f546329464e009ab0ff172f57115e",
+            "prHref": "https://github.com/abiolaah/next-nefllix-clone/pull/26",
+            "prTitle": "Tests/alltest",
+            "prBaseHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20984947144"
           },
           "gitCommit": {
-            "shortHash": "aa9894e",
-            "hash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "subject": "Merge pull request #25 from abiolaah/tests/alltest",
-            "body": "Merge pull request #25 from abiolaah/tests/alltest\n\nfix: Use separate script file for test user creation, dashboard html code, dashboard generation, and test result generation in CI",
+            "shortHash": "92c3084",
+            "hash": "92c30845186f546329464e009ab0ff172f57115e",
+            "subject": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
+            "body": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7\n",
             "author": {
               "name": "Victoria Ajuwon",
               "email": "oluwapelumi.ajuwon@gmail.com",
-              "time": 1767820874000
+              "time": 1768372690000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1767820874000
+              "time": 1768372690000
             },
-            "branch": "main"
+            "branch": "HEAD"
           },
+          "gitDiff": "diff --git a/.github/workflows/jest-tests.yml b/.github/workflows/jest-tests.yml\nindex b742974..26f4939 100644\n--- a/.github/workflows/jest-tests.yml\n+++ b/.github/workflows/jest-tests.yml\n@@ -183,6 +183,7 @@ jobs:\n         env:\n           SKIP_ENV_VALIDATION: true\n           # 🎯 Add required environment variables for build\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -197,7 +198,11 @@ jobs:\n           npx playwright test\n         env:\n           CI: true\n+          NODE_ENV: production\n+          # Suppress Babel warnings about large files\n+          BABEL_COMPACT: false\n           # 🎯 Critical environment variables for E2E tests\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -332,6 +337,13 @@ jobs:\n           fetch-depth: 0\n           token: ${{ secrets.GITHUB_TOKEN }}\n \n+      - name: Clean submodule references\n+        run: |\n+          rm -f .gitmodules\n+          rm -rf main-branch\n+          git config --local --unset-all submodule.main-branch.url || true\n+          git rm --cached main-branch || true\n+\n       - name: Download all test artifacts\n         uses: actions/download-artifact@v4\n         with:\n@@ -362,6 +374,7 @@ jobs:\n             scripts/dashboard-template.html\n             scripts/generate-dashboard.ts\n             scripts/generate-test-result.ts\n+          sparse-checkout-cone: false\n \n       - name: Install tsx for TypeScript execution\n         run: npm install -g tsx\n@@ -395,6 +408,12 @@ jobs:\n \n           echo \"✅ Dashboard generated successfully\"\n \n+      # Clean up main-branch checkout before committing\n+      - name: Clean up temporary checkout\n+        run: |\n+          rm -rf main-branch\n+          git rm -rf --cached main-branch 2>/dev/null || true\n+\n       - name: Commit and push to gh-pages\n         run: |\n           git config user.name \"github-actions[bot]\"\ndiff --git a/components/Navbar.tsx b/components/Navbar.tsx\nindex a2a3fd1..7c82c5e 100644\n--- a/components/Navbar.tsx\n+++ b/components/Navbar.tsx\n@@ -201,7 +201,7 @@ const Navbar = () => {\n           >\n             <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n               <Image\n-                src={currentProfile?.avatar || \"\"}\n+                src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n                 width={30}\n                 height={30}\n                 alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/components/SettingsNavBar.tsx b/components/SettingsNavBar.tsx\nindex 24e3efb..513d644 100644\n--- a/components/SettingsNavBar.tsx\n+++ b/components/SettingsNavBar.tsx\n@@ -85,7 +85,7 @@ const SettingsNavBar = () => {\n         >\n           <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n             <Image\n-              src={currentProfile?.avatar || \"\"}\n+              src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n               width={30}\n               height={30}\n               alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/pages/api/auth/[...nextauth].ts b/pages/api/auth/[...nextauth].ts\nindex 3209aa0..1051dad 100644\n--- a/pages/api/auth/[...nextauth].ts\n+++ b/pages/api/auth/[...nextauth].ts\n@@ -85,7 +85,7 @@ export const authOptions = {\n   pages: {\n     signIn: \"/auth\",\n   },\n-  debug: process.env.NODE_ENV === \"development\",\n+  debug: process.env.NODE_ENV === \"development\" && !process.env.CI,\n   adapter: PrismaAdapter(prismadb),\n   session: {\n     strategy: \"jwt\" as const,\ndiff --git a/pages/api/movies/index.ts b/pages/api/movies/index.ts\nindex b049e12..3ebbaaf 100644\n--- a/pages/api/movies/index.ts\n+++ b/pages/api/movies/index.ts\n@@ -60,7 +60,9 @@ export default async function handler(\n     }\n \n     if (!TMDB_API_KEY) {\n-      console.error(\"TMDB API key is not configured\");\n+      if (!process.env.CI) {\n+        console.error(\"TMDB API key is not configured\");\n+      }\n       return res.status(500).json({ error: \"TMDB API key is not configured\" });\n     }",
           "actualWorkers": 1
         },
         "id": "firefox:authenticated",
@@ -184,27 +200,31 @@
         "retries": 2,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "commitHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20868305516"
+            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/92c30845186f546329464e009ab0ff172f57115e",
+            "commitHash": "92c30845186f546329464e009ab0ff172f57115e",
+            "prHref": "https://github.com/abiolaah/next-nefllix-clone/pull/26",
+            "prTitle": "Tests/alltest",
+            "prBaseHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20984947144"
           },
           "gitCommit": {
-            "shortHash": "aa9894e",
-            "hash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "subject": "Merge pull request #25 from abiolaah/tests/alltest",
-            "body": "Merge pull request #25 from abiolaah/tests/alltest\n\nfix: Use separate script file for test user creation, dashboard html code, dashboard generation, and test result generation in CI",
+            "shortHash": "92c3084",
+            "hash": "92c30845186f546329464e009ab0ff172f57115e",
+            "subject": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
+            "body": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7\n",
             "author": {
               "name": "Victoria Ajuwon",
               "email": "oluwapelumi.ajuwon@gmail.com",
-              "time": 1767820874000
+              "time": 1768372690000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1767820874000
+              "time": 1768372690000
             },
-            "branch": "main"
+            "branch": "HEAD"
           },
+          "gitDiff": "diff --git a/.github/workflows/jest-tests.yml b/.github/workflows/jest-tests.yml\nindex b742974..26f4939 100644\n--- a/.github/workflows/jest-tests.yml\n+++ b/.github/workflows/jest-tests.yml\n@@ -183,6 +183,7 @@ jobs:\n         env:\n           SKIP_ENV_VALIDATION: true\n           # 🎯 Add required environment variables for build\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -197,7 +198,11 @@ jobs:\n           npx playwright test\n         env:\n           CI: true\n+          NODE_ENV: production\n+          # Suppress Babel warnings about large files\n+          BABEL_COMPACT: false\n           # 🎯 Critical environment variables for E2E tests\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -332,6 +337,13 @@ jobs:\n           fetch-depth: 0\n           token: ${{ secrets.GITHUB_TOKEN }}\n \n+      - name: Clean submodule references\n+        run: |\n+          rm -f .gitmodules\n+          rm -rf main-branch\n+          git config --local --unset-all submodule.main-branch.url || true\n+          git rm --cached main-branch || true\n+\n       - name: Download all test artifacts\n         uses: actions/download-artifact@v4\n         with:\n@@ -362,6 +374,7 @@ jobs:\n             scripts/dashboard-template.html\n             scripts/generate-dashboard.ts\n             scripts/generate-test-result.ts\n+          sparse-checkout-cone: false\n \n       - name: Install tsx for TypeScript execution\n         run: npm install -g tsx\n@@ -395,6 +408,12 @@ jobs:\n \n           echo \"✅ Dashboard generated successfully\"\n \n+      # Clean up main-branch checkout before committing\n+      - name: Clean up temporary checkout\n+        run: |\n+          rm -rf main-branch\n+          git rm -rf --cached main-branch 2>/dev/null || true\n+\n       - name: Commit and push to gh-pages\n         run: |\n           git config user.name \"github-actions[bot]\"\ndiff --git a/components/Navbar.tsx b/components/Navbar.tsx\nindex a2a3fd1..7c82c5e 100644\n--- a/components/Navbar.tsx\n+++ b/components/Navbar.tsx\n@@ -201,7 +201,7 @@ const Navbar = () => {\n           >\n             <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n               <Image\n-                src={currentProfile?.avatar || \"\"}\n+                src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n                 width={30}\n                 height={30}\n                 alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/components/SettingsNavBar.tsx b/components/SettingsNavBar.tsx\nindex 24e3efb..513d644 100644\n--- a/components/SettingsNavBar.tsx\n+++ b/components/SettingsNavBar.tsx\n@@ -85,7 +85,7 @@ const SettingsNavBar = () => {\n         >\n           <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n             <Image\n-              src={currentProfile?.avatar || \"\"}\n+              src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n               width={30}\n               height={30}\n               alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/pages/api/auth/[...nextauth].ts b/pages/api/auth/[...nextauth].ts\nindex 3209aa0..1051dad 100644\n--- a/pages/api/auth/[...nextauth].ts\n+++ b/pages/api/auth/[...nextauth].ts\n@@ -85,7 +85,7 @@ export const authOptions = {\n   pages: {\n     signIn: \"/auth\",\n   },\n-  debug: process.env.NODE_ENV === \"development\",\n+  debug: process.env.NODE_ENV === \"development\" && !process.env.CI,\n   adapter: PrismaAdapter(prismadb),\n   session: {\n     strategy: \"jwt\" as const,\ndiff --git a/pages/api/movies/index.ts b/pages/api/movies/index.ts\nindex b049e12..3ebbaaf 100644\n--- a/pages/api/movies/index.ts\n+++ b/pages/api/movies/index.ts\n@@ -60,7 +60,9 @@ export default async function handler(\n     }\n \n     if (!TMDB_API_KEY) {\n-      console.error(\"TMDB API key is not configured\");\n+      if (!process.env.CI) {\n+        console.error(\"TMDB API key is not configured\");\n+      }\n       return res.status(500).json({ error: \"TMDB API key is not configured\" });\n     }",
           "actualWorkers": 1
         },
         "id": "webkit:authenticated",
@@ -222,27 +242,31 @@
         "retries": 2,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "commitHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20868305516"
+            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/92c30845186f546329464e009ab0ff172f57115e",
+            "commitHash": "92c30845186f546329464e009ab0ff172f57115e",
+            "prHref": "https://github.com/abiolaah/next-nefllix-clone/pull/26",
+            "prTitle": "Tests/alltest",
+            "prBaseHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20984947144"
           },
           "gitCommit": {
-            "shortHash": "aa9894e",
-            "hash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "subject": "Merge pull request #25 from abiolaah/tests/alltest",
-            "body": "Merge pull request #25 from abiolaah/tests/alltest\n\nfix: Use separate script file for test user creation, dashboard html code, dashboard generation, and test result generation in CI",
+            "shortHash": "92c3084",
+            "hash": "92c30845186f546329464e009ab0ff172f57115e",
+            "subject": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
+            "body": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7\n",
             "author": {
               "name": "Victoria Ajuwon",
               "email": "oluwapelumi.ajuwon@gmail.com",
-              "time": 1767820874000
+              "time": 1768372690000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1767820874000
+              "time": 1768372690000
             },
-            "branch": "main"
+            "branch": "HEAD"
           },
+          "gitDiff": "diff --git a/.github/workflows/jest-tests.yml b/.github/workflows/jest-tests.yml\nindex b742974..26f4939 100644\n--- a/.github/workflows/jest-tests.yml\n+++ b/.github/workflows/jest-tests.yml\n@@ -183,6 +183,7 @@ jobs:\n         env:\n           SKIP_ENV_VALIDATION: true\n           # 🎯 Add required environment variables for build\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -197,7 +198,11 @@ jobs:\n           npx playwright test\n         env:\n           CI: true\n+          NODE_ENV: production\n+          # Suppress Babel warnings about large files\n+          BABEL_COMPACT: false\n           # 🎯 Critical environment variables for E2E tests\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -332,6 +337,13 @@ jobs:\n           fetch-depth: 0\n           token: ${{ secrets.GITHUB_TOKEN }}\n \n+      - name: Clean submodule references\n+        run: |\n+          rm -f .gitmodules\n+          rm -rf main-branch\n+          git config --local --unset-all submodule.main-branch.url || true\n+          git rm --cached main-branch || true\n+\n       - name: Download all test artifacts\n         uses: actions/download-artifact@v4\n         with:\n@@ -362,6 +374,7 @@ jobs:\n             scripts/dashboard-template.html\n             scripts/generate-dashboard.ts\n             scripts/generate-test-result.ts\n+          sparse-checkout-cone: false\n \n       - name: Install tsx for TypeScript execution\n         run: npm install -g tsx\n@@ -395,6 +408,12 @@ jobs:\n \n           echo \"✅ Dashboard generated successfully\"\n \n+      # Clean up main-branch checkout before committing\n+      - name: Clean up temporary checkout\n+        run: |\n+          rm -rf main-branch\n+          git rm -rf --cached main-branch 2>/dev/null || true\n+\n       - name: Commit and push to gh-pages\n         run: |\n           git config user.name \"github-actions[bot]\"\ndiff --git a/components/Navbar.tsx b/components/Navbar.tsx\nindex a2a3fd1..7c82c5e 100644\n--- a/components/Navbar.tsx\n+++ b/components/Navbar.tsx\n@@ -201,7 +201,7 @@ const Navbar = () => {\n           >\n             <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n               <Image\n-                src={currentProfile?.avatar || \"\"}\n+                src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n                 width={30}\n                 height={30}\n                 alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/components/SettingsNavBar.tsx b/components/SettingsNavBar.tsx\nindex 24e3efb..513d644 100644\n--- a/components/SettingsNavBar.tsx\n+++ b/components/SettingsNavBar.tsx\n@@ -85,7 +85,7 @@ const SettingsNavBar = () => {\n         >\n           <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n             <Image\n-              src={currentProfile?.avatar || \"\"}\n+              src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n               width={30}\n               height={30}\n               alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/pages/api/auth/[...nextauth].ts b/pages/api/auth/[...nextauth].ts\nindex 3209aa0..1051dad 100644\n--- a/pages/api/auth/[...nextauth].ts\n+++ b/pages/api/auth/[...nextauth].ts\n@@ -85,7 +85,7 @@ export const authOptions = {\n   pages: {\n     signIn: \"/auth\",\n   },\n-  debug: process.env.NODE_ENV === \"development\",\n+  debug: process.env.NODE_ENV === \"development\" && !process.env.CI,\n   adapter: PrismaAdapter(prismadb),\n   session: {\n     strategy: \"jwt\" as const,\ndiff --git a/pages/api/movies/index.ts b/pages/api/movies/index.ts\nindex b049e12..3ebbaaf 100644\n--- a/pages/api/movies/index.ts\n+++ b/pages/api/movies/index.ts\n@@ -60,7 +60,9 @@ export default async function handler(\n     }\n \n     if (!TMDB_API_KEY) {\n-      console.error(\"TMDB API key is not configured\");\n+      if (!process.env.CI) {\n+        console.error(\"TMDB API key is not configured\");\n+      }\n       return res.status(500).json({ error: \"TMDB API key is not configured\" });\n     }",
           "actualWorkers": 1
         },
         "id": "chromium:public",
@@ -260,27 +284,31 @@
         "retries": 2,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "commitHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20868305516"
+            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/92c30845186f546329464e009ab0ff172f57115e",
+            "commitHash": "92c30845186f546329464e009ab0ff172f57115e",
+            "prHref": "https://github.com/abiolaah/next-nefllix-clone/pull/26",
+            "prTitle": "Tests/alltest",
+            "prBaseHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20984947144"
           },
           "gitCommit": {
-            "shortHash": "aa9894e",
-            "hash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "subject": "Merge pull request #25 from abiolaah/tests/alltest",
-            "body": "Merge pull request #25 from abiolaah/tests/alltest\n\nfix: Use separate script file for test user creation, dashboard html code, dashboard generation, and test result generation in CI",
+            "shortHash": "92c3084",
+            "hash": "92c30845186f546329464e009ab0ff172f57115e",
+            "subject": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
+            "body": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7\n",
             "author": {
               "name": "Victoria Ajuwon",
               "email": "oluwapelumi.ajuwon@gmail.com",
-              "time": 1767820874000
+              "time": 1768372690000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1767820874000
+              "time": 1768372690000
             },
-            "branch": "main"
+            "branch": "HEAD"
           },
+          "gitDiff": "diff --git a/.github/workflows/jest-tests.yml b/.github/workflows/jest-tests.yml\nindex b742974..26f4939 100644\n--- a/.github/workflows/jest-tests.yml\n+++ b/.github/workflows/jest-tests.yml\n@@ -183,6 +183,7 @@ jobs:\n         env:\n           SKIP_ENV_VALIDATION: true\n           # 🎯 Add required environment variables for build\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -197,7 +198,11 @@ jobs:\n           npx playwright test\n         env:\n           CI: true\n+          NODE_ENV: production\n+          # Suppress Babel warnings about large files\n+          BABEL_COMPACT: false\n           # 🎯 Critical environment variables for E2E tests\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -332,6 +337,13 @@ jobs:\n           fetch-depth: 0\n           token: ${{ secrets.GITHUB_TOKEN }}\n \n+      - name: Clean submodule references\n+        run: |\n+          rm -f .gitmodules\n+          rm -rf main-branch\n+          git config --local --unset-all submodule.main-branch.url || true\n+          git rm --cached main-branch || true\n+\n       - name: Download all test artifacts\n         uses: actions/download-artifact@v4\n         with:\n@@ -362,6 +374,7 @@ jobs:\n             scripts/dashboard-template.html\n             scripts/generate-dashboard.ts\n             scripts/generate-test-result.ts\n+          sparse-checkout-cone: false\n \n       - name: Install tsx for TypeScript execution\n         run: npm install -g tsx\n@@ -395,6 +408,12 @@ jobs:\n \n           echo \"✅ Dashboard generated successfully\"\n \n+      # Clean up main-branch checkout before committing\n+      - name: Clean up temporary checkout\n+        run: |\n+          rm -rf main-branch\n+          git rm -rf --cached main-branch 2>/dev/null || true\n+\n       - name: Commit and push to gh-pages\n         run: |\n           git config user.name \"github-actions[bot]\"\ndiff --git a/components/Navbar.tsx b/components/Navbar.tsx\nindex a2a3fd1..7c82c5e 100644\n--- a/components/Navbar.tsx\n+++ b/components/Navbar.tsx\n@@ -201,7 +201,7 @@ const Navbar = () => {\n           >\n             <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n               <Image\n-                src={currentProfile?.avatar || \"\"}\n+                src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n                 width={30}\n                 height={30}\n                 alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/components/SettingsNavBar.tsx b/components/SettingsNavBar.tsx\nindex 24e3efb..513d644 100644\n--- a/components/SettingsNavBar.tsx\n+++ b/components/SettingsNavBar.tsx\n@@ -85,7 +85,7 @@ const SettingsNavBar = () => {\n         >\n           <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n             <Image\n-              src={currentProfile?.avatar || \"\"}\n+              src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n               width={30}\n               height={30}\n               alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/pages/api/auth/[...nextauth].ts b/pages/api/auth/[...nextauth].ts\nindex 3209aa0..1051dad 100644\n--- a/pages/api/auth/[...nextauth].ts\n+++ b/pages/api/auth/[...nextauth].ts\n@@ -85,7 +85,7 @@ export const authOptions = {\n   pages: {\n     signIn: \"/auth\",\n   },\n-  debug: process.env.NODE_ENV === \"development\",\n+  debug: process.env.NODE_ENV === \"development\" && !process.env.CI,\n   adapter: PrismaAdapter(prismadb),\n   session: {\n     strategy: \"jwt\" as const,\ndiff --git a/pages/api/movies/index.ts b/pages/api/movies/index.ts\nindex b049e12..3ebbaaf 100644\n--- a/pages/api/movies/index.ts\n+++ b/pages/api/movies/index.ts\n@@ -60,7 +60,9 @@ export default async function handler(\n     }\n \n     if (!TMDB_API_KEY) {\n-      console.error(\"TMDB API key is not configured\");\n+      if (!process.env.CI) {\n+        console.error(\"TMDB API key is not configured\");\n+      }\n       return res.status(500).json({ error: \"TMDB API key is not configured\" });\n     }",
           "actualWorkers": 1
         },
         "id": "firefox:public",
@@ -298,27 +326,31 @@
         "retries": 2,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "commitHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20868305516"
+            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/92c30845186f546329464e009ab0ff172f57115e",
+            "commitHash": "92c30845186f546329464e009ab0ff172f57115e",
+            "prHref": "https://github.com/abiolaah/next-nefllix-clone/pull/26",
+            "prTitle": "Tests/alltest",
+            "prBaseHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20984947144"
           },
           "gitCommit": {
-            "shortHash": "aa9894e",
-            "hash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "subject": "Merge pull request #25 from abiolaah/tests/alltest",
-            "body": "Merge pull request #25 from abiolaah/tests/alltest\n\nfix: Use separate script file for test user creation, dashboard html code, dashboard generation, and test result generation in CI",
+            "shortHash": "92c3084",
+            "hash": "92c30845186f546329464e009ab0ff172f57115e",
+            "subject": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
+            "body": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7\n",
             "author": {
               "name": "Victoria Ajuwon",
               "email": "oluwapelumi.ajuwon@gmail.com",
-              "time": 1767820874000
+              "time": 1768372690000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1767820874000
+              "time": 1768372690000
             },
-            "branch": "main"
+            "branch": "HEAD"
           },
+          "gitDiff": "diff --git a/.github/workflows/jest-tests.yml b/.github/workflows/jest-tests.yml\nindex b742974..26f4939 100644\n--- a/.github/workflows/jest-tests.yml\n+++ b/.github/workflows/jest-tests.yml\n@@ -183,6 +183,7 @@ jobs:\n         env:\n           SKIP_ENV_VALIDATION: true\n           # 🎯 Add required environment variables for build\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -197,7 +198,11 @@ jobs:\n           npx playwright test\n         env:\n           CI: true\n+          NODE_ENV: production\n+          # Suppress Babel warnings about large files\n+          BABEL_COMPACT: false\n           # 🎯 Critical environment variables for E2E tests\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -332,6 +337,13 @@ jobs:\n           fetch-depth: 0\n           token: ${{ secrets.GITHUB_TOKEN }}\n \n+      - name: Clean submodule references\n+        run: |\n+          rm -f .gitmodules\n+          rm -rf main-branch\n+          git config --local --unset-all submodule.main-branch.url || true\n+          git rm --cached main-branch || true\n+\n       - name: Download all test artifacts\n         uses: actions/download-artifact@v4\n         with:\n@@ -362,6 +374,7 @@ jobs:\n             scripts/dashboard-template.html\n             scripts/generate-dashboard.ts\n             scripts/generate-test-result.ts\n+          sparse-checkout-cone: false\n \n       - name: Install tsx for TypeScript execution\n         run: npm install -g tsx\n@@ -395,6 +408,12 @@ jobs:\n \n           echo \"✅ Dashboard generated successfully\"\n \n+      # Clean up main-branch checkout before committing\n+      - name: Clean up temporary checkout\n+        run: |\n+          rm -rf main-branch\n+          git rm -rf --cached main-branch 2>/dev/null || true\n+\n       - name: Commit and push to gh-pages\n         run: |\n           git config user.name \"github-actions[bot]\"\ndiff --git a/components/Navbar.tsx b/components/Navbar.tsx\nindex a2a3fd1..7c82c5e 100644\n--- a/components/Navbar.tsx\n+++ b/components/Navbar.tsx\n@@ -201,7 +201,7 @@ const Navbar = () => {\n           >\n             <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n               <Image\n-                src={currentProfile?.avatar || \"\"}\n+                src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n                 width={30}\n                 height={30}\n                 alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/components/SettingsNavBar.tsx b/components/SettingsNavBar.tsx\nindex 24e3efb..513d644 100644\n--- a/components/SettingsNavBar.tsx\n+++ b/components/SettingsNavBar.tsx\n@@ -85,7 +85,7 @@ const SettingsNavBar = () => {\n         >\n           <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n             <Image\n-              src={currentProfile?.avatar || \"\"}\n+              src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n               width={30}\n               height={30}\n               alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/pages/api/auth/[...nextauth].ts b/pages/api/auth/[...nextauth].ts\nindex 3209aa0..1051dad 100644\n--- a/pages/api/auth/[...nextauth].ts\n+++ b/pages/api/auth/[...nextauth].ts\n@@ -85,7 +85,7 @@ export const authOptions = {\n   pages: {\n     signIn: \"/auth\",\n   },\n-  debug: process.env.NODE_ENV === \"development\",\n+  debug: process.env.NODE_ENV === \"development\" && !process.env.CI,\n   adapter: PrismaAdapter(prismadb),\n   session: {\n     strategy: \"jwt\" as const,\ndiff --git a/pages/api/movies/index.ts b/pages/api/movies/index.ts\nindex b049e12..3ebbaaf 100644\n--- a/pages/api/movies/index.ts\n+++ b/pages/api/movies/index.ts\n@@ -60,7 +60,9 @@ export default async function handler(\n     }\n \n     if (!TMDB_API_KEY) {\n-      console.error(\"TMDB API key is not configured\");\n+      if (!process.env.CI) {\n+        console.error(\"TMDB API key is not configured\");\n+      }\n       return res.status(500).json({ error: \"TMDB API key is not configured\" });\n     }",
           "actualWorkers": 1
         },
         "id": "webkit:public",
@@ -367,7 +399,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 22522,
+                  "duration": 21757,
                   "errors": [],
                   "stdout": [
                     {
@@ -415,7 +447,7 @@
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-01-09T23:16:03.397Z",
+                  "startTime": "2026-01-14T06:41:31.665Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -459,12 +491,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 9273,
+                      "duration": 9422,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-09T23:16:51.401Z",
+                      "startTime": "2026-01-14T06:42:19.980Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -490,15 +522,15 @@
                   "projectName": "firefox:authenticated",
                   "results": [
                     {
-                      "workerIndex": 10,
+                      "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4256,
+                      "duration": 3210,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-09T23:18:45.713Z",
+                      "startTime": "2026-01-14T06:42:50.604Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -524,15 +556,15 @@
                   "projectName": "webkit:authenticated",
                   "results": [
                     {
-                      "workerIndex": 16,
+                      "workerIndex": 6,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3028,
+                      "duration": 2903,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-09T23:20:46.313Z",
+                      "startTime": "2026-01-14T06:43:05.963Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -564,7 +596,7 @@
           "specs": [
             {
               "title": "can open a content details modal/card from browse",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -577,169 +609,18 @@
                     {
                       "workerIndex": 4,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 18462,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                          "column": 27,
-                          "line": 21
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 19 |\u001b[39m     \u001b[90m// Wait for a movie card to render\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[36mconst\u001b[39m anyCard \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m expect(anyCard)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m15000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[90m// console.log(\"✅ Successfully located movie card on browse page\");\u001b[39m\n \u001b[90m 23 |\u001b[39m\n \u001b[90m 24 |\u001b[39m     \u001b[90m// Hover to expand and click info button\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                            "column": 27,
-                            "line": 21
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  19 |     // Wait for a movie card to render\n  20 |     const anyCard = page.locator('[data-testid=\"movie-card\"]').first();\n> 21 |     await expect(anyCard).toBeVisible({ timeout: 15000 });\n     |                           ^\n  22 |     // console.log(\"✅ Successfully located movie card on browse page\");\n  23 |\n  24 |     // Hover to expand and click info button\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 10721,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-09T23:17:00.843Z",
+                      "startTime": "2026-01-14T06:42:29.498Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-chromium-authenticated/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-chromium-authenticated/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-chromium-authenticated/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                        "column": 27,
-                        "line": 21
-                      }
-                    },
-                    {
-                      "workerIndex": 5,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 18898,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                          "column": 27,
-                          "line": 21
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 19 |\u001b[39m     \u001b[90m// Wait for a movie card to render\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[36mconst\u001b[39m anyCard \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m expect(anyCard)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m15000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[90m// console.log(\"✅ Successfully located movie card on browse page\");\u001b[39m\n \u001b[90m 23 |\u001b[39m\n \u001b[90m 24 |\u001b[39m     \u001b[90m// Hover to expand and click info button\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                            "column": 27,
-                            "line": 21
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  19 |     // Wait for a movie card to render\n  20 |     const anyCard = page.locator('[data-testid=\"movie-card\"]').first();\n> 21 |     await expect(anyCard).toBeVisible({ timeout: 15000 });\n     |                           ^\n  22 |     // console.log(\"✅ Successfully located movie card on browse page\");\n  23 |\n  24 |     // Hover to expand and click info button\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2026-01-09T23:17:19.926Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-chromium-authenticated-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-chromium-authenticated-retry1/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-chromium-authenticated-retry1/error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-chromium-authenticated-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                        "column": 27,
-                        "line": 21
-                      }
-                    },
-                    {
-                      "workerIndex": 6,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 17930,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                          "column": 27,
-                          "line": 21
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 19 |\u001b[39m     \u001b[90m// Wait for a movie card to render\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[36mconst\u001b[39m anyCard \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m expect(anyCard)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m15000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[90m// console.log(\"✅ Successfully located movie card on browse page\");\u001b[39m\n \u001b[90m 23 |\u001b[39m\n \u001b[90m 24 |\u001b[39m     \u001b[90m// Hover to expand and click info button\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                            "column": 27,
-                            "line": 21
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  19 |     // Wait for a movie card to render\n  20 |     const anyCard = page.locator('[data-testid=\"movie-card\"]').first();\n> 21 |     await expect(anyCard).toBeVisible({ timeout: 15000 });\n     |                           ^\n  22 |     // console.log(\"✅ Successfully located movie card on browse page\");\n  23 |\n  24 |     // Hover to expand and click info button\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 2,
-                      "startTime": "2026-01-09T23:17:39.609Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-chromium-authenticated-retry2/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-chromium-authenticated-retry2/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-chromium-authenticated-retry2/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                        "column": 27,
-                        "line": 21
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "52b650dc819884b9db0f-9a574569666f6f9e5432",
@@ -749,7 +630,7 @@
             },
             {
               "title": "can open a content details modal/card from browse",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -760,171 +641,20 @@
                   "projectName": "firefox:authenticated",
                   "results": [
                     {
-                      "workerIndex": 10,
+                      "workerIndex": 5,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 18310,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                          "column": 27,
-                          "line": 21
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 19 |\u001b[39m     \u001b[90m// Wait for a movie card to render\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[36mconst\u001b[39m anyCard \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m expect(anyCard)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m15000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[90m// console.log(\"✅ Successfully located movie card on browse page\");\u001b[39m\n \u001b[90m 23 |\u001b[39m\n \u001b[90m 24 |\u001b[39m     \u001b[90m// Hover to expand and click info button\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                            "column": 27,
-                            "line": 21
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  19 |     // Wait for a movie card to render\n  20 |     const anyCard = page.locator('[data-testid=\"movie-card\"]').first();\n> 21 |     await expect(anyCard).toBeVisible({ timeout: 15000 });\n     |                           ^\n  22 |     // console.log(\"✅ Successfully located movie card on browse page\");\n  23 |\n  24 |     // Hover to expand and click info button\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 4364,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-09T23:18:50.367Z",
+                      "startTime": "2026-01-14T06:42:54.197Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-firefox-authenticated/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-firefox-authenticated/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-firefox-authenticated/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                        "column": 27,
-                        "line": 21
-                      }
-                    },
-                    {
-                      "workerIndex": 11,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 22383,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                          "column": 27,
-                          "line": 21
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 19 |\u001b[39m     \u001b[90m// Wait for a movie card to render\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[36mconst\u001b[39m anyCard \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m expect(anyCard)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m15000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[90m// console.log(\"✅ Successfully located movie card on browse page\");\u001b[39m\n \u001b[90m 23 |\u001b[39m\n \u001b[90m 24 |\u001b[39m     \u001b[90m// Hover to expand and click info button\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                            "column": 27,
-                            "line": 21
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  19 |     // Wait for a movie card to render\n  20 |     const anyCard = page.locator('[data-testid=\"movie-card\"]').first();\n> 21 |     await expect(anyCard).toBeVisible({ timeout: 15000 });\n     |                           ^\n  22 |     // console.log(\"✅ Successfully located movie card on browse page\");\n  23 |\n  24 |     // Hover to expand and click info button\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2026-01-09T23:19:09.760Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-firefox-authenticated-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-firefox-authenticated-retry1/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-firefox-authenticated-retry1/error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-firefox-authenticated-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                        "column": 27,
-                        "line": 21
-                      }
-                    },
-                    {
-                      "workerIndex": 12,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 18770,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                          "column": 27,
-                          "line": 21
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 19 |\u001b[39m     \u001b[90m// Wait for a movie card to render\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[36mconst\u001b[39m anyCard \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m expect(anyCard)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m15000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[90m// console.log(\"✅ Successfully located movie card on browse page\");\u001b[39m\n \u001b[90m 23 |\u001b[39m\n \u001b[90m 24 |\u001b[39m     \u001b[90m// Hover to expand and click info button\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                            "column": 27,
-                            "line": 21
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  19 |     // Wait for a movie card to render\n  20 |     const anyCard = page.locator('[data-testid=\"movie-card\"]').first();\n> 21 |     await expect(anyCard).toBeVisible({ timeout: 15000 });\n     |                           ^\n  22 |     // console.log(\"✅ Successfully located movie card on browse page\");\n  23 |\n  24 |     // Hover to expand and click info button\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 2,
-                      "startTime": "2026-01-09T23:19:33.883Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-firefox-authenticated-retry2/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-firefox-authenticated-retry2/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-firefox-authenticated-retry2/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                        "column": 27,
-                        "line": 21
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "52b650dc819884b9db0f-c10bcca3b164603e9393",
@@ -934,7 +664,7 @@
             },
             {
               "title": "can open a content details modal/card from browse",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -945,171 +675,20 @@
                   "projectName": "webkit:authenticated",
                   "results": [
                     {
-                      "workerIndex": 16,
+                      "workerIndex": 6,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 19492,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                          "column": 27,
-                          "line": 21
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 19 |\u001b[39m     \u001b[90m// Wait for a movie card to render\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[36mconst\u001b[39m anyCard \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m expect(anyCard)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m15000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[90m// console.log(\"✅ Successfully located movie card on browse page\");\u001b[39m\n \u001b[90m 23 |\u001b[39m\n \u001b[90m 24 |\u001b[39m     \u001b[90m// Hover to expand and click info button\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                            "column": 27,
-                            "line": 21
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  19 |     // Wait for a movie card to render\n  20 |     const anyCard = page.locator('[data-testid=\"movie-card\"]').first();\n> 21 |     await expect(anyCard).toBeVisible({ timeout: 15000 });\n     |                           ^\n  22 |     // console.log(\"✅ Successfully located movie card on browse page\");\n  23 |\n  24 |     // Hover to expand and click info button\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 12362,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-09T23:20:49.461Z",
+                      "startTime": "2026-01-14T06:43:08.981Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-webkit-authenticated/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-webkit-authenticated/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-webkit-authenticated/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                        "column": 27,
-                        "line": 21
-                      }
-                    },
-                    {
-                      "workerIndex": 17,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 19565,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                          "column": 27,
-                          "line": 21
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 19 |\u001b[39m     \u001b[90m// Wait for a movie card to render\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[36mconst\u001b[39m anyCard \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m expect(anyCard)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m15000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[90m// console.log(\"✅ Successfully located movie card on browse page\");\u001b[39m\n \u001b[90m 23 |\u001b[39m\n \u001b[90m 24 |\u001b[39m     \u001b[90m// Hover to expand and click info button\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                            "column": 27,
-                            "line": 21
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  19 |     // Wait for a movie card to render\n  20 |     const anyCard = page.locator('[data-testid=\"movie-card\"]').first();\n> 21 |     await expect(anyCard).toBeVisible({ timeout: 15000 });\n     |                           ^\n  22 |     // console.log(\"✅ Successfully located movie card on browse page\");\n  23 |\n  24 |     // Hover to expand and click info button\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2026-01-09T23:21:09.567Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-webkit-authenticated-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-webkit-authenticated-retry1/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-webkit-authenticated-retry1/error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-webkit-authenticated-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                        "column": 27,
-                        "line": 21
-                      }
-                    },
-                    {
-                      "workerIndex": 18,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 18309,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                          "column": 27,
-                          "line": 21
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 19 |\u001b[39m     \u001b[90m// Wait for a movie card to render\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[36mconst\u001b[39m anyCard \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m expect(anyCard)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m15000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[90m// console.log(\"✅ Successfully located movie card on browse page\");\u001b[39m\n \u001b[90m 23 |\u001b[39m\n \u001b[90m 24 |\u001b[39m     \u001b[90m// Hover to expand and click info button\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                            "column": 27,
-                            "line": 21
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  19 |     // Wait for a movie card to render\n  20 |     const anyCard = page.locator('[data-testid=\"movie-card\"]').first();\n> 21 |     await expect(anyCard).toBeVisible({ timeout: 15000 });\n     |                           ^\n  22 |     // console.log(\"✅ Successfully located movie card on browse page\");\n  23 |\n  24 |     // Hover to expand and click info button\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:21:27"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 2,
-                      "startTime": "2026-01-09T23:21:30.016Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-webkit-authenticated-retry2/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-webkit-authenticated-retry2/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-webkit-authenticated-retry2/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
-                        "column": 27,
-                        "line": 21
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "52b650dc819884b9db0f-9e6ebe5c93c013bb68df",
@@ -1147,15 +726,15 @@
                   "projectName": "chromium:authenticated",
                   "results": [
                     {
-                      "workerIndex": 7,
+                      "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 6426,
+                      "duration": 6301,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-09T23:17:58.227Z",
+                      "startTime": "2026-01-14T06:42:40.256Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1181,15 +760,15 @@
                   "projectName": "firefox:authenticated",
                   "results": [
                     {
-                      "workerIndex": 13,
+                      "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3858,
+                      "duration": 2738,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-09T23:19:55.002Z",
+                      "startTime": "2026-01-14T06:42:58.589Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1215,15 +794,15 @@
                   "projectName": "webkit:authenticated",
                   "results": [
                     {
-                      "workerIndex": 19,
+                      "workerIndex": 6,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2661,
+                      "duration": 3117,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-09T23:21:49.177Z",
+                      "startTime": "2026-01-14T06:43:21.387Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1255,7 +834,7 @@
           "specs": [
             {
               "title": "shows recommended rows on browse page",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -1266,171 +845,20 @@
                   "projectName": "chromium:authenticated",
                   "results": [
                     {
-                      "workerIndex": 7,
+                      "workerIndex": 4,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 13144,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                          "column": 33,
-                          "line": 15
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 13 |\u001b[39m     \u001b[90m// Presence of multiple movie cards implies recommendations rendered\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mconst\u001b[39m cards \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m     \u001b[36mawait\u001b[39m expect(cards\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 17 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                            "column": 33,
-                            "line": 15
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  13 |     // Presence of multiple movie cards implies recommendations rendered\n  14 |     const cards = page.locator('[data-testid=\"movie-card\"]');\n> 15 |     await expect(cards.first()).toBeVisible();\n     |                                 ^\n  16 |   });\n  17 | });\n  18 |\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 3270,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-09T23:18:04.742Z",
+                      "startTime": "2026-01-14T06:42:46.591Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-chromium-authenticated/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-chromium-authenticated/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-chromium-authenticated/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                        "column": 33,
-                        "line": 15
-                      }
-                    },
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 13316,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                          "column": 33,
-                          "line": 15
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 13 |\u001b[39m     \u001b[90m// Presence of multiple movie cards implies recommendations rendered\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mconst\u001b[39m cards \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m     \u001b[36mawait\u001b[39m expect(cards\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 17 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                            "column": 33,
-                            "line": 15
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  13 |     // Presence of multiple movie cards implies recommendations rendered\n  14 |     const cards = page.locator('[data-testid=\"movie-card\"]');\n> 15 |     await expect(cards.first()).toBeVisible();\n     |                                 ^\n  16 |   });\n  17 | });\n  18 |\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2026-01-09T23:18:18.485Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-chromium-authenticated-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-chromium-authenticated-retry1/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-chromium-authenticated-retry1/error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-chromium-authenticated-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                        "column": 33,
-                        "line": 15
-                      }
-                    },
-                    {
-                      "workerIndex": 9,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 12464,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                          "column": 33,
-                          "line": 15
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 13 |\u001b[39m     \u001b[90m// Presence of multiple movie cards implies recommendations rendered\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mconst\u001b[39m cards \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m     \u001b[36mawait\u001b[39m expect(cards\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 17 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                            "column": 33,
-                            "line": 15
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  13 |     // Presence of multiple movie cards implies recommendations rendered\n  14 |     const cards = page.locator('[data-testid=\"movie-card\"]');\n> 15 |     await expect(cards.first()).toBeVisible();\n     |                                 ^\n  16 |   });\n  17 | });\n  18 |\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 2,
-                      "startTime": "2026-01-09T23:18:32.573Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-chromium-authenticated-retry2/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-chromium-authenticated-retry2/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-chromium-authenticated-retry2/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                        "column": 33,
-                        "line": 15
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "7b94f21feaaad7fa869e-dffd09ef5b162c9ec988",
@@ -1440,7 +868,7 @@
             },
             {
               "title": "shows recommended rows on browse page",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -1451,171 +879,20 @@
                   "projectName": "firefox:authenticated",
                   "results": [
                     {
-                      "workerIndex": 13,
+                      "workerIndex": 5,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 12478,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                          "column": 33,
-                          "line": 15
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 13 |\u001b[39m     \u001b[90m// Presence of multiple movie cards implies recommendations rendered\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mconst\u001b[39m cards \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m     \u001b[36mawait\u001b[39m expect(cards\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 17 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                            "column": 33,
-                            "line": 15
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  13 |     // Presence of multiple movie cards implies recommendations rendered\n  14 |     const cards = page.locator('[data-testid=\"movie-card\"]');\n> 15 |     await expect(cards.first()).toBeVisible();\n     |                                 ^\n  16 |   });\n  17 | });\n  18 |\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 3507,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-09T23:19:59.285Z",
+                      "startTime": "2026-01-14T06:43:01.349Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-firefox-authenticated/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-firefox-authenticated/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-firefox-authenticated/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                        "column": 33,
-                        "line": 15
-                      }
-                    },
-                    {
-                      "workerIndex": 14,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 16856,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                          "column": 33,
-                          "line": 15
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 13 |\u001b[39m     \u001b[90m// Presence of multiple movie cards implies recommendations rendered\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mconst\u001b[39m cards \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m     \u001b[36mawait\u001b[39m expect(cards\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 17 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                            "column": 33,
-                            "line": 15
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  13 |     // Presence of multiple movie cards implies recommendations rendered\n  14 |     const cards = page.locator('[data-testid=\"movie-card\"]');\n> 15 |     await expect(cards.first()).toBeVisible();\n     |                                 ^\n  16 |   });\n  17 | });\n  18 |\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2026-01-09T23:20:12.863Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-firefox-authenticated-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-firefox-authenticated-retry1/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-firefox-authenticated-retry1/error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-firefox-authenticated-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                        "column": 33,
-                        "line": 15
-                      }
-                    },
-                    {
-                      "workerIndex": 15,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 13485,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                          "column": 33,
-                          "line": 15
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 13 |\u001b[39m     \u001b[90m// Presence of multiple movie cards implies recommendations rendered\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mconst\u001b[39m cards \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m     \u001b[36mawait\u001b[39m expect(cards\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 17 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                            "column": 33,
-                            "line": 15
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  13 |     // Presence of multiple movie cards implies recommendations rendered\n  14 |     const cards = page.locator('[data-testid=\"movie-card\"]');\n> 15 |     await expect(cards.first()).toBeVisible();\n     |                                 ^\n  16 |   });\n  17 | });\n  18 |\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 2,
-                      "startTime": "2026-01-09T23:20:31.372Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-firefox-authenticated-retry2/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-firefox-authenticated-retry2/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-firefox-authenticated-retry2/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                        "column": 33,
-                        "line": 15
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "7b94f21feaaad7fa869e-2673fcf047ba3996119f",
@@ -1625,7 +902,7 @@
             },
             {
               "title": "shows recommended rows on browse page",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -1636,171 +913,20 @@
                   "projectName": "webkit:authenticated",
                   "results": [
                     {
-                      "workerIndex": 19,
+                      "workerIndex": 6,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 13968,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                          "column": 33,
-                          "line": 15
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 13 |\u001b[39m     \u001b[90m// Presence of multiple movie cards implies recommendations rendered\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mconst\u001b[39m cards \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m     \u001b[36mawait\u001b[39m expect(cards\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 17 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                            "column": 33,
-                            "line": 15
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  13 |     // Presence of multiple movie cards implies recommendations rendered\n  14 |     const cards = page.locator('[data-testid=\"movie-card\"]');\n> 15 |     await expect(cards.first()).toBeVisible();\n     |                                 ^\n  16 |   });\n  17 | });\n  18 |\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 6554,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-09T23:21:51.952Z",
+                      "startTime": "2026-01-14T06:43:24.539Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-webkit-authenticated/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-webkit-authenticated/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-webkit-authenticated/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                        "column": 33,
-                        "line": 15
-                      }
-                    },
-                    {
-                      "workerIndex": 20,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 13484,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                          "column": 33,
-                          "line": 15
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 13 |\u001b[39m     \u001b[90m// Presence of multiple movie cards implies recommendations rendered\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mconst\u001b[39m cards \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m     \u001b[36mawait\u001b[39m expect(cards\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 17 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                            "column": 33,
-                            "line": 15
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  13 |     // Presence of multiple movie cards implies recommendations rendered\n  14 |     const cards = page.locator('[data-testid=\"movie-card\"]');\n> 15 |     await expect(cards.first()).toBeVisible();\n     |                                 ^\n  16 |   });\n  17 | });\n  18 |\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2026-01-09T23:22:06.522Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-webkit-authenticated-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-webkit-authenticated-retry1/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-webkit-authenticated-retry1/error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-webkit-authenticated-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                        "column": 33,
-                        "line": 15
-                      }
-                    },
-                    {
-                      "workerIndex": 21,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 13631,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33",
-                        "location": {
-                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                          "column": 33,
-                          "line": 15
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 13 |\u001b[39m     \u001b[90m// Presence of multiple movie cards implies recommendations rendered\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mconst\u001b[39m cards \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"movie-card\"]'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m     \u001b[36mawait\u001b[39m expect(cards\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 17 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                            "column": 33,
-                            "line": 15
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-testid=\"movie-card\"]').first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"movie-card\"]').first()\u001b[22m\n\n\n  13 |     // Presence of multiple movie cards implies recommendations rendered\n  14 |     const cards = page.locator('[data-testid=\"movie-card\"]');\n> 15 |     await expect(cards.first()).toBeVisible();\n     |                                 ^\n  16 |   });\n  17 | });\n  18 |\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts:15:33"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 2,
-                      "startTime": "2026-01-09T23:22:21.700Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-webkit-authenticated-retry2/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-webkit-authenticated-retry2/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/recommendations.e2e-Recomm-0ce8a-mmended-rows-on-browse-page-webkit-authenticated-retry2/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/recommendations.e2e.test.ts",
-                        "column": 33,
-                        "line": 15
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "7b94f21feaaad7fa869e-131f8db4c714c5b1d6ec",
@@ -1841,12 +967,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 10140,
+                      "duration": 10722,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-09T23:16:27.675Z",
+                      "startTime": "2026-01-14T06:41:55.154Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1875,12 +1001,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3228,
+                      "duration": 3241,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-09T23:16:38.539Z",
+                      "startTime": "2026-01-14T06:42:06.619Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1909,12 +1035,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 6557,
+                      "duration": 7059,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-09T23:16:43.339Z",
+                      "startTime": "2026-01-14T06:42:11.457Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1934,11 +1060,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-01-09T23:15:33.380Z",
-    "duration": 422254.608,
-    "expected": 10,
+    "startTime": "2026-01-14T06:41:01.343Z",
+    "duration": 150025.66900000002,
+    "expected": 16,
     "skipped": 0,
-    "unexpected": 6,
+    "unexpected": 0,
     "flaky": 0
   }
 }
