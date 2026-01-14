@@ -201,7 +201,7 @@ const Navbar = () => {
           >
             <div className="w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden">
               <Image
-                src={currentProfile?.avatar || ""}
+                src={currentProfile?.avatar || "/images/placeholder.jpg"}
                 width={30}
                 height={30}
                 alt={`Avatar for ${currentProfile?.name}`}

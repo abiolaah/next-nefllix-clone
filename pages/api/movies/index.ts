@@ -60,7 +60,9 @@ export default async function handler(
     }
 
     if (!TMDB_API_KEY) {
-      console.error("TMDB API key is not configured");
+      if (!process.env.CI) {
+        console.error("TMDB API key is not configured");
+      }
       return res.status(500).json({ error: "TMDB API key is not configured" });
     }
 
