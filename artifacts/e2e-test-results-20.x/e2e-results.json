@@ -12,31 +12,27 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/92c30845186f546329464e009ab0ff172f57115e",
-        "commitHash": "92c30845186f546329464e009ab0ff172f57115e",
-        "prHref": "https://github.com/abiolaah/next-nefllix-clone/pull/26",
-        "prTitle": "Tests/alltest",
-        "prBaseHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-        "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20984947144"
+        "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+        "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+        "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20985562805"
       },
       "gitCommit": {
-        "shortHash": "92c3084",
-        "hash": "92c30845186f546329464e009ab0ff172f57115e",
-        "subject": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-        "body": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7\n",
+        "shortHash": "126f786",
+        "hash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+        "subject": "Merge pull request #26 from abiolaah/tests/alltest",
+        "body": "Merge pull request #26 from abiolaah/tests/alltest\n\nTests/alltest",
         "author": {
           "name": "Victoria Ajuwon",
           "email": "oluwapelumi.ajuwon@gmail.com",
-          "time": 1768372690000
+          "time": 1768374437000
         },
         "committer": {
           "name": "GitHub",
           "email": "noreply@github.com",
-          "time": 1768372690000
+          "time": 1768374437000
         },
-        "branch": "HEAD"
+        "branch": "main"
       },
-      "gitDiff": "diff --git a/.github/workflows/jest-tests.yml b/.github/workflows/jest-tests.yml\nindex b742974..26f4939 100644\n--- a/.github/workflows/jest-tests.yml\n+++ b/.github/workflows/jest-tests.yml\n@@ -183,6 +183,7 @@ jobs:\n         env:\n           SKIP_ENV_VALIDATION: true\n           # 🎯 Add required environment variables for build\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -197,7 +198,11 @@ jobs:\n           npx playwright test\n         env:\n           CI: true\n+          NODE_ENV: production\n+          # Suppress Babel warnings about large files\n+          BABEL_COMPACT: false\n           # 🎯 Critical environment variables for E2E tests\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -332,6 +337,13 @@ jobs:\n           fetch-depth: 0\n           token: ${{ secrets.GITHUB_TOKEN }}\n \n+      - name: Clean submodule references\n+        run: |\n+          rm -f .gitmodules\n+          rm -rf main-branch\n+          git config --local --unset-all submodule.main-branch.url || true\n+          git rm --cached main-branch || true\n+\n       - name: Download all test artifacts\n         uses: actions/download-artifact@v4\n         with:\n@@ -362,6 +374,7 @@ jobs:\n             scripts/dashboard-template.html\n             scripts/generate-dashboard.ts\n             scripts/generate-test-result.ts\n+          sparse-checkout-cone: false\n \n       - name: Install tsx for TypeScript execution\n         run: npm install -g tsx\n@@ -395,6 +408,12 @@ jobs:\n \n           echo \"✅ Dashboard generated successfully\"\n \n+      # Clean up main-branch checkout before committing\n+      - name: Clean up temporary checkout\n+        run: |\n+          rm -rf main-branch\n+          git rm -rf --cached main-branch 2>/dev/null || true\n+\n       - name: Commit and push to gh-pages\n         run: |\n           git config user.name \"github-actions[bot]\"\ndiff --git a/components/Navbar.tsx b/components/Navbar.tsx\nindex a2a3fd1..7c82c5e 100644\n--- a/components/Navbar.tsx\n+++ b/components/Navbar.tsx\n@@ -201,7 +201,7 @@ const Navbar = () => {\n           >\n             <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n               <Image\n-                src={currentProfile?.avatar || \"\"}\n+                src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n                 width={30}\n                 height={30}\n                 alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/components/SettingsNavBar.tsx b/components/SettingsNavBar.tsx\nindex 24e3efb..513d644 100644\n--- a/components/SettingsNavBar.tsx\n+++ b/components/SettingsNavBar.tsx\n@@ -85,7 +85,7 @@ const SettingsNavBar = () => {\n         >\n           <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n             <Image\n-              src={currentProfile?.avatar || \"\"}\n+              src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n               width={30}\n               height={30}\n               alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/pages/api/auth/[...nextauth].ts b/pages/api/auth/[...nextauth].ts\nindex 3209aa0..1051dad 100644\n--- a/pages/api/auth/[...nextauth].ts\n+++ b/pages/api/auth/[...nextauth].ts\n@@ -85,7 +85,7 @@ export const authOptions = {\n   pages: {\n     signIn: \"/auth\",\n   },\n-  debug: process.env.NODE_ENV === \"development\",\n+  debug: process.env.NODE_ENV === \"development\" && !process.env.CI,\n   adapter: PrismaAdapter(prismadb),\n   session: {\n     strategy: \"jwt\" as const,\ndiff --git a/pages/api/movies/index.ts b/pages/api/movies/index.ts\nindex b049e12..3ebbaaf 100644\n--- a/pages/api/movies/index.ts\n+++ b/pages/api/movies/index.ts\n@@ -60,7 +60,9 @@ export default async function handler(\n     }\n \n     if (!TMDB_API_KEY) {\n-      console.error(\"TMDB API key is not configured\");\n+      if (!process.env.CI) {\n+        console.error(\"TMDB API key is not configured\");\n+      }\n       return res.status(500).json({ error: \"TMDB API key is not configured\" });\n     }",
       "actualWorkers": 1
     },
     "preserveOutput": "always",
@@ -74,31 +70,27 @@
         "retries": 2,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/92c30845186f546329464e009ab0ff172f57115e",
-            "commitHash": "92c30845186f546329464e009ab0ff172f57115e",
-            "prHref": "https://github.com/abiolaah/next-nefllix-clone/pull/26",
-            "prTitle": "Tests/alltest",
-            "prBaseHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20984947144"
+            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20985562805"
           },
           "gitCommit": {
-            "shortHash": "92c3084",
-            "hash": "92c30845186f546329464e009ab0ff172f57115e",
-            "subject": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "body": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7\n",
+            "shortHash": "126f786",
+            "hash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "subject": "Merge pull request #26 from abiolaah/tests/alltest",
+            "body": "Merge pull request #26 from abiolaah/tests/alltest\n\nTests/alltest",
             "author": {
               "name": "Victoria Ajuwon",
               "email": "oluwapelumi.ajuwon@gmail.com",
-              "time": 1768372690000
+              "time": 1768374437000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1768372690000
+              "time": 1768374437000
             },
-            "branch": "HEAD"
+            "branch": "main"
           },
-          "gitDiff": "diff --git a/.github/workflows/jest-tests.yml b/.github/workflows/jest-tests.yml\nindex b742974..26f4939 100644\n--- a/.github/workflows/jest-tests.yml\n+++ b/.github/workflows/jest-tests.yml\n@@ -183,6 +183,7 @@ jobs:\n         env:\n           SKIP_ENV_VALIDATION: true\n           # 🎯 Add required environment variables for build\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -197,7 +198,11 @@ jobs:\n           npx playwright test\n         env:\n           CI: true\n+          NODE_ENV: production\n+          # Suppress Babel warnings about large files\n+          BABEL_COMPACT: false\n           # 🎯 Critical environment variables for E2E tests\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -332,6 +337,13 @@ jobs:\n           fetch-depth: 0\n           token: ${{ secrets.GITHUB_TOKEN }}\n \n+      - name: Clean submodule references\n+        run: |\n+          rm -f .gitmodules\n+          rm -rf main-branch\n+          git config --local --unset-all submodule.main-branch.url || true\n+          git rm --cached main-branch || true\n+\n       - name: Download all test artifacts\n         uses: actions/download-artifact@v4\n         with:\n@@ -362,6 +374,7 @@ jobs:\n             scripts/dashboard-template.html\n             scripts/generate-dashboard.ts\n             scripts/generate-test-result.ts\n+          sparse-checkout-cone: false\n \n       - name: Install tsx for TypeScript execution\n         run: npm install -g tsx\n@@ -395,6 +408,12 @@ jobs:\n \n           echo \"✅ Dashboard generated successfully\"\n \n+      # Clean up main-branch checkout before committing\n+      - name: Clean up temporary checkout\n+        run: |\n+          rm -rf main-branch\n+          git rm -rf --cached main-branch 2>/dev/null || true\n+\n       - name: Commit and push to gh-pages\n         run: |\n           git config user.name \"github-actions[bot]\"\ndiff --git a/components/Navbar.tsx b/components/Navbar.tsx\nindex a2a3fd1..7c82c5e 100644\n--- a/components/Navbar.tsx\n+++ b/components/Navbar.tsx\n@@ -201,7 +201,7 @@ const Navbar = () => {\n           >\n             <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n               <Image\n-                src={currentProfile?.avatar || \"\"}\n+                src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n                 width={30}\n                 height={30}\n                 alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/components/SettingsNavBar.tsx b/components/SettingsNavBar.tsx\nindex 24e3efb..513d644 100644\n--- a/components/SettingsNavBar.tsx\n+++ b/components/SettingsNavBar.tsx\n@@ -85,7 +85,7 @@ const SettingsNavBar = () => {\n         >\n           <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n             <Image\n-              src={currentProfile?.avatar || \"\"}\n+              src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n               width={30}\n               height={30}\n               alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/pages/api/auth/[...nextauth].ts b/pages/api/auth/[...nextauth].ts\nindex 3209aa0..1051dad 100644\n--- a/pages/api/auth/[...nextauth].ts\n+++ b/pages/api/auth/[...nextauth].ts\n@@ -85,7 +85,7 @@ export const authOptions = {\n   pages: {\n     signIn: \"/auth\",\n   },\n-  debug: process.env.NODE_ENV === \"development\",\n+  debug: process.env.NODE_ENV === \"development\" && !process.env.CI,\n   adapter: PrismaAdapter(prismadb),\n   session: {\n     strategy: \"jwt\" as const,\ndiff --git a/pages/api/movies/index.ts b/pages/api/movies/index.ts\nindex b049e12..3ebbaaf 100644\n--- a/pages/api/movies/index.ts\n+++ b/pages/api/movies/index.ts\n@@ -60,7 +60,9 @@ export default async function handler(\n     }\n \n     if (!TMDB_API_KEY) {\n-      console.error(\"TMDB API key is not configured\");\n+      if (!process.env.CI) {\n+        console.error(\"TMDB API key is not configured\");\n+      }\n       return res.status(500).json({ error: \"TMDB API key is not configured\" });\n     }",
           "actualWorkers": 1
         },
         "id": "setup",
@@ -116,31 +108,27 @@
         "retries": 2,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/92c30845186f546329464e009ab0ff172f57115e",
-            "commitHash": "92c30845186f546329464e009ab0ff172f57115e",
-            "prHref": "https://github.com/abiolaah/next-nefllix-clone/pull/26",
-            "prTitle": "Tests/alltest",
-            "prBaseHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20984947144"
+            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20985562805"
           },
           "gitCommit": {
-            "shortHash": "92c3084",
-            "hash": "92c30845186f546329464e009ab0ff172f57115e",
-            "subject": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "body": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7\n",
+            "shortHash": "126f786",
+            "hash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "subject": "Merge pull request #26 from abiolaah/tests/alltest",
+            "body": "Merge pull request #26 from abiolaah/tests/alltest\n\nTests/alltest",
             "author": {
               "name": "Victoria Ajuwon",
               "email": "oluwapelumi.ajuwon@gmail.com",
-              "time": 1768372690000
+              "time": 1768374437000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1768372690000
+              "time": 1768374437000
             },
-            "branch": "HEAD"
+            "branch": "main"
           },
-          "gitDiff": "diff --git a/.github/workflows/jest-tests.yml b/.github/workflows/jest-tests.yml\nindex b742974..26f4939 100644\n--- a/.github/workflows/jest-tests.yml\n+++ b/.github/workflows/jest-tests.yml\n@@ -183,6 +183,7 @@ jobs:\n         env:\n           SKIP_ENV_VALIDATION: true\n           # 🎯 Add required environment variables for build\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -197,7 +198,11 @@ jobs:\n           npx playwright test\n         env:\n           CI: true\n+          NODE_ENV: production\n+          # Suppress Babel warnings about large files\n+          BABEL_COMPACT: false\n           # 🎯 Critical environment variables for E2E tests\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -332,6 +337,13 @@ jobs:\n           fetch-depth: 0\n           token: ${{ secrets.GITHUB_TOKEN }}\n \n+      - name: Clean submodule references\n+        run: |\n+          rm -f .gitmodules\n+          rm -rf main-branch\n+          git config --local --unset-all submodule.main-branch.url || true\n+          git rm --cached main-branch || true\n+\n       - name: Download all test artifacts\n         uses: actions/download-artifact@v4\n         with:\n@@ -362,6 +374,7 @@ jobs:\n             scripts/dashboard-template.html\n             scripts/generate-dashboard.ts\n             scripts/generate-test-result.ts\n+          sparse-checkout-cone: false\n \n       - name: Install tsx for TypeScript execution\n         run: npm install -g tsx\n@@ -395,6 +408,12 @@ jobs:\n \n           echo \"✅ Dashboard generated successfully\"\n \n+      # Clean up main-branch checkout before committing\n+      - name: Clean up temporary checkout\n+        run: |\n+          rm -rf main-branch\n+          git rm -rf --cached main-branch 2>/dev/null || true\n+\n       - name: Commit and push to gh-pages\n         run: |\n           git config user.name \"github-actions[bot]\"\ndiff --git a/components/Navbar.tsx b/components/Navbar.tsx\nindex a2a3fd1..7c82c5e 100644\n--- a/components/Navbar.tsx\n+++ b/components/Navbar.tsx\n@@ -201,7 +201,7 @@ const Navbar = () => {\n           >\n             <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n               <Image\n-                src={currentProfile?.avatar || \"\"}\n+                src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n                 width={30}\n                 height={30}\n                 alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/components/SettingsNavBar.tsx b/components/SettingsNavBar.tsx\nindex 24e3efb..513d644 100644\n--- a/components/SettingsNavBar.tsx\n+++ b/components/SettingsNavBar.tsx\n@@ -85,7 +85,7 @@ const SettingsNavBar = () => {\n         >\n           <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n             <Image\n-              src={currentProfile?.avatar || \"\"}\n+              src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n               width={30}\n               height={30}\n               alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/pages/api/auth/[...nextauth].ts b/pages/api/auth/[...nextauth].ts\nindex 3209aa0..1051dad 100644\n--- a/pages/api/auth/[...nextauth].ts\n+++ b/pages/api/auth/[...nextauth].ts\n@@ -85,7 +85,7 @@ export const authOptions = {\n   pages: {\n     signIn: \"/auth\",\n   },\n-  debug: process.env.NODE_ENV === \"development\",\n+  debug: process.env.NODE_ENV === \"development\" && !process.env.CI,\n   adapter: PrismaAdapter(prismadb),\n   session: {\n     strategy: \"jwt\" as const,\ndiff --git a/pages/api/movies/index.ts b/pages/api/movies/index.ts\nindex b049e12..3ebbaaf 100644\n--- a/pages/api/movies/index.ts\n+++ b/pages/api/movies/index.ts\n@@ -60,7 +60,9 @@ export default async function handler(\n     }\n \n     if (!TMDB_API_KEY) {\n-      console.error(\"TMDB API key is not configured\");\n+      if (!process.env.CI) {\n+        console.error(\"TMDB API key is not configured\");\n+      }\n       return res.status(500).json({ error: \"TMDB API key is not configured\" });\n     }",
           "actualWorkers": 1
         },
         "id": "chromium:authenticated",
@@ -158,31 +146,27 @@
         "retries": 2,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/92c30845186f546329464e009ab0ff172f57115e",
-            "commitHash": "92c30845186f546329464e009ab0ff172f57115e",
-            "prHref": "https://github.com/abiolaah/next-nefllix-clone/pull/26",
-            "prTitle": "Tests/alltest",
-            "prBaseHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20984947144"
+            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20985562805"
           },
           "gitCommit": {
-            "shortHash": "92c3084",
-            "hash": "92c30845186f546329464e009ab0ff172f57115e",
-            "subject": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "body": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7\n",
+            "shortHash": "126f786",
+            "hash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "subject": "Merge pull request #26 from abiolaah/tests/alltest",
+            "body": "Merge pull request #26 from abiolaah/tests/alltest\n\nTests/alltest",
             "author": {
               "name": "Victoria Ajuwon",
               "email": "oluwapelumi.ajuwon@gmail.com",
-              "time": 1768372690000
+              "time": 1768374437000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1768372690000
+              "time": 1768374437000
             },
-            "branch": "HEAD"
+            "branch": "main"
           },
-          "gitDiff": "diff --git a/.github/workflows/jest-tests.yml b/.github/workflows/jest-tests.yml\nindex b742974..26f4939 100644\n--- a/.github/workflows/jest-tests.yml\n+++ b/.github/workflows/jest-tests.yml\n@@ -183,6 +183,7 @@ jobs:\n         env:\n           SKIP_ENV_VALIDATION: true\n           # 🎯 Add required environment variables for build\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -197,7 +198,11 @@ jobs:\n           npx playwright test\n         env:\n           CI: true\n+          NODE_ENV: production\n+          # Suppress Babel warnings about large files\n+          BABEL_COMPACT: false\n           # 🎯 Critical environment variables for E2E tests\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -332,6 +337,13 @@ jobs:\n           fetch-depth: 0\n           token: ${{ secrets.GITHUB_TOKEN }}\n \n+      - name: Clean submodule references\n+        run: |\n+          rm -f .gitmodules\n+          rm -rf main-branch\n+          git config --local --unset-all submodule.main-branch.url || true\n+          git rm --cached main-branch || true\n+\n       - name: Download all test artifacts\n         uses: actions/download-artifact@v4\n         with:\n@@ -362,6 +374,7 @@ jobs:\n             scripts/dashboard-template.html\n             scripts/generate-dashboard.ts\n             scripts/generate-test-result.ts\n+          sparse-checkout-cone: false\n \n       - name: Install tsx for TypeScript execution\n         run: npm install -g tsx\n@@ -395,6 +408,12 @@ jobs:\n \n           echo \"✅ Dashboard generated successfully\"\n \n+      # Clean up main-branch checkout before committing\n+      - name: Clean up temporary checkout\n+        run: |\n+          rm -rf main-branch\n+          git rm -rf --cached main-branch 2>/dev/null || true\n+\n       - name: Commit and push to gh-pages\n         run: |\n           git config user.name \"github-actions[bot]\"\ndiff --git a/components/Navbar.tsx b/components/Navbar.tsx\nindex a2a3fd1..7c82c5e 100644\n--- a/components/Navbar.tsx\n+++ b/components/Navbar.tsx\n@@ -201,7 +201,7 @@ const Navbar = () => {\n           >\n             <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n               <Image\n-                src={currentProfile?.avatar || \"\"}\n+                src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n                 width={30}\n                 height={30}\n                 alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/components/SettingsNavBar.tsx b/components/SettingsNavBar.tsx\nindex 24e3efb..513d644 100644\n--- a/components/SettingsNavBar.tsx\n+++ b/components/SettingsNavBar.tsx\n@@ -85,7 +85,7 @@ const SettingsNavBar = () => {\n         >\n           <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n             <Image\n-              src={currentProfile?.avatar || \"\"}\n+              src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n               width={30}\n               height={30}\n               alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/pages/api/auth/[...nextauth].ts b/pages/api/auth/[...nextauth].ts\nindex 3209aa0..1051dad 100644\n--- a/pages/api/auth/[...nextauth].ts\n+++ b/pages/api/auth/[...nextauth].ts\n@@ -85,7 +85,7 @@ export const authOptions = {\n   pages: {\n     signIn: \"/auth\",\n   },\n-  debug: process.env.NODE_ENV === \"development\",\n+  debug: process.env.NODE_ENV === \"development\" && !process.env.CI,\n   adapter: PrismaAdapter(prismadb),\n   session: {\n     strategy: \"jwt\" as const,\ndiff --git a/pages/api/movies/index.ts b/pages/api/movies/index.ts\nindex b049e12..3ebbaaf 100644\n--- a/pages/api/movies/index.ts\n+++ b/pages/api/movies/index.ts\n@@ -60,7 +60,9 @@ export default async function handler(\n     }\n \n     if (!TMDB_API_KEY) {\n-      console.error(\"TMDB API key is not configured\");\n+      if (!process.env.CI) {\n+        console.error(\"TMDB API key is not configured\");\n+      }\n       return res.status(500).json({ error: \"TMDB API key is not configured\" });\n     }",
           "actualWorkers": 1
         },
         "id": "firefox:authenticated",
@@ -200,31 +184,27 @@
         "retries": 2,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/92c30845186f546329464e009ab0ff172f57115e",
-            "commitHash": "92c30845186f546329464e009ab0ff172f57115e",
-            "prHref": "https://github.com/abiolaah/next-nefllix-clone/pull/26",
-            "prTitle": "Tests/alltest",
-            "prBaseHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20984947144"
+            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20985562805"
           },
           "gitCommit": {
-            "shortHash": "92c3084",
-            "hash": "92c30845186f546329464e009ab0ff172f57115e",
-            "subject": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "body": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7\n",
+            "shortHash": "126f786",
+            "hash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "subject": "Merge pull request #26 from abiolaah/tests/alltest",
+            "body": "Merge pull request #26 from abiolaah/tests/alltest\n\nTests/alltest",
             "author": {
               "name": "Victoria Ajuwon",
               "email": "oluwapelumi.ajuwon@gmail.com",
-              "time": 1768372690000
+              "time": 1768374437000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1768372690000
+              "time": 1768374437000
             },
-            "branch": "HEAD"
+            "branch": "main"
           },
-          "gitDiff": "diff --git a/.github/workflows/jest-tests.yml b/.github/workflows/jest-tests.yml\nindex b742974..26f4939 100644\n--- a/.github/workflows/jest-tests.yml\n+++ b/.github/workflows/jest-tests.yml\n@@ -183,6 +183,7 @@ jobs:\n         env:\n           SKIP_ENV_VALIDATION: true\n           # 🎯 Add required environment variables for build\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -197,7 +198,11 @@ jobs:\n           npx playwright test\n         env:\n           CI: true\n+          NODE_ENV: production\n+          # Suppress Babel warnings about large files\n+          BABEL_COMPACT: false\n           # 🎯 Critical environment variables for E2E tests\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -332,6 +337,13 @@ jobs:\n           fetch-depth: 0\n           token: ${{ secrets.GITHUB_TOKEN }}\n \n+      - name: Clean submodule references\n+        run: |\n+          rm -f .gitmodules\n+          rm -rf main-branch\n+          git config --local --unset-all submodule.main-branch.url || true\n+          git rm --cached main-branch || true\n+\n       - name: Download all test artifacts\n         uses: actions/download-artifact@v4\n         with:\n@@ -362,6 +374,7 @@ jobs:\n             scripts/dashboard-template.html\n             scripts/generate-dashboard.ts\n             scripts/generate-test-result.ts\n+          sparse-checkout-cone: false\n \n       - name: Install tsx for TypeScript execution\n         run: npm install -g tsx\n@@ -395,6 +408,12 @@ jobs:\n \n           echo \"✅ Dashboard generated successfully\"\n \n+      # Clean up main-branch checkout before committing\n+      - name: Clean up temporary checkout\n+        run: |\n+          rm -rf main-branch\n+          git rm -rf --cached main-branch 2>/dev/null || true\n+\n       - name: Commit and push to gh-pages\n         run: |\n           git config user.name \"github-actions[bot]\"\ndiff --git a/components/Navbar.tsx b/components/Navbar.tsx\nindex a2a3fd1..7c82c5e 100644\n--- a/components/Navbar.tsx\n+++ b/components/Navbar.tsx\n@@ -201,7 +201,7 @@ const Navbar = () => {\n           >\n             <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n               <Image\n-                src={currentProfile?.avatar || \"\"}\n+                src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n                 width={30}\n                 height={30}\n                 alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/components/SettingsNavBar.tsx b/components/SettingsNavBar.tsx\nindex 24e3efb..513d644 100644\n--- a/components/SettingsNavBar.tsx\n+++ b/components/SettingsNavBar.tsx\n@@ -85,7 +85,7 @@ const SettingsNavBar = () => {\n         >\n           <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n             <Image\n-              src={currentProfile?.avatar || \"\"}\n+              src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n               width={30}\n               height={30}\n               alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/pages/api/auth/[...nextauth].ts b/pages/api/auth/[...nextauth].ts\nindex 3209aa0..1051dad 100644\n--- a/pages/api/auth/[...nextauth].ts\n+++ b/pages/api/auth/[...nextauth].ts\n@@ -85,7 +85,7 @@ export const authOptions = {\n   pages: {\n     signIn: \"/auth\",\n   },\n-  debug: process.env.NODE_ENV === \"development\",\n+  debug: process.env.NODE_ENV === \"development\" && !process.env.CI,\n   adapter: PrismaAdapter(prismadb),\n   session: {\n     strategy: \"jwt\" as const,\ndiff --git a/pages/api/movies/index.ts b/pages/api/movies/index.ts\nindex b049e12..3ebbaaf 100644\n--- a/pages/api/movies/index.ts\n+++ b/pages/api/movies/index.ts\n@@ -60,7 +60,9 @@ export default async function handler(\n     }\n \n     if (!TMDB_API_KEY) {\n-      console.error(\"TMDB API key is not configured\");\n+      if (!process.env.CI) {\n+        console.error(\"TMDB API key is not configured\");\n+      }\n       return res.status(500).json({ error: \"TMDB API key is not configured\" });\n     }",
           "actualWorkers": 1
         },
         "id": "webkit:authenticated",
@@ -242,31 +222,27 @@
         "retries": 2,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/92c30845186f546329464e009ab0ff172f57115e",
-            "commitHash": "92c30845186f546329464e009ab0ff172f57115e",
-            "prHref": "https://github.com/abiolaah/next-nefllix-clone/pull/26",
-            "prTitle": "Tests/alltest",
-            "prBaseHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20984947144"
+            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20985562805"
           },
           "gitCommit": {
-            "shortHash": "92c3084",
-            "hash": "92c30845186f546329464e009ab0ff172f57115e",
-            "subject": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "body": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7\n",
+            "shortHash": "126f786",
+            "hash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "subject": "Merge pull request #26 from abiolaah/tests/alltest",
+            "body": "Merge pull request #26 from abiolaah/tests/alltest\n\nTests/alltest",
             "author": {
               "name": "Victoria Ajuwon",
               "email": "oluwapelumi.ajuwon@gmail.com",
-              "time": 1768372690000
+              "time": 1768374437000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1768372690000
+              "time": 1768374437000
             },
-            "branch": "HEAD"
+            "branch": "main"
           },
-          "gitDiff": "diff --git a/.github/workflows/jest-tests.yml b/.github/workflows/jest-tests.yml\nindex b742974..26f4939 100644\n--- a/.github/workflows/jest-tests.yml\n+++ b/.github/workflows/jest-tests.yml\n@@ -183,6 +183,7 @@ jobs:\n         env:\n           SKIP_ENV_VALIDATION: true\n           # 🎯 Add required environment variables for build\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -197,7 +198,11 @@ jobs:\n           npx playwright test\n         env:\n           CI: true\n+          NODE_ENV: production\n+          # Suppress Babel warnings about large files\n+          BABEL_COMPACT: false\n           # 🎯 Critical environment variables for E2E tests\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -332,6 +337,13 @@ jobs:\n           fetch-depth: 0\n           token: ${{ secrets.GITHUB_TOKEN }}\n \n+      - name: Clean submodule references\n+        run: |\n+          rm -f .gitmodules\n+          rm -rf main-branch\n+          git config --local --unset-all submodule.main-branch.url || true\n+          git rm --cached main-branch || true\n+\n       - name: Download all test artifacts\n         uses: actions/download-artifact@v4\n         with:\n@@ -362,6 +374,7 @@ jobs:\n             scripts/dashboard-template.html\n             scripts/generate-dashboard.ts\n             scripts/generate-test-result.ts\n+          sparse-checkout-cone: false\n \n       - name: Install tsx for TypeScript execution\n         run: npm install -g tsx\n@@ -395,6 +408,12 @@ jobs:\n \n           echo \"✅ Dashboard generated successfully\"\n \n+      # Clean up main-branch checkout before committing\n+      - name: Clean up temporary checkout\n+        run: |\n+          rm -rf main-branch\n+          git rm -rf --cached main-branch 2>/dev/null || true\n+\n       - name: Commit and push to gh-pages\n         run: |\n           git config user.name \"github-actions[bot]\"\ndiff --git a/components/Navbar.tsx b/components/Navbar.tsx\nindex a2a3fd1..7c82c5e 100644\n--- a/components/Navbar.tsx\n+++ b/components/Navbar.tsx\n@@ -201,7 +201,7 @@ const Navbar = () => {\n           >\n             <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n               <Image\n-                src={currentProfile?.avatar || \"\"}\n+                src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n                 width={30}\n                 height={30}\n                 alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/components/SettingsNavBar.tsx b/components/SettingsNavBar.tsx\nindex 24e3efb..513d644 100644\n--- a/components/SettingsNavBar.tsx\n+++ b/components/SettingsNavBar.tsx\n@@ -85,7 +85,7 @@ const SettingsNavBar = () => {\n         >\n           <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n             <Image\n-              src={currentProfile?.avatar || \"\"}\n+              src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n               width={30}\n               height={30}\n               alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/pages/api/auth/[...nextauth].ts b/pages/api/auth/[...nextauth].ts\nindex 3209aa0..1051dad 100644\n--- a/pages/api/auth/[...nextauth].ts\n+++ b/pages/api/auth/[...nextauth].ts\n@@ -85,7 +85,7 @@ export const authOptions = {\n   pages: {\n     signIn: \"/auth\",\n   },\n-  debug: process.env.NODE_ENV === \"development\",\n+  debug: process.env.NODE_ENV === \"development\" && !process.env.CI,\n   adapter: PrismaAdapter(prismadb),\n   session: {\n     strategy: \"jwt\" as const,\ndiff --git a/pages/api/movies/index.ts b/pages/api/movies/index.ts\nindex b049e12..3ebbaaf 100644\n--- a/pages/api/movies/index.ts\n+++ b/pages/api/movies/index.ts\n@@ -60,7 +60,9 @@ export default async function handler(\n     }\n \n     if (!TMDB_API_KEY) {\n-      console.error(\"TMDB API key is not configured\");\n+      if (!process.env.CI) {\n+        console.error(\"TMDB API key is not configured\");\n+      }\n       return res.status(500).json({ error: \"TMDB API key is not configured\" });\n     }",
           "actualWorkers": 1
         },
         "id": "chromium:public",
@@ -284,31 +260,27 @@
         "retries": 2,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/92c30845186f546329464e009ab0ff172f57115e",
-            "commitHash": "92c30845186f546329464e009ab0ff172f57115e",
-            "prHref": "https://github.com/abiolaah/next-nefllix-clone/pull/26",
-            "prTitle": "Tests/alltest",
-            "prBaseHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20984947144"
+            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20985562805"
           },
           "gitCommit": {
-            "shortHash": "92c3084",
-            "hash": "92c30845186f546329464e009ab0ff172f57115e",
-            "subject": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "body": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7\n",
+            "shortHash": "126f786",
+            "hash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "subject": "Merge pull request #26 from abiolaah/tests/alltest",
+            "body": "Merge pull request #26 from abiolaah/tests/alltest\n\nTests/alltest",
             "author": {
               "name": "Victoria Ajuwon",
               "email": "oluwapelumi.ajuwon@gmail.com",
-              "time": 1768372690000
+              "time": 1768374437000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1768372690000
+              "time": 1768374437000
             },
-            "branch": "HEAD"
+            "branch": "main"
           },
-          "gitDiff": "diff --git a/.github/workflows/jest-tests.yml b/.github/workflows/jest-tests.yml\nindex b742974..26f4939 100644\n--- a/.github/workflows/jest-tests.yml\n+++ b/.github/workflows/jest-tests.yml\n@@ -183,6 +183,7 @@ jobs:\n         env:\n           SKIP_ENV_VALIDATION: true\n           # 🎯 Add required environment variables for build\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -197,7 +198,11 @@ jobs:\n           npx playwright test\n         env:\n           CI: true\n+          NODE_ENV: production\n+          # Suppress Babel warnings about large files\n+          BABEL_COMPACT: false\n           # 🎯 Critical environment variables for E2E tests\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -332,6 +337,13 @@ jobs:\n           fetch-depth: 0\n           token: ${{ secrets.GITHUB_TOKEN }}\n \n+      - name: Clean submodule references\n+        run: |\n+          rm -f .gitmodules\n+          rm -rf main-branch\n+          git config --local --unset-all submodule.main-branch.url || true\n+          git rm --cached main-branch || true\n+\n       - name: Download all test artifacts\n         uses: actions/download-artifact@v4\n         with:\n@@ -362,6 +374,7 @@ jobs:\n             scripts/dashboard-template.html\n             scripts/generate-dashboard.ts\n             scripts/generate-test-result.ts\n+          sparse-checkout-cone: false\n \n       - name: Install tsx for TypeScript execution\n         run: npm install -g tsx\n@@ -395,6 +408,12 @@ jobs:\n \n           echo \"✅ Dashboard generated successfully\"\n \n+      # Clean up main-branch checkout before committing\n+      - name: Clean up temporary checkout\n+        run: |\n+          rm -rf main-branch\n+          git rm -rf --cached main-branch 2>/dev/null || true\n+\n       - name: Commit and push to gh-pages\n         run: |\n           git config user.name \"github-actions[bot]\"\ndiff --git a/components/Navbar.tsx b/components/Navbar.tsx\nindex a2a3fd1..7c82c5e 100644\n--- a/components/Navbar.tsx\n+++ b/components/Navbar.tsx\n@@ -201,7 +201,7 @@ const Navbar = () => {\n           >\n             <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n               <Image\n-                src={currentProfile?.avatar || \"\"}\n+                src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n                 width={30}\n                 height={30}\n                 alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/components/SettingsNavBar.tsx b/components/SettingsNavBar.tsx\nindex 24e3efb..513d644 100644\n--- a/components/SettingsNavBar.tsx\n+++ b/components/SettingsNavBar.tsx\n@@ -85,7 +85,7 @@ const SettingsNavBar = () => {\n         >\n           <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n             <Image\n-              src={currentProfile?.avatar || \"\"}\n+              src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n               width={30}\n               height={30}\n               alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/pages/api/auth/[...nextauth].ts b/pages/api/auth/[...nextauth].ts\nindex 3209aa0..1051dad 100644\n--- a/pages/api/auth/[...nextauth].ts\n+++ b/pages/api/auth/[...nextauth].ts\n@@ -85,7 +85,7 @@ export const authOptions = {\n   pages: {\n     signIn: \"/auth\",\n   },\n-  debug: process.env.NODE_ENV === \"development\",\n+  debug: process.env.NODE_ENV === \"development\" && !process.env.CI,\n   adapter: PrismaAdapter(prismadb),\n   session: {\n     strategy: \"jwt\" as const,\ndiff --git a/pages/api/movies/index.ts b/pages/api/movies/index.ts\nindex b049e12..3ebbaaf 100644\n--- a/pages/api/movies/index.ts\n+++ b/pages/api/movies/index.ts\n@@ -60,7 +60,9 @@ export default async function handler(\n     }\n \n     if (!TMDB_API_KEY) {\n-      console.error(\"TMDB API key is not configured\");\n+      if (!process.env.CI) {\n+        console.error(\"TMDB API key is not configured\");\n+      }\n       return res.status(500).json({ error: \"TMDB API key is not configured\" });\n     }",
           "actualWorkers": 1
         },
         "id": "firefox:public",
@@ -326,31 +298,27 @@
         "retries": 2,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/92c30845186f546329464e009ab0ff172f57115e",
-            "commitHash": "92c30845186f546329464e009ab0ff172f57115e",
-            "prHref": "https://github.com/abiolaah/next-nefllix-clone/pull/26",
-            "prTitle": "Tests/alltest",
-            "prBaseHash": "aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20984947144"
+            "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/20985562805"
           },
           "gitCommit": {
-            "shortHash": "92c3084",
-            "hash": "92c30845186f546329464e009ab0ff172f57115e",
-            "subject": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7",
-            "body": "Merge 2a943f5add04db8494973034915c9d7e90b11aeb into aa9894e81cb07f274fef3c293f9a4a3d0af256e7\n",
+            "shortHash": "126f786",
+            "hash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
+            "subject": "Merge pull request #26 from abiolaah/tests/alltest",
+            "body": "Merge pull request #26 from abiolaah/tests/alltest\n\nTests/alltest",
             "author": {
               "name": "Victoria Ajuwon",
               "email": "oluwapelumi.ajuwon@gmail.com",
-              "time": 1768372690000
+              "time": 1768374437000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1768372690000
+              "time": 1768374437000
             },
-            "branch": "HEAD"
+            "branch": "main"
           },
-          "gitDiff": "diff --git a/.github/workflows/jest-tests.yml b/.github/workflows/jest-tests.yml\nindex b742974..26f4939 100644\n--- a/.github/workflows/jest-tests.yml\n+++ b/.github/workflows/jest-tests.yml\n@@ -183,6 +183,7 @@ jobs:\n         env:\n           SKIP_ENV_VALIDATION: true\n           # 🎯 Add required environment variables for build\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -197,7 +198,11 @@ jobs:\n           npx playwright test\n         env:\n           CI: true\n+          NODE_ENV: production\n+          # Suppress Babel warnings about large files\n+          BABEL_COMPACT: false\n           # 🎯 Critical environment variables for E2E tests\n+          TMDB_API_KEY: ${{ secrets.NEXT_PUBLIC_TMDB_API_KEY }}\n           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'mongodb://localhost:27017/netflix-test?replicaSet=test-rs' }}\n           NEXTAUTH_JWT_SECRET: ${{ secrets.NEXTAUTH_JWT_SECRET || 'test-jwt-secret-key-for-ci' }}\n           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'test-secret-key-for-ci' }}\n@@ -332,6 +337,13 @@ jobs:\n           fetch-depth: 0\n           token: ${{ secrets.GITHUB_TOKEN }}\n \n+      - name: Clean submodule references\n+        run: |\n+          rm -f .gitmodules\n+          rm -rf main-branch\n+          git config --local --unset-all submodule.main-branch.url || true\n+          git rm --cached main-branch || true\n+\n       - name: Download all test artifacts\n         uses: actions/download-artifact@v4\n         with:\n@@ -362,6 +374,7 @@ jobs:\n             scripts/dashboard-template.html\n             scripts/generate-dashboard.ts\n             scripts/generate-test-result.ts\n+          sparse-checkout-cone: false\n \n       - name: Install tsx for TypeScript execution\n         run: npm install -g tsx\n@@ -395,6 +408,12 @@ jobs:\n \n           echo \"✅ Dashboard generated successfully\"\n \n+      # Clean up main-branch checkout before committing\n+      - name: Clean up temporary checkout\n+        run: |\n+          rm -rf main-branch\n+          git rm -rf --cached main-branch 2>/dev/null || true\n+\n       - name: Commit and push to gh-pages\n         run: |\n           git config user.name \"github-actions[bot]\"\ndiff --git a/components/Navbar.tsx b/components/Navbar.tsx\nindex a2a3fd1..7c82c5e 100644\n--- a/components/Navbar.tsx\n+++ b/components/Navbar.tsx\n@@ -201,7 +201,7 @@ const Navbar = () => {\n           >\n             <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n               <Image\n-                src={currentProfile?.avatar || \"\"}\n+                src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n                 width={30}\n                 height={30}\n                 alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/components/SettingsNavBar.tsx b/components/SettingsNavBar.tsx\nindex 24e3efb..513d644 100644\n--- a/components/SettingsNavBar.tsx\n+++ b/components/SettingsNavBar.tsx\n@@ -85,7 +85,7 @@ const SettingsNavBar = () => {\n         >\n           <div className=\"w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden\">\n             <Image\n-              src={currentProfile?.avatar || \"\"}\n+              src={currentProfile?.avatar || \"/images/placeholder.jpg\"}\n               width={30}\n               height={30}\n               alt={`Avatar for ${currentProfile?.name}`}\ndiff --git a/pages/api/auth/[...nextauth].ts b/pages/api/auth/[...nextauth].ts\nindex 3209aa0..1051dad 100644\n--- a/pages/api/auth/[...nextauth].ts\n+++ b/pages/api/auth/[...nextauth].ts\n@@ -85,7 +85,7 @@ export const authOptions = {\n   pages: {\n     signIn: \"/auth\",\n   },\n-  debug: process.env.NODE_ENV === \"development\",\n+  debug: process.env.NODE_ENV === \"development\" && !process.env.CI,\n   adapter: PrismaAdapter(prismadb),\n   session: {\n     strategy: \"jwt\" as const,\ndiff --git a/pages/api/movies/index.ts b/pages/api/movies/index.ts\nindex b049e12..3ebbaaf 100644\n--- a/pages/api/movies/index.ts\n+++ b/pages/api/movies/index.ts\n@@ -60,7 +60,9 @@ export default async function handler(\n     }\n \n     if (!TMDB_API_KEY) {\n-      console.error(\"TMDB API key is not configured\");\n+      if (!process.env.CI) {\n+        console.error(\"TMDB API key is not configured\");\n+      }\n       return res.status(500).json({ error: \"TMDB API key is not configured\" });\n     }",
           "actualWorkers": 1
         },
         "id": "webkit:public",
@@ -399,7 +367,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 21757,
+                  "duration": 21399,
                   "errors": [],
                   "stdout": [
                     {
@@ -447,7 +415,7 @@
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-01-14T06:41:31.665Z",
+                  "startTime": "2026-01-14T07:10:32.165Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -491,12 +459,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 9422,
+                      "duration": 9517,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-14T06:42:19.980Z",
+                      "startTime": "2026-01-14T07:11:19.750Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -525,12 +493,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3210,
+                      "duration": 3209,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-14T06:42:50.604Z",
+                      "startTime": "2026-01-14T07:11:45.942Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -559,12 +527,12 @@
                       "workerIndex": 6,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2903,
+                      "duration": 3137,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-14T06:43:05.963Z",
+                      "startTime": "2026-01-14T07:12:01.744Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -610,12 +578,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 10721,
+                      "duration": 6881,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-14T06:42:29.498Z",
+                      "startTime": "2026-01-14T07:11:29.353Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -644,12 +612,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4364,
+                      "duration": 4802,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-14T06:42:54.197Z",
+                      "startTime": "2026-01-14T07:11:49.526Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -678,12 +646,12 @@
                       "workerIndex": 6,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 12362,
+                      "duration": 11540,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-14T06:43:08.981Z",
+                      "startTime": "2026-01-14T07:12:05.006Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -729,12 +697,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 6301,
+                      "duration": 5581,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-14T06:42:40.256Z",
+                      "startTime": "2026-01-14T07:11:36.262Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -763,12 +731,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2738,
+                      "duration": 2943,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-14T06:42:58.589Z",
+                      "startTime": "2026-01-14T07:11:54.347Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -797,12 +765,12 @@
                       "workerIndex": 6,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3117,
+                      "duration": 2931,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-14T06:43:21.387Z",
+                      "startTime": "2026-01-14T07:12:16.588Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -848,12 +816,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3270,
+                      "duration": 3331,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-14T06:42:46.591Z",
+                      "startTime": "2026-01-14T07:11:41.887Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -882,12 +850,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3507,
+                      "duration": 3367,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-14T06:43:01.349Z",
+                      "startTime": "2026-01-14T07:11:57.307Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -916,12 +884,12 @@
                       "workerIndex": 6,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 6554,
+                      "duration": 5260,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-14T06:43:24.539Z",
+                      "startTime": "2026-01-14T07:12:19.557Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -967,12 +935,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 10722,
+                      "duration": 10643,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-14T06:41:55.154Z",
+                      "startTime": "2026-01-14T07:10:55.178Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1001,12 +969,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3241,
+                      "duration": 3148,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-14T06:42:06.619Z",
+                      "startTime": "2026-01-14T07:11:06.533Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1035,12 +1003,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 7059,
+                      "duration": 7313,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-14T06:42:11.457Z",
+                      "startTime": "2026-01-14T07:11:11.230Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1060,8 +1028,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-01-14T06:41:01.343Z",
-    "duration": 150025.66900000002,
+    "startTime": "2026-01-14T07:10:02.684Z",
+    "duration": 142675.754,
     "expected": 16,
     "skipped": 0,
     "unexpected": 0,
