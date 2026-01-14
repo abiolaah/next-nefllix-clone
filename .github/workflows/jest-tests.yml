@@ -337,6 +337,13 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Clean submodule references
+        run: |
+          rm -f .gitmodules
+          rm -rf main-branch
+          git config --local --unset-all submodule.main-branch.url || true
+          git rm --cached main-branch || true
+
       - name: Download all test artifacts
         uses: actions/download-artifact@v4
         with:
@@ -367,6 +374,7 @@ jobs:
             scripts/dashboard-template.html
             scripts/generate-dashboard.ts
             scripts/generate-test-result.ts
+          sparse-checkout-cone: false
 
       - name: Install tsx for TypeScript execution
         run: npm install -g tsx
@@ -399,6 +407,12 @@ jobs:
           ls -la index.html
 
           echo "✅ Dashboard generated successfully"
+
+      # Clean up main-branch checkout before committing
+      - name: Clean up temporary checkout
+        run: |
+          rm -rf main-branch
+          git rm -rf --cached main-branch 2>/dev/null || true
 
       - name: Commit and push to gh-pages
         run: |
