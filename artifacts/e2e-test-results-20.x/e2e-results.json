@@ -14,7 +14,7 @@
       "ci": {
         "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
         "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
-        "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/23965937565"
+        "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/24268779033"
       },
       "gitCommit": {
         "shortHash": "126f786",
@@ -72,7 +72,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
             "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/23965937565"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/24268779033"
           },
           "gitCommit": {
             "shortHash": "126f786",
@@ -110,7 +110,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
             "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/23965937565"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/24268779033"
           },
           "gitCommit": {
             "shortHash": "126f786",
@@ -148,7 +148,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
             "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/23965937565"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/24268779033"
           },
           "gitCommit": {
             "shortHash": "126f786",
@@ -186,7 +186,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
             "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/23965937565"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/24268779033"
           },
           "gitCommit": {
             "shortHash": "126f786",
@@ -224,7 +224,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
             "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/23965937565"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/24268779033"
           },
           "gitCommit": {
             "shortHash": "126f786",
@@ -262,7 +262,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
             "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/23965937565"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/24268779033"
           },
           "gitCommit": {
             "shortHash": "126f786",
@@ -300,7 +300,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
             "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/23965937565"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/24268779033"
           },
           "gitCommit": {
             "shortHash": "126f786",
@@ -367,7 +367,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 22242,
+                  "duration": 23130,
                   "errors": [],
                   "stdout": [
                     {
@@ -415,7 +415,7 @@
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-04-03T23:28:42.291Z",
+                  "startTime": "2026-04-10T23:30:15.216Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -459,12 +459,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 8487,
+                      "duration": 8644,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-03T23:29:25.727Z",
+                      "startTime": "2026-04-10T23:31:00.418Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -493,12 +493,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3476,
+                      "duration": 3214,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-03T23:29:57.267Z",
+                      "startTime": "2026-04-10T23:31:29.174Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -527,12 +527,12 @@
                       "workerIndex": 6,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2852,
+                      "duration": 2801,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-03T23:30:14.153Z",
+                      "startTime": "2026-04-10T23:31:45.009Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -578,12 +578,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 11055,
+                      "duration": 9543,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-03T23:29:34.319Z",
+                      "startTime": "2026-04-10T23:31:09.157Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -612,12 +612,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4304,
+                      "duration": 3998,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-03T23:30:01.116Z",
+                      "startTime": "2026-04-10T23:31:32.767Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -646,12 +646,12 @@
                       "workerIndex": 6,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 11318,
+                      "duration": 11247,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-03T23:30:17.114Z",
+                      "startTime": "2026-04-10T23:31:47.925Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -697,12 +697,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 7315,
+                      "duration": 6333,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-03T23:29:45.421Z",
+                      "startTime": "2026-04-10T23:31:18.762Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -731,12 +731,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3985,
+                      "duration": 3652,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-03T23:30:05.439Z",
+                      "startTime": "2026-04-10T23:31:36.787Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -765,12 +765,12 @@
                       "workerIndex": 6,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2857,
+                      "duration": 2609,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-03T23:30:28.459Z",
+                      "startTime": "2026-04-10T23:31:59.201Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -816,12 +816,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3743,
+                      "duration": 3403,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-03T23:29:52.770Z",
+                      "startTime": "2026-04-10T23:31:25.125Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -850,12 +850,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3619,
+                      "duration": 3437,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-03T23:30:09.440Z",
+                      "startTime": "2026-04-10T23:31:40.455Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -884,12 +884,12 @@
                       "workerIndex": 6,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5143,
+                      "duration": 6645,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-03T23:30:31.338Z",
+                      "startTime": "2026-04-10T23:32:01.837Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -935,12 +935,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 10771,
+                      "duration": 9864,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-03T23:29:05.486Z",
+                      "startTime": "2026-04-10T23:30:39.559Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -969,12 +969,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3235,
+                      "duration": 3268,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-03T23:29:16.948Z",
+                      "startTime": "2026-04-10T23:30:50.147Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1003,12 +1003,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3083,
+                      "duration": 4427,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-03T23:29:21.628Z",
+                      "startTime": "2026-04-10T23:30:54.910Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1028,8 +1028,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-04-03T23:28:14.005Z",
-    "duration": 142826.58,
+    "startTime": "2026-04-10T23:29:45.388Z",
+    "duration": 143322.80800000002,
     "expected": 16,
     "skipped": 0,
     "unexpected": 0,
