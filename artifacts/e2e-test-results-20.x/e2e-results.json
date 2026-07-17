@@ -14,7 +14,7 @@
       "ci": {
         "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
         "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
-        "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/29131261075"
+        "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/29621378812"
       },
       "gitCommit": {
         "shortHash": "126f786",
@@ -72,7 +72,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
             "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/29131261075"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/29621378812"
           },
           "gitCommit": {
             "shortHash": "126f786",
@@ -110,7 +110,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
             "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/29131261075"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/29621378812"
           },
           "gitCommit": {
             "shortHash": "126f786",
@@ -148,7 +148,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
             "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/29131261075"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/29621378812"
           },
           "gitCommit": {
             "shortHash": "126f786",
@@ -186,7 +186,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
             "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/29131261075"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/29621378812"
           },
           "gitCommit": {
             "shortHash": "126f786",
@@ -224,7 +224,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
             "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/29131261075"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/29621378812"
           },
           "gitCommit": {
             "shortHash": "126f786",
@@ -262,7 +262,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
             "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/29131261075"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/29621378812"
           },
           "gitCommit": {
             "shortHash": "126f786",
@@ -300,7 +300,7 @@
           "ci": {
             "commitHref": "https://github.com/abiolaah/next-nefllix-clone/commit/126f7867d06f080f3ea0bf81aa31ac89986bf39f",
             "commitHash": "126f7867d06f080f3ea0bf81aa31ac89986bf39f",
-            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/29131261075"
+            "buildHref": "https://github.com/abiolaah/next-nefllix-clone/actions/runs/29621378812"
           },
           "gitCommit": {
             "shortHash": "126f786",
@@ -367,7 +367,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 22571,
+                  "duration": 23564,
                   "errors": [],
                   "stdout": [
                     {
@@ -415,7 +415,7 @@
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-07-10T23:53:04.152Z",
+                  "startTime": "2026-07-17T23:45:59.200Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -459,12 +459,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 9388,
+                      "duration": 8591,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-07-10T23:53:53.620Z",
+                      "startTime": "2026-07-17T23:46:47.985Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -493,12 +493,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3363,
+                      "duration": 3298,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-07-10T23:54:26.226Z",
+                      "startTime": "2026-07-17T23:47:17.735Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -527,12 +527,12 @@
                       "workerIndex": 6,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3112,
+                      "duration": 3096,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-07-10T23:54:43.013Z",
+                      "startTime": "2026-07-17T23:47:34.627Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -578,12 +578,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 11857,
+                      "duration": 9875,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-07-10T23:54:03.115Z",
+                      "startTime": "2026-07-17T23:46:56.689Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -612,12 +612,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4565,
+                      "duration": 4198,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-07-10T23:54:30.005Z",
+                      "startTime": "2026-07-17T23:47:21.435Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -645,18 +645,129 @@
                     {
                       "workerIndex": 6,
                       "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 11599,
-                      "errors": [],
+                      "status": "failed",
+                      "duration": 11978,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /play/i })\nExpected: visible\nError: strict mode violation: getByRole('button', { name: /play/i }) resolved to 2 elements:\n    1) <button class=\"bg-white text-black rounded-md py-2 px-4 md:py-2 md:px-6 font-bold flex flex-row items-center gap-2\">…</button> aka getByRole('button', { name: 'Play' }).first()\n    2) <button type=\"button\" class=\"bg-white rounded-md py-1 md:py-2 px-2 md:px-4 w-auto text-xs lg:text-lg font-semibold flex flex-row items-center hover:bg-neutral-300 transition\">…</button> aka getByRole('button', { name: 'Play' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /play/i })\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /play/i })\nExpected: visible\nError: strict mode violation: getByRole('button', { name: /play/i }) resolved to 2 elements:\n    1) <button class=\"bg-white text-black rounded-md py-2 px-4 md:py-2 md:px-6 font-bold flex flex-row items-center gap-2\">…</button> aka getByRole('button', { name: 'Play' }).first()\n    2) <button type=\"button\" class=\"bg-white rounded-md py-1 md:py-2 px-2 md:px-4 w-auto text-xs lg:text-lg font-semibold flex flex-row items-center hover:bg-neutral-300 transition\">…</button> aka getByRole('button', { name: 'Play' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /play/i })\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:33:63",
+                        "location": {
+                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
+                          "column": 63,
+                          "line": 33
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 31 |\u001b[39m\n \u001b[90m 32 |\u001b[39m     \u001b[90m// Expect a modal or details view to appear with title text present\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/play/i\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible({\n \u001b[90m    |\u001b[39m                                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m       timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 35 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 36 |\u001b[39m   })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
+                            "column": 63,
+                            "line": 33
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /play/i })\nExpected: visible\nError: strict mode violation: getByRole('button', { name: /play/i }) resolved to 2 elements:\n    1) <button class=\"bg-white text-black rounded-md py-2 px-4 md:py-2 md:px-6 font-bold flex flex-row items-center gap-2\">…</button> aka getByRole('button', { name: 'Play' }).first()\n    2) <button type=\"button\" class=\"bg-white rounded-md py-1 md:py-2 px-2 md:px-4 w-auto text-xs lg:text-lg font-semibold flex flex-row items-center hover:bg-neutral-300 transition\">…</button> aka getByRole('button', { name: 'Play' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /play/i })\u001b[22m\n\n\n  31 |\n  32 |     // Expect a modal or details view to appear with title text present\n> 33 |     await expect(page.getByRole(\"button\", { name: /play/i })).toBeVisible({\n     |                                                               ^\n  34 |       timeout: 10000,\n  35 |     });\n  36 |   });\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:33:63"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-07-10T23:54:46.243Z",
+                      "startTime": "2026-07-17T23:47:37.841Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-webkit-authenticated/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-webkit-authenticated/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-webkit-authenticated/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
+                        "column": 63,
+                        "line": 33
+                      }
+                    },
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 8737,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /play/i })\nExpected: visible\nError: strict mode violation: getByRole('button', { name: /play/i }) resolved to 2 elements:\n    1) <button class=\"bg-white text-black rounded-md py-2 px-4 md:py-2 md:px-6 font-bold flex flex-row items-center gap-2\">…</button> aka getByRole('button', { name: 'Play' }).first()\n    2) <button type=\"button\" class=\"bg-white rounded-md py-1 md:py-2 px-2 md:px-4 w-auto text-xs lg:text-lg font-semibold flex flex-row items-center hover:bg-neutral-300 transition\">…</button> aka getByRole('button', { name: 'Play' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /play/i })\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /play/i })\nExpected: visible\nError: strict mode violation: getByRole('button', { name: /play/i }) resolved to 2 elements:\n    1) <button class=\"bg-white text-black rounded-md py-2 px-4 md:py-2 md:px-6 font-bold flex flex-row items-center gap-2\">…</button> aka getByRole('button', { name: 'Play' }).first()\n    2) <button type=\"button\" class=\"bg-white rounded-md py-1 md:py-2 px-2 md:px-4 w-auto text-xs lg:text-lg font-semibold flex flex-row items-center hover:bg-neutral-300 transition\">…</button> aka getByRole('button', { name: 'Play' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /play/i })\u001b[22m\n\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:33:63",
+                        "location": {
+                          "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
+                          "column": 63,
+                          "line": 33
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 31 |\u001b[39m\n \u001b[90m 32 |\u001b[39m     \u001b[90m// Expect a modal or details view to appear with title text present\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/play/i\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible({\n \u001b[90m    |\u001b[39m                                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m       timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 35 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 36 |\u001b[39m   })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
+                            "column": 63,
+                            "line": 33
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /play/i })\nExpected: visible\nError: strict mode violation: getByRole('button', { name: /play/i }) resolved to 2 elements:\n    1) <button class=\"bg-white text-black rounded-md py-2 px-4 md:py-2 md:px-6 font-bold flex flex-row items-center gap-2\">…</button> aka getByRole('button', { name: 'Play' }).first()\n    2) <button type=\"button\" class=\"bg-white rounded-md py-1 md:py-2 px-2 md:px-4 w-auto text-xs lg:text-lg font-semibold flex flex-row items-center hover:bg-neutral-300 transition\">…</button> aka getByRole('button', { name: 'Play' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /play/i })\u001b[22m\n\n\n  31 |\n  32 |     // Expect a modal or details view to appear with title text present\n> 33 |     await expect(page.getByRole(\"button\", { name: /play/i })).toBeVisible({\n     |                                                               ^\n  34 |       timeout: 10000,\n  35 |     });\n  36 |   });\n    at /home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts:33:63"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-07-17T23:47:50.507Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-webkit-authenticated-retry1/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-webkit-authenticated-retry1/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-webkit-authenticated-retry1/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/test-results/content-details.e2e-Conten-39d9f-ails-modal-card-from-browse-webkit-authenticated-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/runner/work/next-nefllix-clone/next-nefllix-clone/tests/e2e/authenticated/content-details.e2e.test.ts",
+                        "column": 63,
+                        "line": 33
+                      }
+                    },
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6797,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 2,
+                      "startTime": "2026-07-17T23:48:00.929Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "expected"
+                  "status": "flaky"
                 }
               ],
               "id": "52b650dc819884b9db0f-9e6ebe5c93c013bb68df",
@@ -697,12 +808,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 6368,
+                      "duration": 6892,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-07-10T23:54:15.002Z",
+                      "startTime": "2026-07-17T23:47:06.627Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -731,12 +842,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3630,
+                      "duration": 4159,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-07-10T23:54:34.607Z",
+                      "startTime": "2026-07-17T23:47:25.662Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -762,15 +873,15 @@
                   "projectName": "webkit:authenticated",
                   "results": [
                     {
-                      "workerIndex": 6,
+                      "workerIndex": 8,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2701,
+                      "duration": 4553,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-07-10T23:54:57.859Z",
+                      "startTime": "2026-07-17T23:48:07.860Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -816,12 +927,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4162,
+                      "duration": 3473,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-07-10T23:54:21.390Z",
+                      "startTime": "2026-07-17T23:47:13.598Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -850,12 +961,12 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3641,
+                      "duration": 3648,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-07-10T23:54:38.259Z",
+                      "startTime": "2026-07-17T23:47:29.852Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -881,15 +992,15 @@
                   "projectName": "webkit:authenticated",
                   "results": [
                     {
-                      "workerIndex": 6,
+                      "workerIndex": 8,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5242,
+                      "duration": 5361,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-07-10T23:55:00.585Z",
+                      "startTime": "2026-07-17T23:48:12.431Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -935,12 +1046,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 11125,
+                      "duration": 10379,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-07-10T23:53:27.953Z",
+                      "startTime": "2026-07-17T23:46:23.821Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -969,12 +1080,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3298,
+                      "duration": 3296,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-07-10T23:53:39.824Z",
+                      "startTime": "2026-07-17T23:46:34.948Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1003,12 +1114,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 7488,
+                      "duration": 6794,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-07-10T23:53:44.845Z",
+                      "startTime": "2026-07-17T23:46:39.870Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1028,11 +1139,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-07-10T23:52:33.977Z",
-    "duration": 152326.283,
-    "expected": 16,
+    "startTime": "2026-07-17T23:45:29.177Z",
+    "duration": 169006.593,
+    "expected": 15,
     "skipped": 0,
     "unexpected": 0,
-    "flaky": 0
+    "flaky": 1
   }
 }
